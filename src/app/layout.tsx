@@ -7,14 +7,14 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: {
-    default: 'Your Name - Full Stack Developer',
-    template: '%s | Your Name'
+    default: 'Raghav Chawla - Python Developer & Data Scientist',
+    template: '%s | Raghav Chawla'
   },
-  description: 'Full Stack Developer crafting digital experiences with modern technologies and creative solutions. Specializing in React, Next.js, TypeScript, and cloud technologies.',
-  keywords: ['Full Stack Developer', 'React', 'Next.js', 'TypeScript', 'JavaScript', 'Web Development', 'Software Engineer'],
-  authors: [{ name: 'Your Name' }],
-  creator: 'Your Name',
-  publisher: 'Your Name',
+  description: 'Python Developer specializing in Data Science, AI, and Machine Learning. Building intelligent solutions with modern technologies and creative problem-solving approaches.',
+  keywords: ['Python Developer', 'Data Science', 'Machine Learning', 'AI', 'React', 'Next.js', 'Data Analysis', 'Software Engineer'],
+  authors: [{ name: 'Raghav Chawla' }],
+  creator: 'Raghav Chawla',
+  publisher: 'Raghav Chawla',
   robots: {
     index: true,
     follow: true,
@@ -29,25 +29,25 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://yourwebsite.com',
-    title: 'Your Name - Full Stack Developer',
-    description: 'Full Stack Developer crafting digital experiences with modern technologies and creative solutions.',
-    siteName: 'Your Name Portfolio',
+    url: 'https://raghavchawla.dev',
+    title: 'Raghav Chawla - Python Developer & Data Scientist',
+    description: 'Python Developer specializing in Data Science, AI, and Machine Learning. Building intelligent solutions with modern technologies.',
+    siteName: 'Raghav Chawla Portfolio',
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Your Name - Full Stack Developer',
+        alt: 'Raghav Chawla - Python Developer & Data Scientist',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Your Name - Full Stack Developer',
-    description: 'Full Stack Developer crafting digital experiences with modern technologies and creative solutions.',
+    title: 'Raghav Chawla - Python Developer & Data Scientist',
+    description: 'Python Developer specializing in Data Science, AI, and Machine Learning. Building intelligent solutions with modern technologies.',
     images: ['/og-image.jpg'],
-    creator: '@yourusername',
+    creator: '@raghav_dev',
   },
   icons: {
     icon: '/favicon.ico',
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     apple: '/apple-touch-icon.png',
   },
   manifest: '/site.webmanifest',
-  metadataBase: new URL('https://yourwebsite.com'),
+  metadataBase: new URL('https://raghavchawla.dev'),
 }
 
 export default function RootLayout({
@@ -76,13 +76,13 @@ export default function RootLayout({
               <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                 <div className="text-center md:text-left">
                   <p className="text-gray-300 text-sm">
-                    © {new Date().getFullYear()} Your Name. All rights reserved.
+                    © {new Date().getFullYear()} Raghav Chawla. All rights reserved.
                   </p>
                 </div>
                 <div className="flex gap-4 text-sm text-gray-400">
                   <a href="/privacy" className="hover:text-white transition-colors">Privacy</a>
                   <a href="/terms" className="hover:text-white transition-colors">Terms</a>
-                  <a href="mailto:your.email@example.com" className="hover:text-white transition-colors">Contact</a>
+                  <a href="mailto:chawlaraghav78@gmail.com" className="hover:text-white transition-colors">Contact</a>
                 </div>
               </div>
             </div>

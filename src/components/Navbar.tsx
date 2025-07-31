@@ -3,14 +3,16 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, X, Github, Linkedin, Mail, FileText } from 'lucide-react'
+import { Menu, X, Github, Linkedin, Mail, FileText, Download } from 'lucide-react'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
 
   useEffect(() => {
+    setMounted(true)
     const handleScroll = () => {
       setScrolled(window.scrollY > 50)
     }
@@ -21,6 +23,24 @@ export default function Navbar() {
   useEffect(() => {
     setIsOpen(false)
   }, [pathname])
+
+  // Prevent hydration mismatch
+  if (!mounted) {
+    return (
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-transparent">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
+            <div className="w-10 h-10 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg"></div>
+            <div className="hidden md:flex items-center space-x-8">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="w-16 h-4 bg-gray-700 rounded animate-pulse"></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </nav>
+    )
+  }
 
   const navItems = [
     { name: 'Home', href: '/' },
@@ -34,7 +54,7 @@ export default function Navbar() {
     { icon: Github, href: 'https://github.com/RCcoders', label: 'GitHub' },
     { icon: Linkedin, href: 'https://www.linkedin.com/in/raghav-chawla-29255b275', label: 'LinkedIn' },
     { icon: Mail, href: 'mailto:chawlaraghav78@gmail.com', label: 'Email' },
-    { icon: FileText, href: '/pdfs/resume.pdf', label: 'Resume' },
+    { icon: Download, href: '/pdfs/resume.pdf', label: 'Resume', download: true },
   ]
 
   const isActive = (path: string) => {
@@ -94,6 +114,7 @@ export default function Navbar() {
                   href={social.href}
                   target={social.href.startsWith('http') ? '_blank' : undefined}
                   rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  download={social.download}
                   className="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300 hover:scale-110"
                   aria-label={social.label}
                 >
@@ -107,6 +128,7 @@ export default function Navbar() {
               onClick={() => setIsOpen(!isOpen)}
               className="md:hidden p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300"
               aria-label="Toggle menu"
+              aria-expanded={isOpen}
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -143,6 +165,7 @@ export default function Navbar() {
                     href={social.href}
                     target={social.href.startsWith('http') ? '_blank' : undefined}
                     rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                    download={social.download}
                     className="p-3 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300"
                     aria-label={social.label}
                   >
@@ -160,6 +183,7 @@ export default function Navbar() {
         <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
           onClick={() => setIsOpen(false)}
+          aria-hidden="true"
         />
       )}
     </>
