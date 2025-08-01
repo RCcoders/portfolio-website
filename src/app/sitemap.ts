@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://raghavchawla.dev'
+  const baseUrl = 'https://your-domain.com' // Change this to your actual domain
   
   return [
     {

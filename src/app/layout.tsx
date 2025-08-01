@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     apple: '/apple-touch-icon.png',
   },
   manifest: '/site.webmanifest',
-  metadataBase: new URL('https://raghavchawla.dev'),
+  metadataBase: new URL('https://your-domain.com'), // Change this to your actual domain
 }
 
 export default function RootLayout({
