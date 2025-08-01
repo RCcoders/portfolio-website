@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { FadeInOnScroll } from '@/components/ScrollAnimations'
+import ErrorBoundary from '@/components/ErrorBoundary'
 import { ChevronRight, Github, Linkedin, Mail, ArrowDown, ShoppingCart, DollarSign, TrendingUp } from 'lucide-react'
 
 export default function Home() {
@@ -12,6 +14,7 @@ export default function Home() {
   }, [])
 
   return (
+    <ErrorBoundary>
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
@@ -92,6 +95,7 @@ export default function Home() {
       </main>
 
       {/* Featured work preview section */}
+      <FadeInOnScroll>
       <section className="relative z-10 px-4 py-20 bg-gradient-to-t from-black/50 to-transparent" aria-labelledby="featured-work">
         <div className="max-w-6xl mx-auto">
           <h2 id="featured-work" className="text-3xl md:text-4xl font-bold text-white text-center mb-16">
@@ -181,6 +185,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+      </FadeInOnScroll>
     </div>
+    </ErrorBoundary>
   )
 }
