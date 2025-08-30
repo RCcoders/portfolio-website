@@ -77,7 +77,7 @@ export default function Home() {
             <Linkedin className="w-6 h-6" />
           </a>
           <a
-            href="mailto:chawlaraghav78@gmail.com"
+            href="mailto:cec23554.aiml.cec@cgc.edu.in"
             title="Send email"
             className="p-3 bg-white/10 backdrop-blur-sm rounded-full text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 transform"
           >
@@ -102,7 +102,7 @@ export default function Home() {
           {[
             {
               id: 1,
-              title: "Grocer Management GUI",
+              title: "Grocery Management GUI",
               description: "A comprehensive desktop application for grocery store management with inventory tracking, sales processing, and customer management features.",
               tags: ["Python", "Tkinter", "SQLite"],
               image: "/images/grocery-management.png", // Add your actual image path here

@@ -28,7 +28,7 @@ export default function ProjectsPage() {
       image: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&h=400&fit=crop&crop=center",
       category: "python-development",
       tags: ["Python", "Tkinter", "SQLite", "GUI", "Database Management", "OOP"],
-      githubUrl: "https://github.com/raghavchawla/Grocery_store_management_GUI",
+      githubUrl: "https://github.com/RCcoders/Grocery_store_management_GUI",
       liveUrl: "#",
       status: "completed",
       date: "2025-04-15",
@@ -60,10 +60,10 @@ export default function ProjectsPage() {
       title: "Flask Expense Tracker",
       description: "A responsive web app built with Flask that helps users track expenses, set budgets, categorize spending, and visualize financial patterns with interactive charts.",
       longDescription: "This full-stack expense tracking application is designed to help users manage their personal finances effectively. It allows users to register, log in, and securely track daily expenses by adding, editing, and categorizing transactions. Users can set monthly budgets, monitor overspending, and gain insights into their financial habits through interactive charts and detailed reports. Built using Flask for the backend, SQLAlchemy for database management, and Chart.js for visualizations, the app offers a seamless and intuitive user experience.",
-      image: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&h=400&fit=crop&crop=center",
+      image: "https://images.unsplash.com/photo-1707157284454-553ef0a4ed0d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       category: "web-development",
       tags: ["Python", "Flask", "SQLAlchemy", "HTML/CSS", "JavaScript", "Chart.js"],
-      githubUrl: "https://github.com/raghavchawla/Flask_Expense_tracker",
+      githubUrl: "https://github.com/RCcoders/Flask_Expense_tracker",
       liveUrl: "#",
       status: "completed",
       date: "2025-05-20",
@@ -98,7 +98,7 @@ export default function ProjectsPage() {
       image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop&crop=center",
       category: "machine-learning",
       tags: ["Python", "Scikit-learn", "Pandas", "Matplotlib", "Seaborn", "XGBoost"],
-      githubUrl: "https://github.com/raghavchawla/Customer_churn_prediction",
+      githubUrl: "https://github.com/RCcoders/Customer_churn_prediction",
       liveUrl: "#",
       status: "completed",
       date: "2025-05-10",
@@ -133,7 +133,7 @@ export default function ProjectsPage() {
       image: "https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=600&h=400&fit=crop&crop=center",
       category: "python-development",
       tags: ["Python", "Pygame", "Game Development", "OOP", "Sprites", "Animation"],
-      githubUrl: "https://github.com/raghavchawla/catching_the_falling_star",
+      githubUrl: "https://github.com/RCcoders/catching_the_falling_star",
       liveUrl: "#",
       status: "completed",
       date: "2023-06-30",
@@ -158,6 +158,41 @@ export default function ProjectsPage() {
         levels: "5",
         frameRate: "60 FPS",
         soundEffects: "8"
+      }
+    },
+    {
+      id: 5,
+      title: "Personal Portfolio Website",
+      description: "A modern and responsive personal portfolio website built with Next.js, showcasing my skills, projects, and experience. Features include a blog section, contact form, and interactive UI elements.",
+      longDescription: "This personal portfolio website is designed to showcase my skills, projects, and experience in a modern and responsive layout. Built with Next.js, it includes a blog section for sharing insights, a contact form for inquiries, and interactive UI elements for an engaging user experience. The site is optimized for performance and SEO, ensuring fast loading times and visibility in search engines.",
+      image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cG9ydGZvbGlvfGVufDB8fDB8fHww",
+      category: "web-development",
+      tags: ["Next.js", "React", "Tailwind CSS", "SEO", "Responsive Design", "JavaScript"],
+      githubUrl: "https://github.com/RCcoders/portfolio-website",
+      liveUrl: "#",
+      status: "In Progress",
+      date: "2023-06-30",
+      duration: "3 weeks",
+      client: "Personal Project",
+      features: [
+        "Responsive design for all devices",
+        "Dynamic blog section with Markdown support",
+        "Contact form with email integration",
+        "Interactive project showcase",
+        "SEO optimization for better visibility",
+        "Dark mode toggle and animations"
+      ],
+      technologies: {
+        frontend: ["Next.js", "React", "Tailwind CSS", "JavaScript"],
+        backend: ["Node.js", "Express", "EmailJS"],
+        seo: ["Meta Tags", "Open Graph", "Sitemap"],
+        deployment: ["Vercel", "GitHub Actions", "CI/CD"]
+      },
+      metrics: {
+        pages: "10+",
+        blogPosts: "5",
+        projects: "8",
+        responsiveBreakpoints: "3"
       }
     }
   ];
@@ -452,11 +487,15 @@ export default function ProjectsPage() {
             Let us discuss how we can create something amazing together.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="flex items-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 font-medium">
+            <button 
+              onclick={() => windon.open('https://codesandbox.io', '_blank')}
+              className="flex items-center px-8 py-4 border border-gray-600 bg-blue-600 hover:border-blue-500 text-white rounded-lg transition-colors duration-200 font-medium">
               <Users className="w-5 h-5 mr-2" />
               Start a Project
             </button>
-            <button className="flex items-center px-8 py-4 border border-gray-600 hover:border-blue-500 text-white rounded-lg transition-colors duration-200 font-medium">
+            <button
+              onClick={() => window.open('https://github.com/RCCoders', '_blank')}
+              className="flex items-center px-8 py-4 border border-gray-600 bg-blue-600 hover:border-blue-500 text-white rounded-lg transition-colors duration-200 font-medium">
               <Github className="w-5 h-5 mr-2" />
               View All on GitHub
             </button>

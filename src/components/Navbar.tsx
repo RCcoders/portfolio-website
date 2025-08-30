@@ -38,8 +38,8 @@ export default function Navbar() {
   ]
 
   const isActive = (path: string) => {
-    if (path === '/' && pathname === '/') return true
-    if (path !== '/' && pathname.startsWith(path)) return true
+    if (path === '/' && pathname === '/') {return true}
+    if (path !== '/' && pathname.startsWith(path)) {return true}
     return false
   }
 
@@ -58,7 +58,7 @@ export default function Navbar() {
             <Link href="/" className="relative group">
               <div className="flex items-center gap-2">
                 <div className="w-10 h-10 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg flex items-center justify-center font-bold text-white group-hover:scale-110 transition-transform duration-300">
-                  YN
+                  RC
                 </div>
                 <span className="font-bold text-xl text-white hidden sm:block group-hover:text-purple-300 transition-colors">
                   Raghav Chawla

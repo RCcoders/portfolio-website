@@ -52,7 +52,16 @@ const certifications = [
     credentialUrl: "https://www.comptia.org/certifications/security"
   }
 ];
-
+interface CertificateData {
+  slug: string;
+  title: string;
+  issuer: string;
+  date: string;
+  description?: string;
+  credentialId?: string;
+  credentialUrl?: string;
+  skills?: string[];
+}
 // Certificate Card Component
 const CertCard = ({ 
   slug, 

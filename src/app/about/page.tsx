@@ -1,4 +1,5 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { 
@@ -21,6 +22,7 @@ import {
 } from 'lucide-react';
 
 export default function AboutPage() {
+  const router = useRouter();  
   const [activeTab, setActiveTab] = useState('overview');
 
   const skills = [
@@ -33,25 +35,43 @@ export default function AboutPage() {
   ];
 
   const experiences = [
-    {
-      role: 'Senior Python Developer',
-      company: 'Tech Innovations Inc.',
-      period: '2023 - Present',
-      description: 'Leading AI/ML projects and developing scalable data solutions'
-    },
-    {
-      role: 'Data Science Specialist',
-      company: 'DataCorp Solutions',
-      period: '2021 - 2023',
-      description: 'Built predictive models and implemented machine learning algorithms'
-    },
-    {
-      role: 'Python Developer',
-      company: 'StartupXYZ',
-      period: '2020 - 2021',
-      description: 'Developed web applications and automated data processing pipelines'
-    }
-  ];
+  {
+    role: 'Python Developer Intern',
+    company: 'Smart India Hackathon 2024 (Govt Project)',
+    period: '2024 - Present',
+    description:
+      'Contributed to a national-level problem statement using Python and data science libraries to build scalable, efficient solutions with a team of cross-functional developers.'
+  },
+  {
+    role: 'Data Science Intern',
+    company: 'MY-Service-hub (Freelance Project)',
+    period: '2024',
+    description:
+      'Developed a customer churn prediction system using Streamlit, Pandas, and Scikit-learn; deployed an interactive dashboard for visual insights and predictions.'
+  },
+  {
+    role: 'Backend Developer (Trainee)',
+    company: 'Contribution Hub (Open Source)',
+    period: '2025',
+    description:
+      'Built API integrations and GitHub OAuth using Python and Django; synced contributor data and enabled project matching through GraphQL and REST endpoints.'
+  },
+  {
+    role: 'Grocery Store Management Developer',
+    company: 'Personal Project',
+    period: '2023 - 2024',
+    description:
+      'Designed a Python-based billing system with GST calculation, inventory tracking, and GUI using Tkinter; used real datasets to simulate real-world operations.'
+  },
+  {
+    role: 'Flask Developer',
+    company: 'Expense Tracker Web App',
+    period: '2023',
+    description:
+      'Created a full-stack expense tracking application using Flask and SQLite; implemented category-wise analytics and responsive UI for personal finance monitoring.'
+  }
+];
+
 
   const interests = [
     { icon: Brain, title: 'Artificial Intelligence', desc: 'Exploring the frontiers of AI and deep learning' },
@@ -101,11 +121,12 @@ export default function AboutPage() {
                      Download Resume
                   </button>
                 </a>
-                <a href="mailto:chawlaraghav78@gmail.com">
-                  <button className="flex items-center px-6 py-3 border border-gray-600 hover:border-blue-500 text-white rounded-lg transition-colors duration-200">
-                    <Mail className="w-5 h-5 mr-2" />
-                    Get In Touch
-                  </button>
+                <a
+                  href="mailto:chawlaraghav78@gmail.com"
+                  className="flex items-center px-6 py-3 border border-gray-600 hover:border-blue-500 text-white rounded-lg transition-colors duration-200"
+                >
+                  <Mail className="w-5 h-5 mr-2" />
+                  Get In Touch
                 </a>
               </div>
               
@@ -334,7 +355,10 @@ export default function AboutPage() {
                   I am always excited to discuss new opportunities, collaborate on interesting projects, 
                   or simply chat about the latest trends in AI and data science.
                 </p>
-                <button className="flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 mx-auto">
+                <button
+                  onClick={() => router.push('/contact')}
+                  className="flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 mx-auto"
+                >
                   Start a Conversation
                   <ChevronRight className="w-5 h-5 ml-2" />
                 </button>
