@@ -4,13 +4,13 @@ import Image from 'next/image'
 import { Calendar, ExternalLink, Award } from 'lucide-react'
 
 interface CertCardProps {
-  slug: string
-  title: string
-  issuer: string
-  date: string
-  imageUrl?: string
-  description?: string
-  credentialUrl?: string
+  slug: string;
+  title: string;
+  issuer: string;
+  date: string;
+  imageUrl?: string;
+  description?: string;
+  credentialUrl?: string;
 }
 
 export default function CertCard({
