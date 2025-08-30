@@ -371,7 +371,7 @@ export default function ProjectsPage() {
             </div>
 
             <button
-              onClick={() => setIsExpanded(!isExpanded)}
+              onclick={() => setIsExpanded(!isExpanded)}
               className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors duration-200"
             >
               {isExpanded ? 'Show Less' : 'Show More'}
@@ -444,7 +444,7 @@ export default function ProjectsPage() {
             {categories.map((category) => (
               <button
                 key={category.id}
-                onClick={() => setActiveFilter(category.id)}
+                onclick={() => setActiveFilter(category.id)}
                 className={`flex items-center px-6 py-3 rounded-xl transition-all duration-200 ${
                   activeFilter === category.id
                     ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/25'
@@ -494,7 +494,7 @@ export default function ProjectsPage() {
               Start a Project
             </button>
             <button
-              onClick={() => window.open('https://github.com/RCCoders', '_blank')}
+              onclick={() => window.open('https://github.com/RCCoders', '_blank')}
               className="flex items-center px-8 py-4 border border-gray-600 bg-blue-600 hover:border-blue-500 text-white rounded-lg transition-colors duration-200 font-medium">
               <Github className="w-5 h-5 mr-2" />
               View All on GitHub

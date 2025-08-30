@@ -1,12 +1,12 @@
 'use client';
 
 import React from 'react';
-import CertCard from '@/components/CertCard'
+import CertCard from '../components/CertCard';
 
 // Mock certification data
 const certifications = [
   {
-    slug: "Deloitte Australia - Tehnology Job Simulation",
+    slug: "deloitte-australia-technology-job-simulation",
     title: "Deloitte Australia - Technology Job Simulation",
     issuer: "Forage",
     date: "2025-07-15",
@@ -15,40 +15,40 @@ const certifications = [
     credentialUrl: "https://forage-uploads-prod.s3.amazonaws.com/completion-certificates/9PBTqmSxAf6zZTseP/udmxiyHeqYQLkTPvf_9PBTqmSxAf6zZTseP_mt5PFGpLjWdcYZC4S_1751976789361_completion_certificate.pdf"
   },
   {
-    slug: "Advanced Python: Object-Oriented Programming",
+    slug: "advanced-python-object-oriented-programming",
     title: "Advanced Python: Object-Oriented Programming",
-    issuer: "Linkedin Learning",
+    issuer: "LinkedIn Learning",
     date: "2025-04-21",
     image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=300&h=200&fit=crop&crop=center",
-    description: "Successfully completed IBM's introductory course on Python for Data Science. Gained foundational skills in Python programming, including data types, control structures, functions, and working with libraries such as NumPy and Pandas.",
-    credentialUrl: "https://courses.cognitiveclass.ai/certificates/d4f57248668c4a8e99fd462a324256aa"
+    description: "Mastered advanced object-oriented programming concepts in Python, including inheritance, polymorphism, encapsulation, and design patterns. Built complex applications using OOP principles to create maintainable and scalable code.",
+    credentialUrl: "https://www.linkedin.com/learning/certificates/advanced-python-oop"
   },
   {
-    slug: "Pyhton 101 for data Science",
+    slug: "python-101-for-data-science",
     title: "Python 101 for Data Science",
     issuer: "IBM",
     date: "2025-03-21",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=300&h=200&fit=crop&crop=center",
-    description: "Comprehensive understanding of Google Analytics including setup, configuration, data analysis, and reporting for digital marketing insights.",
-    credentialUrl: "https://skillshop.exceedlms.com/student/path/508845"
+    description: "Successfully completed IBM's introductory course on Python for Data Science. Gained foundational skills in Python programming, including data types, control structures, functions, and working with libraries such as NumPy and Pandas for data manipulation and analysis.",
+    credentialUrl: "https://courses.cognitiveclass.ai/certificates/d4f57248668c4a8e99fd462a324256aa"
   },
   {
-    slug: "Pyhton Object-Oriented Programming",
+    slug: "python-object-oriented-programming",
     title: "Python Object-Oriented Programming",
-    issuer: "Linkedin Learning",
+    issuer: "LinkedIn Learning",
     date: "2023-07-12",
     image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=300&h=200&fit=crop&crop=center",
     description: "Completed an introductory course on Object-Oriented Programming in Python. Gained a solid understanding of fundamental OOP concepts such as classes, objects, constructors, methods, and inheritance. Developed basic Python applications using object-oriented principles to improve code structure, readability, and reusability.",
-    credentialUrl: "https://university.mongodb.com/certification"
+    credentialUrl: "https://www.linkedin.com/learning/certificates/python-oop-basics"
   },
   {
-    slug: "Uisng Chatgpt and Generative AI in FinTech",
+    slug: "generative-ai-in-fintech",
     title: "Generative AI in FinTech",
-    issuer: "Linkedin Learning",
+    issuer: "LinkedIn Learning",
     date: "2025-03-12",
     image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=300&h=200&fit=crop&crop=center",
     description: "Completed a specialized course focused on the application of ChatGPT and generative AI technologies in the financial technology (FinTech) sector. Explored use cases such as automated customer support, fraud detection, personalized financial advising, and natural language data analysis.",
-    credentialUrl: "https://www.comptia.org/certifications/security"
+    credentialUrl: "https://www.linkedin.com/learning/certificates/generative-ai-fintech"
   }
 ];
 
@@ -99,7 +99,7 @@ export default function CertificationsPage() {
             <div className="text-gray-400">Different Providers</div>
           </div>
           <div className="text-center bg-gray-800/50 rounded-xl p-6 border border-gray-700">
-            <div className="text-3xl font-bold text-purple-400 mb-2">2024</div>
+            <div className="text-3xl font-bold text-purple-400 mb-2">2025</div>
             <div className="text-gray-400">Latest Achievement</div>
           </div>
         </div>
