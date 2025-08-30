@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
-import { Calendar, ExternalLink, Award, Building2 } from 'lucide-react';
+import CertCard from '@/components/CertCard'
 
 // Mock certification data
 const certifications = [
@@ -52,93 +51,6 @@ const certifications = [
     credentialUrl: "https://www.comptia.org/certifications/security"
   }
 ];
-interface CertificateData {
-  slug: string;
-  title: string;
-  issuer: string;
-  date: string;
-  description?: string;
-  credentialId?: string;
-  credentialUrl?: string;
-  skills?: string[];
-}
-// Certificate Card Component
-const CertCard = ({ 
-  slug, 
-  title, 
-  issuer, 
-  date, 
-  imageUrl, 
-  description, 
-  credentialUrl 
-}) => {
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
-
-  return (
-    <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl overflow-hidden shadow-2xl border border-gray-700 hover:border-blue-500 transition-all duration-300 hover:scale-105 hover:shadow-blue-500/25 relative">
-      {/* Certificate Image */}
-      <div className="relative h-48 w-full">
-        <Image 
-          src={imageUrl} 
-          alt={title}
-          fill
-          className="object-cover transition-transform duration-300 hover:scale-110"
-          sizes="(max-width: 768px) 100vw, 400px"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent"></div>
-        <div className="absolute top-4 right-4">
-          <div className="bg-blue-600 text-white p-2 rounded-full">
-            <Award className="w-5 h-5" />
-          </div>
-        </div>
-      </div>
-
-      {/* Certificate Content */}
-      <div className="p-6">
-        {/* Title */}
-        <h3 className="text-xl font-bold text-white mb-2 line-clamp-2">
-          {title}
-        </h3>
-
-        {/* Issuer */}
-        <div className="flex items-center text-blue-400 mb-3">
-          <Building2 className="w-4 h-4 mr-2" />
-          <span className="text-sm font-medium">{issuer}</span>
-        </div>
-
-        {/* Date */}
-        <div className="flex items-center text-gray-400 mb-4">
-          <Calendar className="w-4 h-4 mr-2" />
-          <span className="text-sm">{formatDate(date)}</span>
-        </div>
-
-        {/* Description */}
-        <p className="text-gray-300 text-sm mb-6 line-clamp-3 leading-relaxed">
-          {description}
-        </p>
-
-        {/* Action Button */}
-        <div className="flex justify-between items-center">
-          <button 
-            onClick={() => window.open(credentialUrl, '_blank')}
-            className="flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 text-sm font-medium"
-          >
-            View Credential
-            <ExternalLink className="w-4 h-4 ml-2" />
-          </button>
-          
-          <div className="text-xs text-gray-500 bg-gray-800 px-3 py-1 rounded-full">
-            #{slug}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 // Main Certifications Page Component
 export default function CertificationsPage() {
