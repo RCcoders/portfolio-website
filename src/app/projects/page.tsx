@@ -28,7 +28,7 @@ export default function ProjectsPage() {
       image: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&h=400&fit=crop&crop=center",
       category: "python-development",
       tags: ["Python", "Tkinter", "SQLite", "GUI", "Database Management", "OOP"],
-      githubUrl: "https://github.com/RCcoders/Grocery_store_management_GUI",
+      githubUrl: "https://github.com/RCcoders/Grocery_Management_System_GUI",
       liveUrl: "#",
       status: "completed",
       date: "2025-04-15",
@@ -371,7 +371,7 @@ export default function ProjectsPage() {
             </div>
 
             <button
-              onclick={() => setIsExpanded(!isExpanded)}
+              onClick={() => setIsExpanded(!isExpanded)}
               className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors duration-200"
             >
               {isExpanded ? 'Show Less' : 'Show More'}
@@ -444,7 +444,7 @@ export default function ProjectsPage() {
             {categories.map((category) => (
               <button
                 key={category.id}
-                onclick={() => setActiveFilter(category.id)}
+                onClick={() => setActiveFilter(category.id)}
                 className={`flex items-center px-6 py-3 rounded-xl transition-all duration-200 ${
                   activeFilter === category.id
                     ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/25'
@@ -488,13 +488,13 @@ export default function ProjectsPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button 
-              onclick={() => windon.open('https://codesandbox.io', '_blank')}
+              onClick={() => windon.open('https://codesandbox.io', '_blank')}
               className="flex items-center px-8 py-4 border border-gray-600 bg-blue-600 hover:border-blue-500 text-white rounded-lg transition-colors duration-200 font-medium">
               <Users className="w-5 h-5 mr-2" />
               Start a Project
             </button>
             <button
-              onclick={() => window.open('https://github.com/RCCoders', '_blank')}
+              onClick={() => window.open('https://github.com/RCCoders', '_blank')}
               className="flex items-center px-8 py-4 border border-gray-600 bg-blue-600 hover:border-blue-500 text-white rounded-lg transition-colors duration-200 font-medium">
               <Github className="w-5 h-5 mr-2" />
               View All on GitHub

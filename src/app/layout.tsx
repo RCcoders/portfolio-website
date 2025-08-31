@@ -1,7 +1,9 @@
+ 
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import Navbar from './components/Navbar'
+import Navbar from '@/components/Navbar'
+import Link from 'next/link'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -96,30 +98,30 @@ export default function RootLayout({
                 {/* Center - Quick Links */}
                 <div className="flex flex-col items-center gap-4">
                   <div className="flex gap-6 text-sm">
-                    <a 
+                    <Link 
                       href="/about" 
                       className="text-gray-400 hover:text-white transition-colors duration-200"
                     >
                       About
-                    </a>
-                    <a 
+                    </Link>
+                    <Link 
                       href="/projects" 
                       className="text-gray-400 hover:text-white transition-colors duration-200"
                     >
                       Projects
-                    </a>
-                    <a 
+                    </Link>
+                    <Link 
                       href="/certifications" 
                       className="text-gray-400 hover:text-white transition-colors duration-200"
                     >
                       Certifications
-                    </a>
-                    <a 
+                    </Link>
+                    <Link 
                       href="/contact" 
                       className="text-gray-400 hover:text-white transition-colors duration-200"
                     >
                       Contact
-                    </a>
+                    </Link>
                   </div>
                   
                   {/* Social Links */}
@@ -163,18 +165,18 @@ export default function RootLayout({
                 {/* Right side - Legal links */}
                 <div className="flex flex-col items-center md:items-end gap-4">
                   <div className="flex gap-4 text-sm">
-                    <a 
+                    <Link 
                       href="/privacy" 
                       className="text-gray-400 hover:text-white transition-colors duration-200"
                     >
                       Privacy
-                    </a>
-                    <a 
+                    </Link>
+                    <Link 
                       href="/terms" 
                       className="text-gray-400 hover:text-white transition-colors duration-200"
                     >
                       Terms
-                    </a>
+                    </Link>
                     <a 
                       href="mailto:chawlaraghav78@gmail.com" 
                       className="text-gray-400 hover:text-blue-400 transition-colors duration-200"

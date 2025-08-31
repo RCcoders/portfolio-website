@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import CertCard from '../components/CertCard';
+import CertCard from '@/components/CertCard';
 
 // Mock certification data
 const certifications = [
