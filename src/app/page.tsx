@@ -73,7 +73,7 @@ export default function Home() {
           <a href="https://github.com/RCcoders" target="_blank" rel="noopener noreferrer" title="GitHub" className="p-3 bg-white/10 backdrop-blur-sm rounded-full text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 transform">
             <Github className="w-6 h-6" />
           </a>
-          <a href="inkedin.com/in/raghav-chawla-29255b275/" target="_blank" rel="noopener noreferrer" title="LinkedIn" className="p-3 bg-white/10 backdrop-blur-sm rounded-full text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 transform">
+          <a href="linkedin.com/in/raghav-chawla-29255b275/" target="_blank" rel="noopener noreferrer" title="LinkedIn" className="p-3 bg-white/10 backdrop-blur-sm rounded-full text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 transform">
             <Linkedin className="w-6 h-6" />
           </a>
           <a
