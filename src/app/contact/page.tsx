@@ -36,8 +36,8 @@ function AIChatbot() {
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef(null);
-  const inputRef = useRef(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -54,7 +54,7 @@ function AIChatbot() {
   }, [isOpen, isMinimized]);
 
   // Mock AI responses - Replace with actual API call
-  const getAIResponse = async (userMessage) => {
+  const getAIResponse = async (userMessage: string): Promise<string> => {
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000));
     
@@ -118,8 +118,7 @@ function AIChatbot() {
       };
       
       setMessages(prev => [...prev, aiMessage]);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
+    } catch {
       const errorMessage = {
         type: 'bot',
         content: "I apologize, but I'm having trouble responding right now. Please try reaching out to Raghav directly via email or phone for immediate assistance.",
@@ -131,14 +130,14 @@ function AIChatbot() {
     }
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
   };
 
-  const formatTime = (timestamp) => {
+  const formatTime = (timestamp: Date) => {
     return timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
@@ -233,7 +232,7 @@ function AIChatbot() {
                     ref={inputRef}
                     type="text"
                     value={inputMessage}
-                    onChange={(e) => setInputMessage(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
                     placeholder="Ask me anything about Raghav's services..."
                     className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 text-sm focus:outline-none focus:border-blue-500 transition-colors"
@@ -267,9 +266,9 @@ export default function ContactPage() {
   });
   
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null);
+  const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -277,33 +276,39 @@ export default function ContactPage() {
     }));
   };
 
-  const handleSubmit = async (e) => {
-  e.preventDefault();
-  setIsSubmitting(true);
-  setSubmitStatus(null);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
 
-  try {
-    const response = await fetch("https://formspree.io/f/movlgrge", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(formData)
-    });
+    try {
+      const response = await fetch("https://formspree.io/f/movlgrge", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      });
 
-    if (response.ok) {
-      setSubmitStatus("success");
-      setFormData({ name: "", email: "", subject: "", message: "" });
-    } else {
+      if (response.ok) {
+        setSubmitStatus("success");
+        setFormData({ 
+          name: "", 
+          email: "", 
+          company: "", 
+          subject: "", 
+          message: "", 
+          projectType: "general" 
+        });
+      } else {
+        setSubmitStatus("error");
+      }
+    } catch {
       setSubmitStatus("error");
+    } finally {
+      setIsSubmitting(false);
     }
-  } catch {
-    setSubmitStatus("error");
-  } finally {
-    setIsSubmitting(false);
-  }
-};
-
+  };
 
   const contactMethods = [
     {
@@ -371,24 +376,23 @@ export default function ContactPage() {
     }
   ];
 
-  
-const projectTypes = [
-  { value: 'general', label: 'General Inquiry' },
-  { value: 'data-science', label: 'Data Science Project' },
-  { value: 'machine-learning', label: 'Machine Learning' },
-  { value: 'deep-learning', label: 'Deep Learning / Neural Networks' },
-  { value: 'web-development', label: 'Web Development' },
-  { value: 'frontend', label: 'Frontend Development' },
-  { value: 'backend-api', label: 'Backend/API Development' },
-  { value: 'flask-django', label: 'Flask/Django Project' },
-  { value: 'streamlit-app', label: 'Streamlit Dashboard / Tool' },
-  { value: 'automation', label: 'Python Automation Script' },
-  { value: 'chatbot', label: 'Chatbot / LLM Integration' },
-  { value: 'cv-nlp', label: 'Computer Vision / NLP' },
-  { value: 'cloud', label: 'Cloud Deployment (AWS, Vercel, etc.)' },
-  { value: 'consulting', label: 'Tech Consulting / Advice' },
-  { value: 'collaboration', label: 'Open Source Collaboration' }
-];
+  const projectTypes = [
+    { value: 'general', label: 'General Inquiry' },
+    { value: 'data-science', label: 'Data Science Project' },
+    { value: 'machine-learning', label: 'Machine Learning' },
+    { value: 'deep-learning', label: 'Deep Learning / Neural Networks' },
+    { value: 'web-development', label: 'Web Development' },
+    { value: 'frontend', label: 'Frontend Development' },
+    { value: 'backend-api', label: 'Backend/API Development' },
+    { value: 'flask-django', label: 'Flask/Django Project' },
+    { value: 'streamlit-app', label: 'Streamlit Dashboard / Tool' },
+    { value: 'automation', label: 'Python Automation Script' },
+    { value: 'chatbot', label: 'Chatbot / LLM Integration' },
+    { value: 'cv-nlp', label: 'Computer Vision / NLP' },
+    { value: 'cloud', label: 'Cloud Deployment (AWS, Vercel, etc.)' },
+    { value: 'consulting', label: 'Tech Consulting / Advice' },
+    { value: 'collaboration', label: 'Open Source Collaboration' }
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative">
@@ -434,7 +438,7 @@ const projectTypes = [
               </div>
             )}
 
-            <div className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -542,8 +546,7 @@ const projectTypes = [
               </div>
 
               <button
-                type="button"
-                onClick={handleSubmit}
+                type="submit"
                 disabled={isSubmitting}
                 className="w-full flex items-center justify-center px-6 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -559,7 +562,7 @@ const projectTypes = [
                   </>
                 )}
               </button>
-            </div>
+            </form>
           </div>
 
           {/* Contact Information */}
