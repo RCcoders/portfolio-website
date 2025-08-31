@@ -166,7 +166,7 @@ export default function CertificationDetailPage() {
         {/* Back Button */}
         <div className="mb-8">
           <button
-            onclick={() => router.back()}
+            onClick={() => router.back()}
             className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />

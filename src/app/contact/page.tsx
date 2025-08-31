@@ -146,7 +146,7 @@ function AIChatbot() {
       {/* Chatbot Toggle Button */}
       {!isOpen && (
         <button
-          onclick={() => setIsOpen(true)}
+          onClick={() => setIsOpen(true)}
           className="fixed bottom-6 right-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 z-50 group"
         >
           <Bot className="w-6 h-6" />
@@ -177,13 +177,13 @@ function AIChatbot() {
             </div>
             <div className="flex items-center space-x-2">
               <button
-                onclick={() => setIsMinimized(!isMinimized)}
+                onClick={() => setIsMinimized(!isMinimized)}
                 className="text-gray-400 hover:text-white p-1 rounded transition-colors"
               >
                 {isMinimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
               </button>
               <button
-                onclick={() => setIsOpen(false)}
+                onClick={() => setIsOpen(false)}
                 className="text-gray-400 hover:text-white p-1 rounded transition-colors"
               >
                 <X className="w-4 h-4" />
@@ -239,7 +239,7 @@ function AIChatbot() {
                     disabled={isLoading}
                   />
                   <button
-                    onclick={handleSendMessage}
+                    onClick={handleSendMessage}
                     disabled={!inputMessage.trim() || isLoading}
                     className="px-3 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-200"
                   >

@@ -15,11 +15,43 @@ import {
   Users
 } from 'lucide-react';
 
+// Define the Project type
+interface Project {
+  id: number;
+  title: string;
+  description: string;
+  longDescription: string;
+  image: string;
+  category: string;
+  tags: string[];
+  githubUrl: string;
+  liveUrl: string;
+  status: 'completed' | 'in-progress' | 'planned';
+  date: string;
+  duration: string;
+  client: string;
+  features: string[];
+  technologies: {
+    [key: string]: string[];
+  };
+  metrics: {
+    [key: string]: string;
+  };
+}
+
+// Define the Category type
+interface Category {
+  id: string;
+  name: string;
+  icon: React.ComponentType<{ className?: string }>;
+  count: number;
+}
+
 export default function ProjectsPage() {
   const [activeFilter, setActiveFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
 
-  const projects = [
+  const projects: Project[] = [
     {
       id: 1,
       title: "Grocery Store Management GUI",
@@ -170,7 +202,7 @@ export default function ProjectsPage() {
       tags: ["Next.js", "React", "Tailwind CSS", "SEO", "Responsive Design", "JavaScript"],
       githubUrl: "https://github.com/RCcoders/portfolio-website",
       liveUrl: "#",
-      status: "In Progress",
+      status: "in-progress",
       date: "2023-06-30",
       duration: "3 weeks",
       client: "Personal Project",
@@ -197,7 +229,7 @@ export default function ProjectsPage() {
     }
   ];
 
-  const categories = [
+  const categories: Category[] = [
     { id: 'all', name: 'All Projects', icon: Globe, count: projects.length },
     { id: 'machine-learning', name: 'Machine Learning', icon: Brain, count: projects.filter(p => p.category === 'machine-learning').length },
     { id: 'python-development', name: 'Python Model', icon: Play, count: projects.filter(p => p.category === 'python-development').length },
@@ -212,10 +244,10 @@ export default function ProjectsPage() {
     return matchesCategory && matchesSearch;
   });
 
-  const ProjectCard = ({ project }) => {
+  const ProjectCard = ({ project }: { project: Project }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
-    const getStatusColor = (status) => {
+    const getStatusColor = (status: string) => {
       switch (status) {
         case 'completed': return 'bg-green-600 text-green-100';
         case 'in-progress': return 'bg-blue-600 text-blue-100';
@@ -224,7 +256,7 @@ export default function ProjectsPage() {
       }
     };
 
-    const getStatusIcon = (status) => {
+    const getStatusIcon = (status: string) => {
       switch (status) {
         case 'completed': return <Award className="w-4 h-4" />;
         case 'in-progress': return <Play className="w-4 h-4" />;
@@ -488,7 +520,7 @@ export default function ProjectsPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button 
-              onClick={() => windon.open('https://codesandbox.io', '_blank')}
+              onClick={() => window.open('https://codesandbox.io', '_blank')}
               className="flex items-center px-8 py-4 border border-gray-600 bg-blue-600 hover:border-blue-500 text-white rounded-lg transition-colors duration-200 font-medium">
               <Users className="w-5 h-5 mr-2" />
               Start a Project

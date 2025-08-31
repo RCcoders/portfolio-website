@@ -148,12 +148,14 @@ export default function ProjectCard({
 
           {/* Technologies */}
           <div className="flex flex-wrap gap-2 mb-4">
+            {technologies.slice(0, 4).map((tech, index) => (
               <span 
                 key={tech}
                 className={`px-2 py-1 bg-white/5 backdrop-blur-sm rounded text-xs text-purple-300 border border-white/10 hover:border-purple-400/30 transition-colors tech-delay-${index}`}
               >
                 {tech}
               </span>
+            ))}
             {technologies.length > 4 && (
               <span className="px-2 py-1 bg-white/5 backdrop-blur-sm rounded text-xs text-gray-400 border border-white/10">
                 +{technologies.length - 4} more
