@@ -112,6 +112,27 @@ const certifications = [
       "Personalized Financial Advisory",
       "Regulatory and Ethical Considerations"
     ]
+  },
+  {
+    slug: "tata-data-visualisation-simulation",
+    title: "Tata Data Visualisation: Empowering Business with Effective Insights",
+    issuer: "Forage (Tata Consultancy Services)",
+    date: "2025-09-01",
+    image: "https://images.unsplash.com/photo-1532074205216-d0e1f4b87368?w=800&h=400&fit=crop&crop=center",
+    description: "Completed a job simulation focused on building impactful data visualizations and preparing business insights for Tata Consultancy Services.",
+    longDescription: "This simulation program developed practical skills in transforming complex datasets into clear and compelling visuals that support executive decision-making. Activities included preparing strategic questions for senior client leadership meetings, designing insightful dashboards, and applying visualization best practices to communicate findings effectively. The program emphasized aligning analytical outputs with business objectives to empower leaders with actionable insights.",
+    credentialUrl: "https://www.theforage.com/virtual-internships/prototype/tata/data-visualisation-simulation",
+    skills: ["Data Visualization", "Business Insights", "Executive Communication", "Dashboard Design", "Decision-Making Support", "Analytics Storytelling"],
+    duration: "6 hours",
+    level: "Intermediate",
+    modules: [
+      "Introduction to Data Visualization in Business",
+      "Preparing Questions for Senior Leadership",
+      "Designing Effective Dashboards",
+      "Transforming Data into Insights",
+      "Storytelling with Analytics",
+      "Communicating Recommendations to Executives"
+    ]
   }
 ];
 
