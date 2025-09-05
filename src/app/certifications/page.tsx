@@ -49,6 +49,16 @@ const certifications = [
     image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=300&h=200&fit=crop&crop=center",
     description: "Completed a specialized course focused on the application of ChatGPT and generative AI technologies in the financial technology (FinTech) sector. Explored use cases such as automated customer support, fraud detection, personalized financial advising, and natural language data analysis.",
     credentialUrl: "https://www.linkedin.com/learning/certificates/generative-ai-fintech"
+  },
+  {
+    slug: "tata-data-visualisation-simulation",
+    title: "Tata Data Visualisation: Empowering Business with Effective Insights",
+    issuer: "Forage (Tata Consultancy Services)",
+    date: "2025-09-01",
+    image: "https://images.unsplash.com/photo-1532074205216-d0e1f4b87368?w=300&h=200&fit=crop&crop=center",
+    description: "Completed a job simulation focused on creating data visualizations to support business decision-making at Tata Consultancy Services. The program involved preparing executive-level questions for client meetings, designing visuals for data analysis, and presenting insights that enable senior leadership to make informed and strategic business decisions.",
+    credentialUrl: "https://www.theforage.com/virtual-internships/prototype/tata/data-visualisation-simulation"
+
   }
 ];
 
