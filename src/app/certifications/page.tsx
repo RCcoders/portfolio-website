@@ -64,6 +64,11 @@ const certifications = [
 
 // Main Certifications Page Component
 export default function CertificationsPage() {
+  // 🔹 Dynamic Stats
+  const totalCerts = certifications.length;
+  const uniqueProviders = new Set(certifications.map(cert => cert.issuer)).size;
+  const latestYear = Math.max(...certifications.map(cert => new Date(cert.date).getFullYear()));
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800">
       <div className="max-w-6xl mx-auto py-12 px-4">
@@ -77,7 +82,7 @@ export default function CertificationsPage() {
           </p>
           <div className="mt-6 flex justify-center">
             <div className="bg-blue-600/20 text-blue-400 px-4 py-2 rounded-full text-sm font-medium">
-              {certifications.length} Certifications Earned
+              {totalCerts} Certifications Earned
             </div>
           </div>
         </div>
@@ -101,15 +106,15 @@ export default function CertificationsPage() {
         {/* Stats Section */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center bg-gray-800/50 rounded-xl p-6 border border-gray-700">
-            <div className="text-3xl font-bold text-blue-400 mb-2">5</div>
+            <div className="text-3xl font-bold text-blue-400 mb-2">{totalCerts}</div>
             <div className="text-gray-400">Total Certifications</div>
           </div>
           <div className="text-center bg-gray-800/50 rounded-xl p-6 border border-gray-700">
-            <div className="text-3xl font-bold text-green-400 mb-2">4</div>
+            <div className="text-3xl font-bold text-green-400 mb-2">{uniqueProviders}</div>
             <div className="text-gray-400">Different Providers</div>
           </div>
           <div className="text-center bg-gray-800/50 rounded-xl p-6 border border-gray-700">
-            <div className="text-3xl font-bold text-purple-400 mb-2">2025</div>
+            <div className="text-3xl font-bold text-purple-400 mb-2">{latestYear}</div>
             <div className="text-gray-400">Latest Achievement</div>
           </div>
         </div>
