@@ -232,7 +232,7 @@ export default function ProjectsPage() {
       title: "ML Learning Platform",
       description: "A modern and responsive ML Learning website built with Next.js, python, and PostgresSQL showcasing my skills, projects, and experience. Features include a Dashboard section, Registration form, and interactive UI elements.",
       longDescription: "This personal portfolio website is designed to showcase my skills, projects, and experience in a modern and responsive layout. Built with Next.js, it includes a blog section for sharing insights, a contact form for inquiries, and interactive UI elements for an engaging user experience. The site is optimized for performance and SEO, ensuring fast loading times and visibility in search engines.",
-      image: "https://plus.unsplash.com/premium_photo-1682124651258-410b25fa9dc0?q=80&w=1621&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      image: "hhttps://images.unsplash.com/photo-1557562645-4eee56b29bc1?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       category: "web-development",
       tags: ["Next.js", "React", "Tailwind CSS", "SEO", "Responsive Design", "JavaScript", "Python", "MySQL"],
       githubUrl: "https://github.com/RCcoders/ml-notebook-web",
