@@ -201,8 +201,8 @@ export default function ProjectsPage() {
       category: "web-development",
       tags: ["Next.js", "React", "Tailwind CSS", "SEO", "Responsive Design", "JavaScript"],
       githubUrl: "https://github.com/RCcoders/portfolio-website",
-      liveUrl: "#",
-      status: "in-progress",
+      liveUrl: "https://portfolio-website-raghav.vercel.app/",
+      status: "completed",
       date: "2023-06-30",
       duration: "3 weeks",
       client: "Personal Project",
@@ -219,6 +219,43 @@ export default function ProjectsPage() {
         backend: ["Node.js", "Express", "EmailJS"],
         seo: ["Meta Tags", "Open Graph", "Sitemap"],
         deployment: ["Vercel", "GitHub Actions", "CI/CD"]
+      },
+      metrics: {
+        pages: "8+",
+        blogPosts: "5",
+        projects: "8",
+        responsiveBreakpoints: "3"
+      }
+    },
+    {
+      id: 6,
+      title: "ML Learning Platform",
+      description: "A modern and responsive ML Learning website built with Next.js, python, and PostgresSQL showcasing my skills, projects, and experience. Features include a Dashboard section, Registration form, and interactive UI elements.",
+      longDescription: "This personal portfolio website is designed to showcase my skills, projects, and experience in a modern and responsive layout. Built with Next.js, it includes a blog section for sharing insights, a contact form for inquiries, and interactive UI elements for an engaging user experience. The site is optimized for performance and SEO, ensuring fast loading times and visibility in search engines.",
+      image: "https://plus.unsplash.com/premium_photo-1682124651258-410b25fa9dc0?q=80&w=1621&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      category: "web-development", "machine-learning", "python-development",
+      tags: ["Next.js", "React", "Tailwind CSS", "SEO", "Responsive Design", "JavaScript", "Python", "MySQL"],
+      githubUrl: "https://github.com/RCcoders/ml-notebook-web",
+      liveUrl: "#",
+      status: "in-progress",
+      date: "2025-07-30",
+      duration: "Still going",
+      client: "Personal Project",
+      features: [
+        "Interactive Jupyter-like notebook interface",
+        "Real-time code execution with Python and ML libraries",
+        "Support for data visualization (Matplotlib, Seaborn, Plotly)",
+        "Dataset upload and management",
+        "Integrated model training and evaluation dashboards",
+        "Export notebooks to PDF/HTML",
+        "User authentication and notebook versioning",
+        "Dark mode toggle and responsive design"
+      ],
+      technologies: {
+        frontend: ["Next.js", "React", "Tailwind CSS", "JavaScript"],
+        backend: ["Node.js", "Express", "FastAPI", "pydantic", "uuid"],
+        deployment: ["Vercel", "GitHub Actions", "CI/CD"],
+        database: ["My SQL", "sqlalchemy"]
       },
       metrics: {
         pages: "10+",
