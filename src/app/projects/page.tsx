@@ -201,7 +201,7 @@ export default function ProjectsPage() {
       category: "web-development",
       tags: ["Next.js", "React", "Tailwind CSS", "SEO", "Responsive Design", "JavaScript"],
       githubUrl: "https://github.com/RCcoders/portfolio-website",
-      liveUrl: "https://portfolio-website-raghav.vercel.app/",
+      liveUrl: "#",
       status: "completed",
       date: "2023-06-30",
       duration: "3 weeks",
