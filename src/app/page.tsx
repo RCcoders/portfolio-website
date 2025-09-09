@@ -2,8 +2,26 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { ChevronRight, Github, Linkedin, Mail, ArrowDown, ShoppingCart, DollarSign, TrendingUp } from 'lucide-react'
+import { useState, useEffect } from 'react'
 
 export default function Home() {
+  const [displayText, setDisplayText] = useState('')
+  const fullText = 'Raghav Chawla'
+  
+  useEffect(() => {
+    let index = 0
+    const timer = setInterval(() => {
+      if (index <= fullText.length) {
+        setDisplayText(fullText.slice(0, index))
+        index++
+      } else {
+        clearInterval(timer)
+      }
+    }, 150) // Adjust speed here (milliseconds per character)
+    
+    return () => clearInterval(timer)
+  }, [])
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       {/* Animated background elements */}
@@ -22,7 +40,8 @@ export default function Home() {
             <span className="inline-block animate-slideInLeft">Hi, I am</span>
             <br />
             <span className="inline-block bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent animate-slideInRight">
-              Raghav Chawla
+              {displayText}
+              <span className="animate-blink">|</span>
             </span>
           </h1>
 
@@ -201,6 +220,11 @@ export default function Home() {
           to { opacity: 1; transform: translateY(0); }
         }
         
+        @keyframes blink {
+          0%, 50% { opacity: 1; }
+          51%, 100% { opacity: 0; }
+        }
+        
         .animate-fadeIn {
           animation: fadeIn 1s ease-out;
         }
@@ -215,6 +239,10 @@ export default function Home() {
         
         .animate-fadeInUp {
           animation: fadeInUp 1s ease-out;
+        }
+        
+        .animate-blink {
+          animation: blink 1s infinite;
         }
         
         .delay-100 {
