@@ -1,124 +1,188 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import CertCard from '@/components/CertCard';
-
-// Mock certification data
-const certifications = [
-  {
-    slug: "deloitte-australia-technology-job-simulation",
-    title: "Deloitte Australia - Technology Job Simulation",
-    issuer: "Forage",
-    date: "2025-07-15",
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=300&h=200&fit=crop&crop=center",
-    description: "Successfully completed a technology-focused virtual job simulation designed to mirror real-world tasks and expectations in the tech industry. Gained practical experience in areas such as software development, data analysis, debugging, product design, and agile workflows.",
-    credentialUrl: "https://forage-uploads-prod.s3.amazonaws.com/completion-certificates/9PBTqmSxAf6zZTseP/udmxiyHeqYQLkTPvf_9PBTqmSxAf6zZTseP_mt5PFGpLjWdcYZC4S_1751976789361_completion_certificate.pdf"
-  },
-  {
-    slug: "advanced-python-object-oriented-programming",
-    title: "Advanced Python: Object-Oriented Programming",
-    issuer: "LinkedIn Learning",
-    date: "2025-04-21",
-    image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=300&h=200&fit=crop&crop=center",
-    description: "Mastered advanced object-oriented programming concepts in Python, including inheritance, polymorphism, encapsulation, and design patterns. Built complex applications using OOP principles to create maintainable and scalable code.",
-    credentialUrl: "https://www.linkedin.com/learning/certificates/advanced-python-oop"
-  },
-  {
-    slug: "python-101-for-data-science",
-    title: "Python 101 for Data Science",
-    issuer: "IBM",
-    date: "2025-03-21",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=300&h=200&fit=crop&crop=center",
-    description: "Successfully completed IBM's introductory course on Python for Data Science. Gained foundational skills in Python programming, including data types, control structures, functions, and working with libraries such as NumPy and Pandas for data manipulation and analysis.",
-    credentialUrl: "https://courses.cognitiveclass.ai/certificates/d4f57248668c4a8e99fd462a324256aa"
-  },
-  {
-    slug: "python-object-oriented-programming",
-    title: "Python Object-Oriented Programming",
-    issuer: "LinkedIn Learning",
-    date: "2023-07-12",
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=300&h=200&fit=crop&crop=center",
-    description: "Completed an introductory course on Object-Oriented Programming in Python. Gained a solid understanding of fundamental OOP concepts such as classes, objects, constructors, methods, and inheritance. Developed basic Python applications using object-oriented principles to improve code structure, readability, and reusability.",
-    credentialUrl: "https://www.linkedin.com/learning/certificates/python-oop-basics"
-  },
-  {
-    slug: "generative-ai-in-fintech",
-    title: "Generative AI in FinTech",
-    issuer: "LinkedIn Learning",
-    date: "2025-03-12",
-    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=300&h=200&fit=crop&crop=center",
-    description: "Completed a specialized course focused on the application of ChatGPT and generative AI technologies in the financial technology (FinTech) sector. Explored use cases such as automated customer support, fraud detection, personalized financial advising, and natural language data analysis.",
-    credentialUrl: "https://www.linkedin.com/learning/certificates/generative-ai-fintech"
-  },
-  {
-    slug: "tata-data-visualisation-simulation",
-    title: "Tata Data Visualisation: Empowering Business with Effective Insights",
-    issuer: "Forage (Tata Consultancy Services)",
-    date: "2025-09-01",
-    image: "https://images.unsplash.com/photo-1532074205216-d0e1f4b87368?w=300&h=200&fit=crop&crop=center",
-    description: "Completed a job simulation focused on creating data visualizations to support business decision-making at Tata Consultancy Services. The program involved preparing executive-level questions for client meetings, designing visuals for data analysis, and presenting insights that enable senior leadership to make informed and strategic business decisions.",
-    credentialUrl: "https://www.theforage.com/virtual-internships/prototype/tata/data-visualisation-simulation"
-
-  }
-];
+import { api, Certificate } from '@/lib/api';
+import AddCertificateModal from '@/components/AddCertificateModal';
+import { Plus, Trash2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import PageTransition from '@/components/ui/PageTransition';
+import GlowCard from '@/components/ui/GlowCard';
 
 // Main Certifications Page Component
 export default function CertificationsPage() {
+  const [certifications, setCertifications] = useState<Certificate[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  useEffect(() => {
+    fetchCertifications();
+  }, []);
+
+  const fetchCertifications = async () => {
+    try {
+      const data = await api.getCertificates();
+      setCertifications(data);
+    } catch (error) {
+      console.error('Failed to fetch certificates:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddCertificate = (newCert: Certificate) => {
+    setCertifications([...certifications, newCert]);
+  };
+
+  const handleDeleteCertificate = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this certificate?')) return;
+    try {
+      await api.deleteCertificate(id);
+      setCertifications(certifications.filter(c => c.id !== id));
+    } catch (error) {
+      console.error('Failed to delete certificate:', error);
+      alert('Failed to delete certificate');
+    }
+  };
+
   // 🔹 Dynamic Stats
   const totalCerts = certifications.length;
   const uniqueProviders = new Set(certifications.map(cert => cert.issuer)).size;
-  const latestYear = Math.max(...certifications.map(cert => new Date(cert.date).getFullYear()));
+
+  const validYears = certifications
+    .map(cert => new Date(cert.date).getFullYear())
+    .filter(year => !isNaN(year));
+
+  const latestYear = validYears.length > 0 ? Math.max(...validYears) : new Date().getFullYear();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800">
-      <div className="max-w-6xl mx-auto py-12 px-4">
-        {/* Header Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-            Professional Certifications
-          </h1>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            A collection of professional certifications demonstrating expertise across various technologies and domains
-          </p>
-          <div className="mt-6 flex justify-center">
-            <div className="bg-blue-600/20 text-blue-400 px-4 py-2 rounded-full text-sm font-medium">
-              {totalCerts} Certifications Earned
+    <PageTransition>
+      <div className="min-h-screen">
+        <AddCertificateModal
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+          onCertificateAdded={handleAddCertificate}
+        />
+
+        <div className="max-w-6xl mx-auto py-12 px-4">
+          {/* Header Section */}
+          <div className="text-center mb-12 relative">
+            <motion.h1
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent"
+            >
+              Professional Certifications
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-gray-400 text-lg max-w-2xl mx-auto"
+            >
+              A collection of professional certifications demonstrating expertise across various technologies and domains
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="mt-6 flex justify-center gap-4"
+            >
+              <div className="bg-blue-600/20 text-blue-400 px-4 py-2 rounded-full text-sm font-medium border border-blue-500/30">
+                {totalCerts} Certifications Earned
+              </div>
+              <button
+                onClick={() => setIsAddModalOpen(true)}
+                className="flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-medium transition-colors shadow-lg shadow-blue-600/20"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Certificate
+              </button>
+            </motion.div>
+          </div>
+
+          {/* Certifications Grid */}
+          {loading ? (
+            <div className="text-center py-20">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+              <p className="text-gray-400">Loading certifications...</p>
             </div>
-          </div>
-        </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {certifications.map((cert, index) => (
+                <motion.div
+                  key={cert.id || cert.slug}
+                  className="relative group"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (cert.id) handleDeleteCertificate(cert.id);
+                    }}
+                    className="absolute top-2 right-2 z-20 p-2 bg-red-600/80 hover:bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                    title="Delete Certificate"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                  <CertCard
+                    slug={cert.slug}
+                    title={cert.title}
+                    issuer={cert.issuer}
+                    date={cert.date}
+                    imageUrl={cert.image}
+                    description={cert.description}
+                    credentialUrl={cert.credentialUrl}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          )}
 
-        {/* Certifications Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {certifications.map((cert) => (
-            <CertCard
-              key={cert.slug}
-              slug={cert.slug}
-              title={cert.title}
-              issuer={cert.issuer}
-              date={cert.date}
-              imageUrl={cert.image}
-              description={cert.description}
-              credentialUrl={cert.credentialUrl}
-            />
-          ))}
-        </div>
+          {/* Stats Section */}
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              <GlowCard className="text-center p-6">
+                <div className="text-3xl font-bold text-blue-400 mb-2">{totalCerts}</div>
+                <div className="text-gray-400">Total Certifications</div>
+              </GlowCard>
+            </motion.div>
 
-        {/* Stats Section */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="text-center bg-gray-800/50 rounded-xl p-6 border border-gray-700">
-            <div className="text-3xl font-bold text-blue-400 mb-2">{totalCerts}</div>
-            <div className="text-gray-400">Total Certifications</div>
-          </div>
-          <div className="text-center bg-gray-800/50 rounded-xl p-6 border border-gray-700">
-            <div className="text-3xl font-bold text-green-400 mb-2">{uniqueProviders}</div>
-            <div className="text-gray-400">Different Providers</div>
-          </div>
-          <div className="text-center bg-gray-800/50 rounded-xl p-6 border border-gray-700">
-            <div className="text-3xl font-bold text-purple-400 mb-2">{latestYear}</div>
-            <div className="text-gray-400">Latest Achievement</div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+            >
+              <GlowCard className="text-center p-6">
+                <div className="text-3xl font-bold text-green-400 mb-2">{uniqueProviders}</div>
+                <div className="text-gray-400">Different Providers</div>
+              </GlowCard>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6 }}
+            >
+              <GlowCard className="text-center p-6">
+                <div className="text-3xl font-bold text-purple-400 mb-2">{latestYear}</div>
+                <div className="text-gray-400">Latest Achievement</div>
+              </GlowCard>
+            </motion.div>
           </div>
         </div>
       </div>
-    </div>
+    </PageTransition>
   );
 }

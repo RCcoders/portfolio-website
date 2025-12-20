@@ -1,13 +1,17 @@
 'use client'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ChevronRight, Github, Linkedin, Mail, ArrowDown, ShoppingCart, DollarSign, TrendingUp } from 'lucide-react'
+import { ChevronRight, Github, Linkedin, Mail, ArrowDown, ShoppingCart, DollarSign, TrendingUp, Instagram } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import PageTransition from '@/components/ui/PageTransition'
+import GlowCard from '@/components/ui/GlowCard'
+import Hero3D from '@/components/canvas/Hero3D'
 
 export default function Home() {
   const [displayText, setDisplayText] = useState('')
   const fullText = 'Raghav Chawla'
-  
+
   useEffect(() => {
     let index = 0
     const timer = setInterval(() => {
@@ -17,250 +21,240 @@ export default function Home() {
       } else {
         clearInterval(timer)
       }
-    }, 150) // Adjust speed here (milliseconds per character)
-    
+    }, 150)
+
     return () => clearInterval(timer)
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse delay-500"></div>
-      </div>
+    <PageTransition>
+      <div className="min-h-screen relative overflow-hidden">
+        {/* 3D Background */}
+        <Hero3D />
 
-      {/* Main content */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 text-center">
-        {/* Hero section */}
-        <div className="max-w-4xl mx-auto">          
-          {/* Main heading */}
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-            <span className="inline-block animate-slideInLeft">Hi, I am</span>
-            <br />
-            <span className="inline-block bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent animate-slideInRight">
-              {displayText}
-              <span className="animate-blink">|</span>
-            </span>
-          </h1>
-
-          {/* Subtitle */}
-          <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed animate-fadeInUp">
-            I am a Python developer passionate about data science and AI. I work on data-driven projects and am growing my skills in machine learning, analytics, and web tech like React and HTML/CSS.
-          </p>
-
-          {/* Call to action */}
-          {/* Tech stack tags */}
-          <div className="flex flex-wrap justify-center gap-3 mb-12 animate-fadeInUp delay-200">
-            {['React', 'Next.js', 'TypeScript', 'Node.js', 'Python', 'AWS'].map((tech, index) => (
-              <span
-                key={tech}
-                className={`px-4 py-2 bg-white/5 backdrop-blur-sm rounded-full text-sm text-purple-300 border border-white/10 hover:border-purple-400 transition-colors duration-300 ${
-                  index === 0 ? '' :
-                  index === 1 ? 'delay-100' :
-                  index === 2 ? 'delay-200' :
-                  index === 3 ? 'delay-300' :
-                  index === 4 ? 'delay-400' :
-                  index === 5 ? 'delay-500' : ''
-                }`}
+        {/* Main content */}
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 text-center pointer-events-none">
+          {/* Hero section */}
+          <div className="max-w-5xl mx-auto pointer-events-auto">
+            {/* Main heading */}
+            <h1 className="text-6xl md:text-8xl font-bold text-white mb-8 leading-tight tracking-tighter">
+              <motion.span
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 1 }}
+                className="inline-block"
               >
-                {tech}
-              </span>
-            ))}
-          </div>
+                Hi, I am
+              </motion.span>
+              <br />
+              <motion.span
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 1, delay: 0.2 }}
+                className="inline-block bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]"
+              >
+                {displayText}
+                <span className="animate-blink">|</span>
+              </motion.span>
+            </h1>
 
-          {/* CTA buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 animate-fadeInUp delay-300">
-            <Link href="/projects" className="group">
-              <button className="flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full font-semibold shadow-lg hover:shadow-purple-500/25 transition-all duration-300 hover:scale-105 transform">
-                View My Work
-                <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </Link>
-            <Link href="/certifications" className="group">
-              <button className="flex items-center gap-2 px-8 py-4 bg-white/10 backdrop-blur-sm text-white rounded-full font-semibold border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 transform">
-                Certifications
-                <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </Link>
-          </div>
-        </div>
-
-        {/* Social links */}
-        <div className="flex gap-6 mb-8 animate-fadeInUp delay-400">
-          <a href="https://github.com/RCcoders" target="_blank" rel="noopener noreferrer" title="GitHub" className="p-3 bg-white/10 backdrop-blur-sm rounded-full text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 transform">
-            <Github className="w-6 h-6" />
-          </a>
-          <a href="linkedin.com/in/raghav-chawla-29255b275/" target="_blank" rel="noopener noreferrer" title="LinkedIn" className="p-3 bg-white/10 backdrop-blur-sm rounded-full text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 transform">
-            <Linkedin className="w-6 h-6" />
-          </a>
-          <a
-            href="mailto:cec23554.aiml.cec@cgc.edu.in"
-            title="Send email"
-            className="p-3 bg-white/10 backdrop-blur-sm rounded-full text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 transform"
-          >
-            <Mail className="w-6 h-6" />
-          </a>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <ArrowDown className="w-6 h-6 text-white/60" />
-        </div>
-      </div>
-
-      {/* Featured work preview section */}
-      <div className="relative z-10 px-4 py-20 bg-gradient-to-t from-black/50 to-transparent">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-16">
-            Featured Work
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[
-            {
-              id: 1,
-              title: "Grocery Management GUI",
-              description: "A comprehensive desktop application for grocery store management with inventory tracking, sales processing, and customer management features.",
-              tags: ["Python", "Tkinter", "SQLite"],
-              image: "/images/grocery-management.png", // Add your actual image path here
-              icon: <ShoppingCart className="w-8 h-8 text-purple-400" />
-            },
-            {
-              id: 2,
-              title: "Flask Expense Tracker",
-              description: "A web-based expense tracking application built with Flask, featuring user authentication, category management, and expense analytics.",
-              tags: ["Flask", "Python", "SQLAlchemy"],
-              image: "/images/expense-tracker.webp", // Add your actual image path here
-              icon: <DollarSign className="w-8 h-8 text-green-400" />
-            },
-            {
-              id: 3,
-              title: "Customer Churn Prediction",
-              description: "Machine learning model to predict customer churn using advanced algorithms and data analysis techniques for business intelligence.",
-              tags: ["Python", "Scikit-learn", "Pandas"],
-              image: "/images/churn-prediction.jpeg", // Add your actual image path here
-              icon: <TrendingUp className="w-8 h-8 text-blue-400" />
-            }
-          ].map((project) => (
-            <div
-              key={project.id}
-              className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/20 hover:border-purple-400/50 transition-all duration-500 hover:scale-105 transform"
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.4 }}
+              className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed font-light"
             >
-              <div className="p-6">
-                <div className="w-full h-48 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl mb-4 overflow-hidden relative group-hover:scale-105 transition-transform duration-300">
-                  {project.image ? (
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      width={320}
-                      height={192}
-                      className="w-full h-full object-cover"
-                      style={{ objectFit: 'cover' }}
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <div className="text-center">
-                        <div className="w-16 h-16 bg-white/10 rounded-lg flex items-center justify-center mb-2 mx-auto">
-                          {project.icon}
+              Python Developer & Data Science Enthusiast. <br className="hidden md:block" />
+              Crafting intelligent solutions with <span className="text-purple-400 font-medium">AI</span>, <span className="text-blue-400 font-medium">Machine Learning</span>, and <span className="text-pink-400 font-medium">Modern Web Tech</span>.
+            </motion.p>
+
+            {/* Tech stack tags */}
+            <div className="flex flex-wrap justify-center gap-3 mb-12">
+              {['React', 'Next.js', 'TypeScript', 'Node.js', 'Python', 'AWS', 'TensorFlow', 'PyTorch'].map((tech, index) => (
+                <motion.span
+                  key={tech}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
+                  whileHover={{ scale: 1.1, borderColor: '#a855f7', boxShadow: '0 0 15px rgba(168,85,247,0.3)' }}
+                  className="px-4 py-2 bg-white/5 backdrop-blur-md rounded-full text-sm text-purple-200 border border-white/10 transition-all duration-300 cursor-default shadow-lg"
+                >
+                  {tech}
+                </motion.span>
+              ))}
+            </div>
+
+            {/* CTA buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.2 }}
+              className="flex flex-col sm:flex-row gap-6 justify-center mb-16"
+            >
+              <Link href="/projects" className="group">
+                <button className="flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full font-semibold shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] transition-all duration-300 hover:scale-105 transform border border-white/10">
+                  View My Work
+                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </Link>
+              <Link href="/contact" className="group">
+                <button className="flex items-center gap-2 px-8 py-4 bg-white/5 backdrop-blur-md text-white rounded-full font-semibold border border-white/10 hover:bg-white/10 hover:border-purple-500/50 transition-all duration-300 hover:scale-105 transform shadow-lg">
+                  Contact Me
+                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </Link>
+            </motion.div>
+          </div>
+
+          {/* Social links */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1.5 }}
+            className="flex gap-6 mb-8 pointer-events-auto"
+          >
+            {[
+              { icon: Github, href: 'https://github.com/RCcoders', label: 'GitHub' },
+              { icon: Linkedin, href: 'https://www.linkedin.com/in/raghav-chawla-29255b275/', label: 'LinkedIn' },
+              { icon: Instagram, href: 'https://instagram.com/_nx.raghav._', label: 'Instagram' },
+              { icon: Mail, href: 'mailto:chawlaraghav78@gmail.com', label: 'Email' }
+            ].map((social, index) => (
+              <a
+                key={index}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={social.label}
+                className="p-4 bg-white/5 backdrop-blur-md rounded-full text-white border border-white/10 hover:bg-white/10 hover:border-purple-500/50 hover:text-purple-300 transition-all duration-300 hover:scale-110 transform shadow-lg hover:shadow-[0_0_15px_rgba(168,85,247,0.3)]"
+              >
+                <social.icon className="w-6 h-6" />
+              </a>
+            ))}
+          </motion.div>
+
+          {/* Scroll indicator */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 2, duration: 1 }}
+            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce pointer-events-auto"
+          >
+            <ArrowDown className="w-6 h-6 text-purple-400" />
+          </motion.div>
+        </div>
+
+        {/* Featured work preview section */}
+        <div className="relative z-10 px-4 py-24 bg-gradient-to-t from-black via-black/90 to-transparent">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Featured Work</h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto rounded-full"></div>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                {
+                  id: 1,
+                  title: "Grocery Management GUI",
+                  description: "A comprehensive desktop application for grocery store management with inventory tracking, sales processing, and customer management features.",
+                  tags: ["Python", "Tkinter", "SQLite"],
+                  image: "/images/grocery-management.png",
+                  icon: <ShoppingCart className="w-8 h-8 text-purple-400" />
+                },
+                {
+                  id: 2,
+                  title: "Flask Expense Tracker",
+                  description: "A web-based expense tracking application built with Flask, featuring user authentication, category management, and expense analytics.",
+                  tags: ["Flask", "Python", "SQLAlchemy"],
+                  image: "/images/expense-tracker.webp",
+                  icon: <DollarSign className="w-8 h-8 text-green-400" />
+                },
+                {
+                  id: 3,
+                  title: "Customer Churn Prediction",
+                  description: "Machine learning model to predict customer churn using advanced algorithms and data analysis techniques for business intelligence.",
+                  tags: ["Python", "Scikit-learn", "Pandas"],
+                  image: "/images/churn-prediction.jpeg",
+                  icon: <TrendingUp className="w-8 h-8 text-blue-400" />
+                }
+              ].map((project, index) => (
+                <motion.div
+                  key={project.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.2 }}
+                >
+                  <GlowCard className="h-full flex flex-col">
+                    <div className="w-full h-56 bg-gradient-to-br from-purple-500/10 to-blue-500/10 rounded-xl mb-6 overflow-hidden relative group-hover:scale-[1.02] transition-transform duration-500 border border-white/5">
+                      {project.image ? (
+                        <Image
+                          src={project.image}
+                          alt={project.title}
+                          width={400}
+                          height={250}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                          style={{ objectFit: 'cover' }}
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                          <div className="text-center p-6">
+                            <div className="w-20 h-20 bg-white/5 rounded-2xl flex items-center justify-center mb-4 mx-auto border border-white/10 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+                              {project.icon}
+                            </div>
+                            <span className="text-white/60 text-sm font-medium tracking-wider uppercase">{project.title}</span>
+                          </div>
                         </div>
-                        <span className="text-white/60 text-sm">{project.title}</span>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300"></div>
+                    </div>
+
+                    <div className="flex-1 flex flex-col">
+                      <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-purple-300 transition-colors">{project.title}</h3>
+                      <p className="text-gray-400 text-sm mb-6 leading-relaxed flex-1">{project.description}</p>
+
+                      <div className="flex gap-2 flex-wrap mt-auto">
+                        {project.tags.map((tag, idx) => (
+                          <span
+                            key={idx}
+                            className="px-3 py-1 bg-purple-500/10 text-purple-300 text-xs font-medium rounded-full border border-purple-500/20"
+                          >
+                            {tag}
+                          </span>
+                        ))}
                       </div>
                     </div>
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                </div>
-                <h3 className="text-xl font-semibold text-white mb-2">{project.title}</h3>
-                <p className="text-gray-300 text-sm mb-4">{project.description}</p>
-                <div className="flex gap-2 flex-wrap">
-                  {project.tags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="px-2 py-1 bg-purple-500/20 text-purple-300 text-xs rounded"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-purple-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </GlowCard>
+                </motion.div>
+              ))}
             </div>
-          ))}
-        </div>
-          <div className="text-center mt-12">
-            <Link href="/projects">
-              <button className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full font-semibold shadow-lg hover:shadow-purple-500/25 transition-all duration-300 hover:scale-105 transform">
-                View All Projects
-              </button>
-            </Link>
+            <div className="text-center mt-16">
+              <Link href="/projects">
+                <button className="px-10 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full font-semibold shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] transition-all duration-300 hover:scale-105 transform border border-white/10">
+                  View All Projects
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Custom animations */}
-      <style jsx>{`
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        
-        @keyframes slideInLeft {
-          from { opacity: 0; transform: translateX(-50px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        
-        @keyframes slideInRight {
-          from { opacity: 0; transform: translateX(50px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(30px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes blink {
-          0%, 50% { opacity: 1; }
-          51%, 100% { opacity: 0; }
-        }
-        
-        .animate-fadeIn {
-          animation: fadeIn 1s ease-out;
-        }
-        
-        .animate-slideInLeft {
-          animation: slideInLeft 1s ease-out;
-        }
-        
-        .animate-slideInRight {
-          animation: slideInRight 1s ease-out 0.2s both;
-        }
-        
-        .animate-fadeInUp {
-          animation: fadeInUp 1s ease-out;
-        }
-        
-        .animate-blink {
-          animation: blink 1s infinite;
-        }
-        
-        .delay-100 {
-          animation-delay: 0.1s;
-        }
-        .delay-200 {
-          animation-delay: 0.2s;
-        }
-        .delay-300 {
-          animation-delay: 0.3s;
-        }
-        .delay-400 {
-          animation-delay: 0.4s;
-        }
-        .delay-500 {
-          animation-delay: 0.5s;
-        }
-      `}</style>
-    </div>
+        {/* Custom animations */}
+        <style jsx>{`
+          @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+          }
+          .animate-blink {
+            animation: blink 1s infinite;
+          }
+        `}</style>
+      </div>
+    </PageTransition>
   )
 }

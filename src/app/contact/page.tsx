@@ -1,16 +1,17 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
-import { 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Send, 
-  MessageCircle, 
-  Clock, 
+import emailjs from '@emailjs/browser';
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Send,
+  MessageCircle,
+  Clock,
   Globe,
   Github,
   Linkedin,
-  Twitter,
+  Instagram,
   Calendar,
   CheckCircle,
   User,
@@ -20,8 +21,12 @@ import {
   X,
   Minimize2,
   Maximize2,
-  Loader
+  Loader,
+  Sparkles
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import PageTransition from '@/components/ui/PageTransition';
+import GlowCard from '@/components/ui/GlowCard';
 
 // AI Chatbot Component
 function AIChatbot() {
@@ -57,34 +62,34 @@ function AIChatbot() {
   const getAIResponse = async (userMessage: string): Promise<string> => {
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000));
-    
+
     const lowerMessage = userMessage.toLowerCase();
-    
+
     // Simple keyword-based responses - replace with actual AI API
     if (lowerMessage.includes('service') || lowerMessage.includes('what do') || lowerMessage.includes('offer')) {
       return "Raghav specializes in Data Science, Machine Learning, AI solutions, and Full-Stack Web Development. His main services include:\n\n• Custom ML models and AI solutions\n• Data analysis and visualization\n• Web applications (React, Node.js, Python)\n• Automation scripts and tools\n• Cloud deployment (AWS, Vercel)\n• Technical consulting\n\nWhich area interests you most?";
     }
-    
+
     if (lowerMessage.includes('experience') || lowerMessage.includes('background')) {
       return "Raghav is a skilled developer with expertise in:\n\n• Python, JavaScript, React, Node.js\n• Machine Learning frameworks (TensorFlow, PyTorch, Scikit-learn)\n• Data Science tools (Pandas, NumPy, Matplotlib)\n• Cloud platforms and deployment\n• Database management\n\nHe has worked on various projects ranging from predictive models to full-stack web applications. Would you like to know about any specific technology or project type?";
     }
-    
+
     if (lowerMessage.includes('price') || lowerMessage.includes('cost') || lowerMessage.includes('rate')) {
       return "Project pricing depends on several factors like complexity, timeline, and requirements. Raghav offers competitive rates and can provide:\n\n• Hourly consulting rates\n• Fixed-price project quotes\n• Retainer agreements for ongoing work\n\nFor an accurate quote, it's best to discuss your specific project requirements. Would you like me to help you prepare details for a project inquiry?";
     }
-    
+
     if (lowerMessage.includes('timeline') || lowerMessage.includes('how long') || lowerMessage.includes('duration')) {
       return "Project timelines vary based on scope and complexity:\n\n• Simple automation scripts: 1-3 days\n• Data analysis projects: 1-2 weeks\n• ML model development: 2-4 weeks\n• Web applications: 2-6 weeks\n• Complex AI solutions: 4-8 weeks\n\nRaghav always provides realistic timelines during project planning. What type of project are you considering?";
     }
-    
+
     if (lowerMessage.includes('contact') || lowerMessage.includes('reach') || lowerMessage.includes('get in touch')) {
-      return "You can reach Raghav through several channels:\n\n📧 Email: chawlaraghav78@gmail.com\n📱 Phone: +91 998121 79058\n💼 LinkedIn: https://www.linkedin.com/in/raghav-chawla-29255b275/\n💻 GitHub: https://github.com/RCCoders\n\nHe typically responds to emails within 24 hours on weekdays. For urgent matters, calling directly is recommended!";
+      return "You can reach Raghav through several channels:\n\n📧 Email: chawlaraghav78@gmail.com\n📱 Phone: +91 998121 79058\n💼 LinkedIn: https://www.linkedin.com/in/raghav-chawla-29255b275/\n💻 GitHub: https://github.com/RCcoders\n\nHe typically responds to emails within 24 hours on weekdays. For urgent matters, calling directly is recommended!";
     }
-    
+
     if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
       return "Hello! Great to meet you! I'm here to help you learn more about Raghav's services and expertise. Whether you're interested in:\n\n• Data Science & Machine Learning\n• Web Development\n• AI Solutions\n• Technical Consulting\n\nFeel free to ask me anything! What would you like to know?";
     }
-    
+
     // Default response
     return "That's a great question! While I can provide general information about Raghav's services, I'd recommend reaching out to him directly for detailed discussions about your specific needs.\n\nYou can:\n• Fill out the contact form on this page\n• Email him at chawlaraghav78@gmail.com\n• Call him at +91 998121 79058\n\nIs there anything specific about his services or experience you'd like to know more about?";
   };
@@ -96,27 +101,27 @@ function AIChatbot() {
 
     const userMessage = inputMessage.trim();
     setInputMessage('');
-    
+
     // Add user message
     const newUserMessage = {
       type: 'user',
       content: userMessage,
       timestamp: new Date()
     };
-    
+
     setMessages(prev => [...prev, newUserMessage]);
     setIsLoading(true);
 
     try {
       // Get AI response
       const aiResponse = await getAIResponse(userMessage);
-      
+
       const aiMessage = {
         type: 'bot',
         content: aiResponse,
         timestamp: new Date()
       };
-      
+
       setMessages(prev => [...prev, aiMessage]);
     } catch {
       const errorMessage = {
@@ -144,118 +149,135 @@ function AIChatbot() {
   return (
     <>
       {/* Chatbot Toggle Button */}
-      {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 z-50 group"
-        >
-          <Bot className="w-6 h-6" />
-          <div className="absolute -top-12 right-0 bg-gray-800 text-white px-3 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
-            Chat with AI Assistant
-          </div>
-        </button>
-      )}
+      <AnimatePresence>
+        {!isOpen && (
+          <motion.button
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+            onClick={() => setIsOpen(true)}
+            className="fixed bottom-6 right-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white p-4 rounded-full shadow-2xl z-50 group"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <Bot className="w-6 h-6" />
+            <div className="absolute -top-12 right-0 bg-gray-800 text-white px-3 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+              Chat with AI Assistant
+            </div>
+          </motion.button>
+        )}
+      </AnimatePresence>
 
       {/* Chatbot Window */}
-      {isOpen && (
-        <div className={`fixed bottom-6 right-6 bg-gray-800 border border-gray-700 rounded-2xl shadow-2xl z-50 transition-all duration-300 ${
-          isMinimized ? 'h-14' : 'h-96 w-80 md:w-96'
-        }`}>
-          {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-700 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-t-2xl">
-            <div className="flex items-center space-x-3">
-              <div className="relative">
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
-                  <Bot className="w-4 h-4 text-white" />
-                </div>
-                <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-gray-800 rounded-full"></div>
-              </div>
-              <div>
-                <h3 className="text-white font-semibold text-sm">AI Assistant</h3>
-                <p className="text-gray-400 text-xs">Online now</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={() => setIsMinimized(!isMinimized)}
-                className="text-gray-400 hover:text-white p-1 rounded transition-colors"
-              >
-                {isMinimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
-              </button>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="text-gray-400 hover:text-white p-1 rounded transition-colors"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
-          {!isMinimized && (
-            <>
-              {/* Messages */}
-              <div className="h-64 overflow-y-auto p-4 space-y-4">
-                {messages.map((message, index) => (
-                  <div key={index} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-2xl ${
-                      message.type === 'user' 
-                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white' 
-                        : 'bg-gray-700 text-gray-100'
-                    }`}>
-                      <p className="text-sm whitespace-pre-line">{message.content}</p>
-                      <p className={`text-xs mt-1 ${
-                        message.type === 'user' ? 'text-blue-100' : 'text-gray-400'
-                      }`}>
-                        {formatTime(message.timestamp)}
-                      </p>
-                    </div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 50, scale: 0.9 }}
+            className={`fixed bottom-6 right-6 bg-gray-800 border border-gray-700 rounded-2xl shadow-2xl z-50 overflow-hidden ${isMinimized ? 'h-14' : 'h-96 w-80 md:w-96'
+              }`}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-700 bg-gradient-to-r from-blue-600/20 to-purple-600/20">
+              <div className="flex items-center space-x-3">
+                <div className="relative">
+                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                    <Bot className="w-4 h-4 text-white" />
                   </div>
-                ))}
-                
-                {isLoading && (
-                  <div className="flex justify-start">
-                    <div className="bg-gray-700 text-gray-100 px-4 py-2 rounded-2xl">
-                      <div className="flex items-center space-x-2">
-                        <Loader className="w-4 h-4 animate-spin" />
-                        <span className="text-sm">Typing...</span>
+                  <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-gray-800 rounded-full animate-pulse"></div>
+                </div>
+                <div>
+                  <h3 className="text-white font-semibold text-sm">AI Assistant</h3>
+                  <p className="text-gray-400 text-xs">Online now</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => setIsMinimized(!isMinimized)}
+                  className="text-gray-400 hover:text-white p-1 rounded transition-colors"
+                >
+                  {isMinimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
+                </button>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="text-gray-400 hover:text-white p-1 rounded transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {!isMinimized && (
+              <>
+                {/* Messages */}
+                <div className="h-64 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+                  {messages.map((message, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                    >
+                      <div className={`max-w-xs px-4 py-2 rounded-2xl ${message.type === 'user'
+                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
+                        : 'bg-gray-700 text-gray-100'
+                        }`}>
+                        <p className="text-sm whitespace-pre-line">{message.content}</p>
+                        <p className={`text-xs mt-1 ${message.type === 'user' ? 'text-blue-100' : 'text-gray-400'
+                          }`}>
+                          {formatTime(message.timestamp)}
+                        </p>
+                      </div>
+                    </motion.div>
+                  ))}
+
+                  {isLoading && (
+                    <div className="flex justify-start">
+                      <div className="bg-gray-700 text-gray-100 px-4 py-2 rounded-2xl">
+                        <div className="flex items-center space-x-2">
+                          <Loader className="w-4 h-4 animate-spin" />
+                          <span className="text-sm">Typing...</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
-                <div ref={messagesEndRef} />
-              </div>
-
-              {/* Input */}
-              <div className="p-4 border-t border-gray-700">
-                <div className="flex space-x-3">
-                  <input
-                    ref={inputRef}
-                    type="text"
-                    value={inputMessage}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputMessage(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    placeholder="Ask me anything about Raghav's services..."
-                    className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 text-sm focus:outline-none focus:border-blue-500 transition-colors"
-                    disabled={isLoading}
-                  />
-                  <button
-                    onClick={handleSendMessage}
-                    disabled={!inputMessage.trim() || isLoading}
-                    className="px-3 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-200"
-                  >
-                    <Send className="w-4 h-4" />
-                  </button>
+                  )}
+                  <div ref={messagesEndRef} />
                 </div>
-              </div>
-            </>
-          )}
-        </div>
-      )}
+
+                {/* Input */}
+                <div className="p-4 border-t border-gray-700 bg-gray-800">
+                  <div className="flex space-x-3">
+                    <input
+                      ref={inputRef}
+                      type="text"
+                      value={inputMessage}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputMessage(e.target.value)}
+                      onKeyPress={handleKeyPress}
+                      placeholder="Ask me anything..."
+                      className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 text-sm focus:outline-none focus:border-blue-500 transition-colors"
+                      disabled={isLoading}
+                    />
+                    <button
+                      onClick={handleSendMessage}
+                      disabled={!inputMessage.trim() || isLoading}
+                      className="px-3 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-200"
+                    >
+                      <Send className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
 
 export default function ContactPage() {
+  const form = useRef<HTMLFormElement>(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -264,7 +286,7 @@ export default function ContactPage() {
     message: "",
     projectType: 'general'
   });
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
 
@@ -281,29 +303,27 @@ export default function ContactPage() {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
-    try {
-      const response = await fetch("https://formspree.io/f/movlgrge", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(formData)
-      });
+    if (!form.current) return;
 
-      if (response.ok) {
-        setSubmitStatus("success");
-        setFormData({ 
-          name: "", 
-          email: "", 
-          company: "", 
-          subject: "", 
-          message: "", 
-          projectType: "general" 
-        });
-      } else {
-        setSubmitStatus("error");
-      }
-    } catch {
+    try {
+      await emailjs.sendForm(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+        form.current,
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+      );
+
+      setSubmitStatus("success");
+      setFormData({
+        name: "",
+        email: "",
+        company: "",
+        subject: "",
+        message: "",
+        projectType: "general"
+      });
+    } catch (error) {
+      console.error('EmailJS Error:', error);
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
@@ -350,7 +370,7 @@ export default function ContactPage() {
       icon: Github,
       name: 'GitHub',
       username: '@RCcoders',
-      link: 'https://github.com/RCCoders',
+      link: 'https://github.com/RCcoders',
       color: 'hover:text-gray-400'
     },
     {
@@ -361,11 +381,11 @@ export default function ContactPage() {
       color: 'hover:text-blue-400'
     },
     {
-      icon: Twitter,
-      name: 'Twitter',
-      username: '@raghav_dev',
-      link: 'https://twitter.com',
-      color: 'hover:text-sky-400'
+      icon: Instagram,
+      name: 'Instagram',
+      username: '_nx.raghav._',
+      link: 'https://instagram.com/_nx.raghav._',
+      color: 'hover:text-pink-500'
     },
     {
       icon: Globe,
@@ -395,298 +415,363 @@ export default function ContactPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative">
-      {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10"></div>
-        <div className="relative max-w-6xl mx-auto px-4 py-20">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl lg:text-6xl font-bold text-white mb-6">
-              Let us{' '}
-              <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-                Connect
-              </span>
-            </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Ready to transform your ideas into reality? Whether you have a project in mind, 
-              need consulting, or just want to discuss the latest in AI and data science, 
-              I would love to hear from you.
-            </p>
-            <div className="mt-8 flex items-center justify-center space-x-4 text-sm text-gray-400">
-              <div className="flex items-center">
-                <Bot className="w-4 h-4 mr-2 text-blue-400" />
-                <span>Try the AI assistant for quick questions</span>
-              </div>
-            </div>
-          </div>
+    <PageTransition>
+      <div className="min-h-screen relative overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[100px]"></div>
+          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[100px]"></div>
         </div>
-      </div>
 
-      <div className="max-w-6xl mx-auto px-4 pb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Contact Form */}
-          <div className="bg-gray-800/50 p-8 rounded-2xl border border-gray-700">
-            <div className="flex items-center mb-6">
-              <MessageCircle className="w-6 h-6 text-blue-400 mr-3" />
-              <h2 className="text-2xl font-bold text-white">Send a Message</h2>
-            </div>
-            
-            {submitStatus === 'success' && (
-              <div className="flex items-center bg-green-600/20 border border-green-600/50 text-green-400 p-4 rounded-lg mb-6">
-                <CheckCircle className="w-5 h-5 mr-2" />
-                <span>Message sent successfully! I will get back to you soon.</span>
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    <User className="w-4 h-4 inline mr-2" />
-                    Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
-                    placeholder="Your full name"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    <Mail className="w-4 h-4 inline mr-2" />
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
-                    placeholder="your@email.com"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    <Building className="w-4 h-4 inline mr-2" />
-                    Company
-                  </label>
-                  <input
-                    type="text"
-                    name="company"
-                    value={formData.company}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
-                    placeholder="Your company (optional)"
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="projectType" className="block text-sm font-medium text-gray-300 mb-2">
-                    <FileText className="w-4 h-4 inline mr-2" />
-                    Project Type
-                  </label>
-                  <select
-                    id="projectType"
-                    name="projectType"
-                    value={formData.projectType}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500 transition-colors appearance-none overflow-y-auto"
-                    size={1}
-                  >
-                    {projectTypes.map((type) => (
-                      <option
-                        key={type.value}
-                        value={type.value}
-                        className="bg-gray-700 text-white"
-                      >
-                        {type.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Subject *
-                </label>
-                <input
-                  type="text"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
-                  placeholder="What's this about?"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Message *
-                </label>
-                <textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  required
-                  rows={6}
-                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors resize-none"
-                  placeholder="Tell me about your project, requirements, timeline, or any questions you have..."
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full flex items-center justify-center px-6 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        {/* Hero Section */}
+        <div className="relative">
+          <div className="relative max-w-7xl mx-auto px-4 py-24">
+            <div className="text-center mb-16">
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
               >
-                {isSubmitting ? (
-                  <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    <Send className="w-5 h-5 mr-2" />
-                    Send Message
-                  </>
+                <div className="inline-flex items-center px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium mb-6">
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  Get in Touch
+                </div>
+                <h1 className="text-5xl lg:text-7xl font-bold text-white mb-8 leading-tight">
+                  Let us{' '}
+                  <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                    Connect
+                  </span>
+                </h1>
+              </motion.div>
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed font-light"
+              >
+                Ready to transform your ideas into reality? Whether you have a project in mind,
+                need consulting, or just want to discuss the latest in AI and data science,
+                I would love to hear from you.
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="mt-8 flex items-center justify-center space-x-4 text-sm text-gray-400"
+              >
+                <div className="flex items-center bg-white/5 px-4 py-2 rounded-full border border-white/10">
+                  <Bot className="w-4 h-4 mr-2 text-blue-400" />
+                  <span>Try the AI assistant for quick questions</span>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 pb-24">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            {/* Contact Form */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <GlowCard className="p-8 h-full border-white/10 bg-white/5 backdrop-blur-md">
+                <div className="flex items-center mb-8">
+                  <div className="p-3 bg-blue-500/10 rounded-xl mr-4 border border-blue-500/20">
+                    <MessageCircle className="w-6 h-6 text-blue-400" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-white">Send a Message</h2>
+                </div>
+
+                {submitStatus === 'success' && (
+                  <div className="flex items-center bg-green-500/10 border border-green-500/20 text-green-400 p-4 rounded-xl mb-8">
+                    <CheckCircle className="w-5 h-5 mr-3 flex-shrink-0" />
+                    <span>Message sent successfully! I will get back to you soon.</span>
+                  </div>
                 )}
-              </button>
-            </form>
+
+                {submitStatus === 'error' && (
+                  <div className="flex items-center bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl mb-8">
+                    <X className="w-5 h-5 mr-3 flex-shrink-0" />
+                    <span>Something went wrong. Please try again later.</span>
+                  </div>
+                )}
+
+                <form ref={form} onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        <User className="w-4 h-4 inline mr-2 text-blue-400" />
+                        Name *
+                      </label>
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full px-4 py-3.5 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                        placeholder="Your full name"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        <Mail className="w-4 h-4 inline mr-2 text-blue-400" />
+                        Email *
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full px-4 py-3.5 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                        placeholder="your@email.com"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        <Building className="w-4 h-4 inline mr-2 text-blue-400" />
+                        Company
+                      </label>
+                      <input
+                        type="text"
+                        name="company"
+                        value={formData.company}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3.5 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                        placeholder="Your company (optional)"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="projectType" className="block text-sm font-medium text-gray-300 mb-2">
+                        <FileText className="w-4 h-4 inline mr-2 text-blue-400" />
+                        Project Type
+                      </label>
+                      <div className="relative">
+                        <select
+                          id="projectType"
+                          name="projectType"
+                          value={formData.projectType}
+                          onChange={handleInputChange}
+                          className="w-full px-4 py-3.5 bg-gray-800/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all appearance-none cursor-pointer"
+                        >
+                          {projectTypes.map((type) => (
+                            <option
+                              key={type.value}
+                              value={type.value}
+                              className="bg-gray-800 text-white py-2"
+                            >
+                              {type.label}
+                            </option>
+                          ))}
+                        </select>
+                        <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                          <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Subject *
+                    </label>
+                    <input
+                      type="text"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3.5 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                      placeholder="What's this about?"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Message *
+                    </label>
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      required
+                      rows={6}
+                      className="w-full px-4 py-3.5 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all resize-none"
+                      placeholder="Tell me about your project, requirements, timeline, or any questions you have..."
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-600/20 hover:shadow-blue-600/40 hover:scale-[1.02] transform"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-5 h-5 mr-2" />
+                        Send Message
+                      </>
+                    )}
+                  </button>
+                </form>
+              </GlowCard>
+            </motion.div>
+
+            {/* Contact Information */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="space-y-8"
+            >
+              {/* Contact Methods */}
+              <GlowCard className="p-8 border-white/10 bg-white/5 backdrop-blur-md">
+                <h2 className="text-2xl font-bold text-white mb-8">Get In Touch</h2>
+                <div className="space-y-6">
+                  {contactMethods.map((method, index) => (
+                    <a
+                      key={index}
+                      href={method.link}
+                      className="flex items-start space-x-5 p-4 rounded-xl hover:bg-white/5 transition-all duration-300 group border border-transparent hover:border-white/5"
+                    >
+                      <div className={`${method.color} bg-gray-800/50 p-4 rounded-xl group-hover:scale-110 transition-transform duration-300 border border-gray-700/50`}>
+                        <method.icon className="w-6 h-6" />
+                      </div>
+                      <div>
+                        <h3 className="text-white font-bold mb-1 group-hover:text-blue-400 transition-colors">{method.title}</h3>
+                        <p className={`${method.color} font-medium mb-1`}>{method.value}</p>
+                        <p className="text-gray-400 text-sm">{method.description}</p>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </GlowCard>
+
+              {/* AI Assistant Info */}
+              <div className="bg-gradient-to-r from-blue-600/10 to-purple-600/10 p-8 rounded-2xl border border-blue-500/20 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
+                <div className="flex items-center mb-4 relative z-10">
+                  <div className="p-2 bg-blue-500/20 rounded-lg mr-3">
+                    <Bot className="w-6 h-6 text-blue-400" />
+                  </div>
+                  <h3 className="text-white font-bold text-lg">AI Assistant Available</h3>
+                </div>
+                <p className="text-gray-300 text-sm leading-relaxed mb-4 relative z-10">
+                  Got quick questions about my services, experience, or project types?
+                  Chat with my AI assistant for instant answers!
+                </p>
+                <div className="text-xs text-blue-300 font-medium flex items-center relative z-10">
+                  <span className="w-2 h-2 bg-blue-400 rounded-full mr-2 animate-pulse"></span>
+                  Available 24/7 • Instant responses • No signup required
+                </div>
+              </div>
+
+              {/* Social Links */}
+              <GlowCard className="p-8 border-white/10 bg-white/5 backdrop-blur-md">
+                <h2 className="text-2xl font-bold text-white mb-8">Connect Online</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {socialLinks.map((social, index) => (
+                    <a
+                      key={index}
+                      href={social.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex items-center space-x-4 p-4 bg-gray-800/30 rounded-xl hover:bg-gray-800/60 transition-all duration-300 text-gray-300 border border-gray-700/50 hover:border-gray-600 group ${social.color}`}
+                    >
+                      <social.icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                      <div>
+                        <p className="font-bold text-white group-hover:text-blue-400 transition-colors">{social.name}</p>
+                        <p className="text-xs opacity-60 font-mono mt-0.5">{social.username}</p>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </GlowCard>
+
+              {/* Availability */}
+              <div className="bg-emerald-500/5 p-6 rounded-2xl border border-emerald-500/20">
+                <h3 className="text-white font-bold mb-4 flex items-center">
+                  <Clock className="w-5 h-5 mr-2 text-emerald-400" />
+                  Current Availability
+                </h3>
+                <div className="flex items-center mb-3">
+                  <div className="w-3 h-3 bg-emerald-500 rounded-full mr-3 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+                  <span className="text-emerald-400 font-medium">Available for new projects</span>
+                </div>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  I am currently accepting new projects and collaborations.
+                  Let us discuss how we can work together!
+                </p>
+              </div>
+            </motion.div>
           </div>
 
-          {/* Contact Information */}
-          <div className="space-y-8">
-            {/* Contact Methods */}
-            <div className="bg-gray-800/50 p-8 rounded-2xl border border-gray-700">
-              <h2 className="text-2xl font-bold text-white mb-6">Get In Touch</h2>
-              <div className="space-y-6">
-                {contactMethods.map((method, index) => (
-                  <a
-                    key={index}
-                    href={method.link}
-                    className="flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-700/30 transition-colors duration-200 group"
-                  >
-                    <div className={`${method.color} bg-gray-700/50 p-3 rounded-lg group-hover:scale-110 transition-transform duration-200`}>
-                      <method.icon className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <h3 className="text-white font-semibold mb-1">{method.title}</h3>
-                      <p className={`${method.color} font-medium mb-1`}>{method.value}</p>
-                      <p className="text-gray-400 text-sm">{method.description}</p>
-                    </div>
-                  </a>
-                ))}
-              </div>
+          {/* FAQ Section */}
+          <div className="mt-24">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-white mb-4">Frequently Asked Questions</h2>
+              <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
             </div>
 
-            {/* AI Assistant Info */}
-            <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 p-6 rounded-xl border border-gray-700">
-              <div className="flex items-center mb-3">
-                <Bot className="w-5 h-5 text-blue-400 mr-2" />
-                <h3 className="text-white font-semibold">AI Assistant Available</h3>
-              </div>
-              <p className="text-gray-300 text-sm leading-relaxed mb-3">
-                Got quick questions about my services, experience, or project types? 
-                Chat with my AI assistant for instant answers!
-              </p>
-              <div className="text-xs text-gray-400">
-                Available 24/7 • Instant responses • No signup required
-              </div>
-            </div>
-
-            {/* Response Time */}
-            <div className="bg-gradient-to-r from-green-600/20 to-blue-600/20 p-6 rounded-xl border border-gray-700">
-              <div className="flex items-center mb-3">
-                <Clock className="w-5 h-5 text-green-400 mr-2" />
-                <h3 className="text-white font-semibold">Response Time</h3>
-              </div>
-              <p className="text-gray-300 text-sm leading-relaxed">
-                I typically respond to emails within 24 hours on weekdays. 
-                For urgent matters, feel free to call me directly.
-              </p>
-            </div>
-
-            {/* Social Links */}
-            <div className="bg-gray-800/50 p-8 rounded-2xl border border-gray-700">
-              <h2 className="text-2xl font-bold text-white mb-6">Connect Online</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {socialLinks.map((social, index) => (
-                  <a
-                    key={index}
-                    href={social.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`flex items-center space-x-3 p-4 bg-gray-700/30 rounded-lg hover:bg-gray-700/50 transition-colors duration-200 text-gray-300 ${social.color}`}
-                  >
-                    <social.icon className="w-5 h-5" />
-                    <div>
-                      <p className="font-medium">{social.name}</p>
-                      <p className="text-sm opacity-75">{social.username}</p>
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            {/* Availability */}
-            <div className="bg-gray-800/50 p-6 rounded-xl border border-gray-700">
-              <h3 className="text-white font-semibold mb-4">Current Availability</h3>
-              <div className="flex items-center mb-3">
-                <div className="w-3 h-3 bg-green-500 rounded-full mr-3 animate-pulse"></div>
-                <span className="text-green-400 font-medium">Available for new projects</span>
-              </div>
-              <p className="text-gray-300 text-sm">
-                I am currently accepting new projects and collaborations. 
-                Let us discuss how we can work together!
-              </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {[
+                {
+                  question: "What's your typical project timeline?",
+                  answer: "Project timelines vary based on complexity, but most data science projects take 2-6 weeks, while web development projects typically take 1-4 weeks."
+                },
+                {
+                  question: "Do you work with international clients?",
+                  answer: "Absolutely! I work with clients globally and am comfortable with remote collaboration across different time zones."
+                },
+                {
+                  question: "What technologies do you specialize in?",
+                  answer: "I specialize in Python, Data Science, Machine Learning, AI, and web development with modern frameworks like React and Node.js."
+                },
+                {
+                  question: "Do you provide ongoing support?",
+                  answer: "Yes, I offer maintenance and support packages for all projects to ensure they continue to perform optimally over time."
+                }
+              ].map((faq, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <GlowCard className="p-8 h-full hover:bg-white/5 transition-colors border-white/5">
+                    <h3 className="text-lg font-bold text-white mb-3 flex items-start">
+                      <span className="text-blue-500 mr-3 text-xl leading-none">•</span>
+                      {faq.question}
+                    </h3>
+                    <p className="text-gray-400 text-sm leading-relaxed pl-6">{faq.answer}</p>
+                  </GlowCard>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* FAQ Section */}
-        <div className="mt-20">
-          <h2 className="text-3xl font-bold text-white text-center mb-12">Frequently Asked Questions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[
-              {
-                question: "What's your typical project timeline?",
-                answer: "Project timelines vary based on complexity, but most data science projects take 2-6 weeks, while web development projects typically take 1-4 weeks."
-              },
-              {
-                question: "Do you work with international clients?",
-                answer: "Absolutely! I work with clients globally and am comfortable with remote collaboration across different time zones."
-              },
-              {
-                question: "What technologies do you specialize in?",
-                answer: "I specialize in Python, Data Science, Machine Learning, AI, and web development with modern frameworks like React and Node.js."
-              },
-              {
-                question: "Do you provide ongoing support?",
-                answer: "Yes, I offer maintenance and support packages for all projects to ensure they continue to perform optimally over time."
-              }
-            ].map((faq, index) => (
-              <div key={index} className="bg-gray-800/50 p-6 rounded-xl border border-gray-700">
-                <h3 className="text-white font-semibold mb-3">{faq.question}</h3>
-                <p className="text-gray-300 text-sm leading-relaxed">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* AI Chatbot Component */}
+        <AIChatbot />
       </div>
-
-      {/* AI Chatbot Component */}
-      <AIChatbot />
-    </div>
+    </PageTransition>
   );
 }

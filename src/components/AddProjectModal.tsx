@@ -1,0 +1,183 @@
+import React, { useState } from 'react';
+import { X } from 'lucide-react';
+import { Project, api } from '@/lib/api';
+
+interface AddProjectModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    onProjectAdded: (project: Project) => void;
+}
+
+export default function AddProjectModal({ isOpen, onClose, onProjectAdded }: AddProjectModalProps) {
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState<Partial<Project>>({
+        title: '',
+        description: '',
+        image: '',
+        category: 'web-development',
+        status: 'planned',
+        tags: [],
+        githubUrl: '',
+        liveUrl: '',
+        technologies: {},
+        metrics: {},
+        features: []
+    });
+
+    const [tagsInput, setTagsInput] = useState('');
+
+    if (!isOpen) return null;
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            const newProject: Project = {
+                title: formData.title || 'Untitled',
+                description: formData.description || '',
+                image: formData.image || 'https://via.placeholder.com/600x400',
+                category: formData.category || 'web-development',
+                status: (formData.status as Project['status']) || 'planned',
+                tags: tagsInput.split(',').map(t => t.trim()).filter(t => t),
+                githubUrl: formData.githubUrl,
+                liveUrl: formData.liveUrl,
+                technologies: {}, // Simplified for now
+                metrics: {},      // Simplified for now
+                features: []      // Simplified for now
+            };
+
+            const created = await api.createProject(newProject);
+            onProjectAdded(created);
+            onClose();
+        } catch (error) {
+            console.error('Failed to create project:', error);
+            alert('Failed to create project. See console for details.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+            <div className="bg-gray-800 border border-gray-700 rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+                <div className="flex items-center justify-between p-6 border-b border-gray-700">
+                    <h2 className="text-xl font-bold text-white">Add New Project</h2>
+                    <button onClick={onClose} className="text-gray-400 hover:text-white">
+                        <X className="w-6 h-6" />
+                    </button>
+                </div>
+
+                <form onSubmit={handleSubmit} className="p-6 space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-1">Title</label>
+                            <input
+                                type="text"
+                                required
+                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                value={formData.title}
+                                onChange={e => setFormData({ ...formData, title: e.target.value })}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-1">Category</label>
+                            <select
+                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                value={formData.category}
+                                onChange={e => setFormData({ ...formData, category: e.target.value })}
+                            >
+                                <option value="web-development">Web Development</option>
+                                <option value="python-development">Python Development</option>
+                                <option value="machine-learning">Machine Learning</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-1">Description</label>
+                        <textarea
+                            required
+                            rows={3}
+                            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                            value={formData.description}
+                            onChange={e => setFormData({ ...formData, description: e.target.value })}
+                        />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-1">Image URL</label>
+                            <input
+                                type="text"
+                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                value={formData.image}
+                                onChange={e => setFormData({ ...formData, image: e.target.value })}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-1">Status</label>
+                            <select
+                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                value={formData.status}
+                                onChange={e => setFormData({ ...formData, status: e.target.value as Project['status'] })}
+                            >
+                                <option value="planned">Planned</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-1">GitHub URL</label>
+                            <input
+                                type="text"
+                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                value={formData.githubUrl}
+                                onChange={e => setFormData({ ...formData, githubUrl: e.target.value })}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-300 mb-1">Live URL</label>
+                            <input
+                                type="text"
+                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                value={formData.liveUrl}
+                                onChange={e => setFormData({ ...formData, liveUrl: e.target.value })}
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-1">Tags (comma separated)</label>
+                        <input
+                            type="text"
+                            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                            value={tagsInput}
+                            onChange={e => setTagsInput(e.target.value)}
+                            placeholder="React, TypeScript, Tailwind..."
+                        />
+                    </div>
+
+                    <div className="flex justify-end gap-3 mt-6">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="px-4 py-2 text-gray-300 hover:text-white transition-colors"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {loading ? 'Adding...' : 'Add Project'}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+}

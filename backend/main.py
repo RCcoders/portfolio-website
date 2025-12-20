@@ -1,0 +1,55 @@
+from fastapi import FastAPI, HTTPException
+from typing import List
+from fastapi.middleware.cors import CORSMiddleware
+from . import crud, schemas, database
+
+app = FastAPI()
+
+# CORS configuration
+origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/")
+def read_root():
+    return {"message": "Portfolio Backend is running"}
+
+@app.get("/projects")
+def get_projects():
+    return crud.get_projects(database.supabase)
+
+@app.post("/projects", response_model=List[schemas.Project])
+def create_project(project: schemas.ProjectCreate):
+    return crud.create_project(database.supabase, project)
+
+@app.delete("/projects/{project_id}")
+def delete_project(project_id: str):
+    return crud.delete_project(database.supabase, project_id)
+
+@app.get("/certificates")
+def get_certificates():
+    return crud.get_certificates(database.supabase)
+
+@app.post("/certificates", response_model=List[schemas.Certificate])
+def create_certificate(certificate: schemas.CertificateCreate):
+    return crud.create_certificate(database.supabase, certificate)
+
+@app.delete("/certificates/{certificate_id}")
+def delete_certificate(certificate_id: str):
+    return crud.delete_certificate(database.supabase, certificate_id)
+
+@app.get("/certificates/{slug}", response_model=schemas.Certificate)
+def get_certificate_by_slug(slug: str):
+    cert = crud.get_certificate_by_slug(database.supabase, slug)
+    if not cert:
+        raise HTTPException(status_code=404, detail="Certificate not found")
+    return cert
