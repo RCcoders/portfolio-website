@@ -6,7 +6,7 @@ def get_projects(db: Client):
     return response.data
 
 def create_project(db: Client, project: schemas.ProjectCreate):
-    project_data = project.dict()
+    project_data = project.dict(by_alias=True)
     response = db.table("projects").insert(project_data).execute()
     return response.data
 
@@ -19,7 +19,7 @@ def get_certificates(db: Client):
     return response.data
 
 def create_certificate(db: Client, certificate: schemas.CertificateCreate):
-    cert_data = certificate.dict()
+    cert_data = certificate.dict(by_alias=True)
     response = db.table("certificates").insert(cert_data).execute()
     return response.data
 

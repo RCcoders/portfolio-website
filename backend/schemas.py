@@ -4,20 +4,24 @@ from typing import List, Optional, Dict
 class ProjectBase(BaseModel):
     title: str
     description: str
-    longDescription: Optional[str] = None
+    longDescription: Optional[str] = Field(None, alias="long_description")
     image: str
     category: str
     tags: List[str] = []
-    githubUrl: Optional[str] = None
-    liveUrl: Optional[str] = None
+    githubUrl: Optional[str] = Field(None, alias="github_url")
+    liveUrl: Optional[str] = Field(None, alias="live_url")
     status: str = "completed"
-    date: Optional[str] = None
+    date: Optional[str] = Field(None, alias="project_date")
     duration: Optional[str] = None
     client: Optional[str] = None
     features: List[str] = []
     technologies: Dict = {}
     metrics: Dict = {}
     featured: bool = False
+
+    class Config:
+        populate_by_name = True
+        from_attributes = True
 
 
 class CertificateBase(BaseModel):

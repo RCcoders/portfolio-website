@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { Project, api } from '@/lib/api';
@@ -41,9 +42,10 @@ export default function AddProjectModal({ isOpen, onClose, onProjectAdded }: Add
                 tags: tagsInput.split(',').map(t => t.trim()).filter(t => t),
                 githubUrl: formData.githubUrl,
                 liveUrl: formData.liveUrl,
-                technologies: {}, // Simplified for now
-                metrics: {},      // Simplified for now
-                features: []      // Simplified for now
+                longDescription: formData.longDescription,
+                technologies: formData.technologies || {},
+                metrics: formData.metrics || {},
+                features: formData.features || []
             };
 
             const created = await api.createProject(newProject);
@@ -157,6 +159,65 @@ export default function AddProjectModal({ isOpen, onClose, onProjectAdded }: Add
                             value={tagsInput}
                             onChange={e => setTagsInput(e.target.value)}
                             placeholder="React, TypeScript, Tailwind..."
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-1">Long Description (Optional)</label>
+                        <textarea
+                            rows={4}
+                            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                            value={formData.longDescription || ''}
+                            onChange={e => setFormData({ ...formData, longDescription: e.target.value })}
+                            placeholder="Detailed description of the project..."
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-1">Features (One per line)</label>
+                        <textarea
+                            rows={3}
+                            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                            placeholder="User Authentication&#10;Real-time Updates&#10;Responsive Design"
+                            onChange={e => setFormData({ ...formData, features: e.target.value.split('\n').filter(line => line.trim()) })}
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-1">Technologies (Category: Tech1, Tech2... one per line)</label>
+                        <textarea
+                            rows={3}
+                            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                            placeholder="Frontend: React, Tailwind&#10;Backend: Python, FastAPI&#10;Database: PostgreSQL"
+                            onChange={e => {
+                                const techs: Record<string, string[]> = {};
+                                e.target.value.split('\n').forEach(line => {
+                                    const [category, items] = line.split(':');
+                                    if (category && items) {
+                                        techs[category.trim()] = items.split(',').map(i => i.trim()).filter(i => i);
+                                    }
+                                });
+                                setFormData({ ...formData, technologies: techs });
+                            }}
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-1">Metrics (Label: Value one per line)</label>
+                        <textarea
+                            rows={2}
+                            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                            placeholder="Performance: 98/100&#10;Users: 10k+"
+                            onChange={e => {
+                                const metrics: Record<string, string> = {};
+                                e.target.value.split('\n').forEach(line => {
+                                    const [key, value] = line.split(':');
+                                    if (key && value) {
+                                        metrics[key.trim()] = value.trim();
+                                    }
+                                });
+                                setFormData({ ...formData, metrics: metrics });
+                            }}
                         />
                     </div>
 
