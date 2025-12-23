@@ -248,7 +248,7 @@ export default function ProjectsPage() {
                       <Award className="w-4 h-4 mr-2 text-green-400" />
                       Project Metrics
                     </h4>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {Object.entries(project.metrics).map(([key, value]) => (
                         <div key={key} className="bg-gray-800/50 p-3 rounded-lg text-center border border-gray-700/50">
                           <div className="text-blue-400 font-bold text-lg">{value as string}</div>
