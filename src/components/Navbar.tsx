@@ -47,8 +47,8 @@ export default function Navbar() {
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-            ? 'bg-black/50 backdrop-blur-xl border-b border-white/10 py-2'
-            : 'bg-transparent py-4'
+          ? 'bg-black/50 backdrop-blur-xl border-b border-white/10 py-2'
+          : 'bg-transparent py-4'
           }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -57,12 +57,12 @@ export default function Navbar() {
             <Link href="/" className="relative group">
               <div className="flex items-center gap-3">
                 <div className="relative w-10 h-10 flex items-center justify-center">
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg rotate-0 group-hover:rotate-12 transition-transform duration-300 opacity-75 blur-sm"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-sky-500 to-green-500 rounded-lg rotate-0 group-hover:rotate-12 transition-transform duration-300 opacity-75 blur-sm"></div>
                   <div className="relative w-full h-full bg-black rounded-lg border border-white/10 flex items-center justify-center font-bold text-white z-10">
                     RC
                   </div>
                 </div>
-                <span className="font-bold text-xl tracking-tight text-white hidden sm:block group-hover:text-purple-300 transition-colors">
+                <span className="font-bold text-xl tracking-tight text-white hidden sm:block group-hover:text-primary transition-colors">
                   Raghav Chawla
                 </span>
               </div>
@@ -75,8 +75,8 @@ export default function Navbar() {
                   key={item.name}
                   href={item.href}
                   className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${isActive(item.href)
-                      ? 'text-white bg-white/10 shadow-[0_0_10px_rgba(168,85,247,0.5)]'
-                      : 'text-gray-400 hover:text-white hover:bg-white/5'
+                    ? 'text-white bg-white/10 shadow-[0_0_10px_rgba(56,189,248,0.5)]'
+                    : 'text-gray-400 hover:text-white hover:bg-white/5'
                     }`}
                 >
                   {item.name}
@@ -92,7 +92,7 @@ export default function Navbar() {
                   href={social.href}
                   target={social.href.startsWith('http') ? '_blank' : undefined}
                   rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  className="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-full transition-all duration-300 hover:scale-110 hover:shadow-[0_0_15px_rgba(168,85,247,0.5)]"
+                  className="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-full transition-all duration-300 hover:scale-110 hover:shadow-[0_0_15px_rgba(56,189,248,0.5)]"
                   aria-label={social.label}
                 >
                   <social.icon className="w-5 h-5" />
@@ -124,8 +124,8 @@ export default function Navbar() {
                   href={item.href}
                   onClick={() => setIsOpen(false)}
                   className={`block px-4 py-4 rounded-xl text-lg font-medium transition-all duration-300 ${isActive(item.href)
-                      ? 'text-white bg-gradient-to-r from-purple-600/20 to-blue-600/20 border border-purple-500/30'
-                      : 'text-gray-400 hover:text-white hover:bg-white/5'
+                    ? 'text-white bg-gradient-to-r from-sky-600/20 to-green-600/20 border border-sky-500/30'
+                    : 'text-gray-400 hover:text-white hover:bg-white/5'
                     }`}
                 >
                   {item.name}

@@ -71,7 +71,7 @@ export default function CertificationsPage() {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent"
+              className="text-5xl font-bold mb-4 bg-gradient-to-r from-sky-400 to-green-500 bg-clip-text text-transparent"
             >
               Professional Certifications
             </motion.h1>
@@ -176,7 +176,7 @@ export default function CertificationsPage() {
               transition={{ delay: 0.6 }}
             >
               <GlowCard className="text-center p-6">
-                <div className="text-3xl font-bold text-purple-400 mb-2">{latestYear}</div>
+                <div className="text-3xl font-bold text-sky-400 mb-2">{latestYear}</div>
                 <div className="text-gray-400">Latest Achievement</div>
               </GlowCard>
             </motion.div>

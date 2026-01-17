@@ -22,7 +22,7 @@ function Word({ children, ...props }: { children: React.ReactNode } & React.Comp
         if (ref.current) {
             ref.current.quaternion.copy(camera.quaternion);
             // @ts-expect-error - material color type issue
-            ref.current.material.color.lerp(color.set(hovered ? '#fa2720' : 'white'), 0.1);
+            ref.current.material.color.lerp(color.set(hovered ? '#38BDF8' : 'white'), 0.1);
         }
     });
 
@@ -57,7 +57,7 @@ export default function SkillsSphere() {
     return (
         <div className="h-[500px] w-full cursor-grab active:cursor-grabbing">
             <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 35], fov: 90 }}>
-                <fog attach="fog" args={['#202025', 0, 80]} />
+                <fog attach="fog" args={['#020617', 0, 80]} />
                 <Cloud count={8} radius={20} />
                 <TrackballControls />
             </Canvas>

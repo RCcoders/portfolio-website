@@ -176,13 +176,13 @@ export default function CertificationDetailPage() {
                 >
                   <GlowCard className="p-6">
                     <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                      <Award className="w-5 h-5 text-purple-400" />
+                      <Award className="w-5 h-5 text-sky-400" />
                       Course Modules
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {certification.modules.map((module, index) => (
                         <div key={index} className="flex items-center gap-3 p-3 bg-gray-700/30 rounded-lg hover:bg-gray-700/50 transition-colors">
-                          <div className="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-purple-600/20">
+                          <div className="w-6 h-6 bg-sky-600 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-sky-600/20">
                             {index + 1}
                           </div>
                           <span className="text-gray-300">{module}</span>
@@ -230,7 +230,7 @@ export default function CertificationDetailPage() {
               >
                 <GlowCard className="p-6">
                   <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                    <Award className="w-5 h-5 text-purple-400" />
+                    <Award className="w-5 h-5 text-sky-400" />
                     Certificate Details
                   </h3>
                   <div className="space-y-3">
@@ -296,10 +296,10 @@ export default function CertificationDetailPage() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.5 }}
-                className="bg-gradient-to-br from-purple-600/20 to-blue-600/20 rounded-xl p-6 border border-purple-500/30"
+                className="bg-gradient-to-br from-sky-600/20 to-green-600/20 rounded-xl p-6 border border-sky-500/30"
               >
                 <div className="text-center">
-                  <Award className="w-12 h-12 text-purple-400 mx-auto mb-3 animate-pulse" />
+                  <Award className="w-12 h-12 text-sky-400 mx-auto mb-3 animate-pulse" />
                   <h4 className="text-white font-bold mb-2">Verified Achievement</h4>
                   <p className="text-gray-300 text-sm">This certification has been verified and is part of my professional development journey.</p>
                 </div>

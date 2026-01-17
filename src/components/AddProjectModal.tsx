@@ -76,7 +76,7 @@ export default function AddProjectModal({ isOpen, onClose, onProjectAdded }: Add
                             <input
                                 type="text"
                                 required
-                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-sky-500 outline-none"
                                 value={formData.title}
                                 onChange={e => setFormData({ ...formData, title: e.target.value })}
                             />
@@ -84,7 +84,7 @@ export default function AddProjectModal({ isOpen, onClose, onProjectAdded }: Add
                         <div>
                             <label className="block text-sm font-medium text-gray-300 mb-1">Category</label>
                             <select
-                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-sky-500 outline-none"
                                 value={formData.category}
                                 onChange={e => setFormData({ ...formData, category: e.target.value })}
                             >
@@ -111,7 +111,7 @@ export default function AddProjectModal({ isOpen, onClose, onProjectAdded }: Add
                             <label className="block text-sm font-medium text-gray-300 mb-1">Image URL</label>
                             <input
                                 type="text"
-                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-sky-500 outline-none"
                                 value={formData.image}
                                 onChange={e => setFormData({ ...formData, image: e.target.value })}
                             />
@@ -119,7 +119,7 @@ export default function AddProjectModal({ isOpen, onClose, onProjectAdded }: Add
                         <div>
                             <label className="block text-sm font-medium text-gray-300 mb-1">Status</label>
                             <select
-                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-sky-500 outline-none"
                                 value={formData.status}
                                 onChange={e => setFormData({ ...formData, status: e.target.value as Project['status'] })}
                             >
@@ -135,7 +135,7 @@ export default function AddProjectModal({ isOpen, onClose, onProjectAdded }: Add
                             <label className="block text-sm font-medium text-gray-300 mb-1">GitHub URL</label>
                             <input
                                 type="text"
-                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-sky-500 outline-none"
                                 value={formData.githubUrl}
                                 onChange={e => setFormData({ ...formData, githubUrl: e.target.value })}
                             />
@@ -144,7 +144,7 @@ export default function AddProjectModal({ isOpen, onClose, onProjectAdded }: Add
                             <label className="block text-sm font-medium text-gray-300 mb-1">Live URL</label>
                             <input
                                 type="text"
-                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-sky-500 outline-none"
                                 value={formData.liveUrl}
                                 onChange={e => setFormData({ ...formData, liveUrl: e.target.value })}
                             />
@@ -232,7 +232,7 @@ export default function AddProjectModal({ isOpen, onClose, onProjectAdded }: Add
                         <button
                             type="submit"
                             disabled={loading}
-                            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-6 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {loading ? 'Adding...' : 'Add Project'}
                         </button>

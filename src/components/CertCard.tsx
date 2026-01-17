@@ -23,7 +23,7 @@ export default function CertCard({
   credentialUrl
 }: CertCardProps) {
   return (
-    <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm border border-white/10 hover:border-purple-400/30 transition-all duration-500 hover:scale-105 transform">
+    <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm border border-white/10 hover:border-sky-400/30 transition-all duration-500 hover:scale-105 transform">
       <Link href={`/certifications/${slug}`}>
         <div className="relative h-48 w-full overflow-hidden">
           {imageUrl ? (
@@ -34,7 +34,7 @@ export default function CertCard({
               className="object-cover transition-transform duration-500 group-hover:scale-110"
             />
           ) : (
-            <div className="w-full h-full bg-purple-500/20 flex items-center justify-center">
+            <div className="w-full h-full bg-sky-500/20 flex items-center justify-center">
               <Award className="w-12 h-12 text-white/40" />
             </div>
           )}
@@ -42,7 +42,7 @@ export default function CertCard({
 
         <div className="p-5">
           <h3 className="text-white font-bold text-lg mb-1">{title}</h3>
-          <p className="text-sm text-purple-300 mb-1">{issuer}</p>
+          <p className="text-sm text-sky-300 mb-1">{issuer}</p>
           {description && (
             <p className="text-sm text-gray-300 line-clamp-2 mb-2">{description}</p>
           )}
@@ -53,7 +53,7 @@ export default function CertCard({
               <span>{date}</span>
             </div>
 
-            <span className="text-purple-400 group-hover:underline">
+            <span className="text-sky-400 group-hover:underline">
               View Details →
             </span>
           </div>

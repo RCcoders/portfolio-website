@@ -16,7 +16,7 @@ export default function PrivacyPage() {
             transition={{ duration: 0.8 }}
           >
             <GlowCard className="p-8">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent mb-8">
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-sky-400 to-green-600 bg-clip-text text-transparent mb-8">
                 Privacy Policy
               </h1>
 

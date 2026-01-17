@@ -92,7 +92,7 @@ export default function ProjectsPage() {
       switch (status) {
         case 'completed': return 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30';
         case 'in-progress': return 'bg-blue-500/20 text-blue-300 border-blue-500/30';
-        case 'planned': return 'bg-purple-500/20 text-purple-300 border-purple-500/30';
+        case 'planned': return 'bg-sky-500/20 text-sky-300 border-sky-500/30';
         default: return 'bg-gray-500/20 text-gray-300 border-gray-500/30';
       }
     };
@@ -227,7 +227,7 @@ export default function ProjectsPage() {
                 {project.technologies && Object.keys(project.technologies).length > 0 && (
                   <div>
                     <h4 className="text-white font-semibold mb-3 text-sm flex items-center">
-                      <Code className="w-4 h-4 mr-2 text-purple-400" />
+                      <Code className="w-4 h-4 mr-2 text-green-400" />
                       Technology Stack
                     </h4>
                     <div className="space-y-3">
@@ -308,7 +308,7 @@ export default function ProjectsPage() {
       <div className="min-h-screen relative overflow-hidden">
         {/* Background Elements */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-          <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[100px]"></div>
+          <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-green-600/10 rounded-full blur-[100px]"></div>
           <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[100px]"></div>
         </div>
 
@@ -333,7 +333,7 @@ export default function ProjectsPage() {
                 </div>
                 <h1 className="text-5xl lg:text-7xl font-bold text-white mb-8 leading-tight">
                   My{' '}
-                  <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-sky-400 via-blue-400 to-green-400 bg-clip-text text-transparent">
                     Projects
                   </span>
                 </h1>
@@ -368,7 +368,7 @@ export default function ProjectsPage() {
                   <div className="text-gray-400 text-sm font-medium uppercase tracking-wider">Completed</div>
                 </div>
                 <div className="bg-white/5 backdrop-blur-sm px-6 py-4 rounded-2xl border border-white/10 min-w-[120px]">
-                  <div className="text-3xl font-bold text-purple-400 mb-1">
+                  <div className="text-3xl font-bold text-sky-400 mb-1">
                     {projects.filter(p => p.status === 'in-progress').length}
                   </div>
                   <div className="text-gray-400 text-sm font-medium uppercase tracking-wider">In Progress</div>
@@ -395,7 +395,7 @@ export default function ProjectsPage() {
               </div>
               <button
                 onClick={() => setIsAddModalOpen(true)}
-                className="flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-blue-600/20 hover:shadow-blue-600/40 hover:scale-105 transform"
+                className="flex items-center justify-center px-8 py-4 bg-gradient-to-r from-sky-600 to-green-600 hover:from-sky-700 hover:to-green-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-sky-600/20 hover:shadow-sky-600/40 hover:scale-105 transform"
               >
                 <Plus className="w-5 h-5 mr-2" />
                 Add Project
@@ -409,7 +409,7 @@ export default function ProjectsPage() {
                   key={category.id}
                   onClick={() => setActiveFilter(category.id)}
                   className={`flex items-center px-6 py-3 rounded-full transition-all duration-300 border ${activeFilter === category.id
-                    ? 'bg-blue-600 text-white border-blue-500 shadow-lg shadow-blue-600/25'
+                    ? 'bg-sky-600 text-white border-sky-500 shadow-lg shadow-sky-600/25'
                     : 'bg-gray-800/30 text-gray-400 hover:bg-gray-700/50 border-gray-700 hover:text-white'
                     }`}
                 >
@@ -427,8 +427,8 @@ export default function ProjectsPage() {
           {loading ? (
             <div className="text-center py-32">
               <div className="relative w-20 h-20 mx-auto mb-6">
-                <div className="absolute inset-0 border-4 border-blue-500/30 rounded-full"></div>
-                <div className="absolute inset-0 border-4 border-t-blue-500 rounded-full animate-spin"></div>
+                <div className="absolute inset-0 border-4 border-sky-500/30 rounded-full"></div>
+                <div className="absolute inset-0 border-4 border-t-sky-500 rounded-full animate-spin"></div>
               </div>
               <p className="text-gray-400 text-lg font-medium">Loading projects...</p>
             </div>
@@ -462,7 +462,7 @@ export default function ProjectsPage() {
               </p>
               <button
                 onClick={() => { setSearchTerm(''); setActiveFilter('all'); }}
-                className="mt-8 px-6 py-3 bg-blue-600/20 text-blue-400 hover:bg-blue-600/30 rounded-xl font-medium transition-colors"
+                className="mt-8 px-6 py-3 bg-sky-600/20 text-sky-400 hover:bg-sky-600/30 rounded-xl font-medium transition-colors"
               >
                 Clear Filters
               </button>
@@ -474,11 +474,11 @@ export default function ProjectsPage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mt-24 text-center bg-gradient-to-r from-blue-900/20 to-purple-900/20 p-16 rounded-3xl border border-white/10 relative overflow-hidden"
+            className="mt-24 text-center bg-gradient-to-r from-sky-900/20 to-green-900/20 p-16 rounded-3xl border border-white/10 relative overflow-hidden"
           >
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
-            <div className="bg-blue-500/10 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-8 rotate-12">
-              <Users className="w-10 h-10 text-blue-400" />
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-sky-500 via-blue-500 to-green-500"></div>
+            <div className="bg-sky-500/10 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-8 rotate-12">
+              <Users className="w-10 h-10 text-sky-400" />
             </div>
             <h2 className="text-4xl font-bold text-white mb-6">Interested in Working Together?</h2>
             <p className="text-gray-300 mb-10 max-w-2xl mx-auto text-lg">

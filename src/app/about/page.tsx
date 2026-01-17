@@ -114,7 +114,7 @@ export default function AboutPage() {
       <div className="min-h-screen relative overflow-hidden">
         {/* Background Elements */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[100px]"></div>
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-green-600/10 rounded-full blur-[100px]"></div>
           <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[100px]"></div>
         </div>
 
@@ -137,12 +137,12 @@ export default function AboutPage() {
 
                 <h1 className="text-5xl lg:text-7xl font-bold text-white mb-8 leading-tight">
                   Hi, I am{' '}
-                  <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-sky-400 via-blue-400 to-green-400 bg-clip-text text-transparent">
                     Raghav Chawla
                   </span>
                 </h1>
 
-                <p className="text-xl text-gray-300 mb-10 leading-relaxed font-light border-l-4 border-purple-500/50 pl-6">
+                <p className="text-xl text-gray-300 mb-10 leading-relaxed font-light border-l-4 border-green-500/50 pl-6">
                   A passionate Python developer specializing in <span className="text-white font-medium">Data Science</span> and <span className="text-white font-medium">AI</span>.
                   I transform complex data into actionable insights and build intelligent
                   solutions that make a difference.
@@ -150,14 +150,14 @@ export default function AboutPage() {
 
                 <div className="flex flex-wrap gap-4 mb-10">
                   <a href="/pdfs/resume.pdf" download>
-                    <button className="flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] hover:scale-105 transform font-medium">
+                    <button className="flex items-center px-8 py-4 bg-gradient-to-r from-sky-600 to-green-600 hover:from-sky-700 hover:to-green-700 text-white rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(56,189,248,0.3)] hover:shadow-[0_0_30px_rgba(56,189,248,0.5)] hover:scale-105 transform font-medium">
                       <Download className="w-5 h-5 mr-2" />
                       Download Resume
                     </button>
                   </a>
                   <a
                     href="mailto:chawlaraghav78@gmail.com"
-                    className="flex items-center px-8 py-4 border border-white/10 bg-white/5 hover:bg-white/10 text-white rounded-full transition-all duration-300 hover:border-purple-500/50 hover:scale-105 transform backdrop-blur-sm font-medium"
+                    className="flex items-center px-8 py-4 border border-white/10 bg-white/5 hover:bg-white/10 text-white rounded-full transition-all duration-300 hover:border-green-500/50 hover:scale-105 transform backdrop-blur-sm font-medium"
                   >
                     <Mail className="w-5 h-5 mr-2" />
                     Get In Touch
@@ -166,7 +166,7 @@ export default function AboutPage() {
 
                 <div className="flex items-center space-x-8 pt-8 border-t border-white/10">
                   <div className="flex items-center text-gray-400">
-                    <MapPin className="w-5 h-5 mr-2 text-purple-400" />
+                    <MapPin className="w-5 h-5 mr-2 text-green-400" />
                     <span>Panipat, India</span>
                   </div>
                   <div className="flex space-x-4">
@@ -198,9 +198,9 @@ export default function AboutPage() {
                 className="relative flex justify-center lg:justify-end"
               >
                 <div className="relative w-80 h-80 lg:w-96 lg:h-96 group">
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-3xl opacity-20 group-hover:opacity-40 transition-opacity duration-500 animate-pulse"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-sky-500 to-green-500 rounded-full blur-3xl opacity-20 group-hover:opacity-40 transition-opacity duration-500 animate-pulse"></div>
                   <div className="relative w-full h-full rounded-full p-2 border-2 border-dashed border-white/20 animate-[spin_10s_linear_infinite]"></div>
-                  <div className="absolute inset-2 z-30 rounded-full overflow-hidden border-4 border-white/10 group-hover:border-purple-500/50 transition-colors duration-500 shadow-2xl">
+                  <div className="absolute inset-2 z-30 rounded-full overflow-hidden border-4 border-white/10 group-hover:border-green-500/50 transition-colors duration-500 shadow-2xl">
                     <Image
                       src={profileImage}
                       alt="Raghav Chawla"
@@ -253,7 +253,7 @@ export default function AboutPage() {
                 transition={{ delay: index * 0.1 }}
               >
                 <GlowCard className="text-center py-8 bg-white/5 backdrop-blur-sm border-white/5">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
+                  <div className="text-4xl font-bold bg-gradient-to-r from-sky-400 to-green-400 bg-clip-text text-transparent mb-2">
                     {achievement.number}
                   </div>
                   <div className="text-gray-400 font-medium text-sm uppercase tracking-wider">{achievement.label}</div>
@@ -278,7 +278,7 @@ export default function AboutPage() {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center px-6 py-3 rounded-full transition-all duration-300 font-medium ${activeTab === tab.id
-                    ? 'text-white bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg'
+                    ? 'text-white bg-gradient-to-r from-sky-600 to-green-600 shadow-lg'
                     : 'text-gray-400 hover:text-white hover:bg-white/5'
                     }`}
                 >
@@ -322,7 +322,7 @@ export default function AboutPage() {
 
                   <div>
                     <h2 className="text-3xl font-bold text-white mb-8 flex items-center">
-                      <span className="w-1 h-8 bg-purple-500 rounded-full mr-4"></span>
+                      <span className="w-1 h-8 bg-green-500 rounded-full mr-4"></span>
                       What I Do
                     </h2>
                     <div className="grid grid-cols-1 gap-4">
@@ -331,8 +331,8 @@ export default function AboutPage() {
                           icon: Brain,
                           title: 'Machine Learning',
                           desc: 'Building intelligent systems that learn and adapt',
-                          color: 'text-pink-400',
-                          bg: 'bg-pink-500/10'
+                          color: 'text-sky-400',
+                          bg: 'bg-sky-500/10'
                         },
                         {
                           icon: Database,
@@ -352,8 +352,8 @@ export default function AboutPage() {
                           icon: Globe,
                           title: 'AI Solutions',
                           desc: 'Implementing cutting-edge AI technologies',
-                          color: 'text-purple-400',
-                          bg: 'bg-purple-500/10'
+                          color: 'text-sky-400',
+                          bg: 'bg-sky-500/10'
                         }
                       ].map((service, index) => (
                         <GlowCard key={index} className="flex items-center space-x-6 p-6 hover:bg-white/5 transition-colors">
@@ -385,7 +385,7 @@ export default function AboutPage() {
                     Drag and rotate the sphere to explore my technical skill set.
                   </p>
 
-                  <div className="relative h-[600px] w-full bg-gradient-to-b from-black/20 to-purple-900/10 rounded-3xl border border-white/10 overflow-hidden shadow-2xl">
+                  <div className="relative h-[600px] w-full bg-gradient-to-b from-black/20 to-green-900/10 rounded-3xl border border-white/10 overflow-hidden shadow-2xl">
                     <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20"></div>
                     <SkillsSphere />
                   </div>
@@ -422,7 +422,7 @@ export default function AboutPage() {
                   <h2 className="text-3xl font-bold text-white mb-12 text-center">Professional Journey</h2>
                   <div className="space-y-12 relative">
                     {/* Timeline Line */}
-                    <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 via-purple-500 to-transparent hidden md:block"></div>
+                    <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-sky-500 via-green-500 to-transparent hidden md:block"></div>
 
                     {experiences.map((exp, index) => (
                       <motion.div
@@ -440,7 +440,7 @@ export default function AboutPage() {
                             <div>
                               <h3 className="text-2xl font-bold text-white mb-1 group-hover:text-blue-400 transition-colors">{exp.role}</h3>
                               <p className="text-gray-400 font-medium flex items-center text-lg">
-                                <Award className="w-5 h-5 mr-2 text-purple-400" />
+                                <Award className="w-5 h-5 mr-2 text-green-400" />
                                 {exp.company}
                               </p>
                             </div>
@@ -474,7 +474,7 @@ export default function AboutPage() {
                       >
                         <GlowCard className="p-8 h-full hover:bg-white/5 transition-all duration-300 group">
                           <div className="flex items-center mb-6">
-                            <div className="bg-gradient-to-br from-blue-600/20 to-purple-600/20 p-4 rounded-2xl mr-5 group-hover:scale-110 transition-transform duration-300 border border-white/5">
+                            <div className="bg-gradient-to-br from-sky-600/20 to-green-600/20 p-4 rounded-2xl mr-5 group-hover:scale-110 transition-transform duration-300 border border-white/5">
                               <interest.icon className="w-8 h-8 text-blue-400" />
                             </div>
                             <h3 className="text-2xl font-bold text-white group-hover:text-blue-300 transition-colors">{interest.title}</h3>
@@ -489,9 +489,9 @@ export default function AboutPage() {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="mt-16 text-center bg-gradient-to-r from-blue-900/20 to-purple-900/20 p-12 rounded-3xl border border-white/10 relative overflow-hidden"
+                    className="mt-16 text-center bg-gradient-to-r from-sky-900/20 to-green-900/20 p-12 rounded-3xl border border-white/10 relative overflow-hidden"
                   >
-                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-sky-500 via-blue-500 to-green-500"></div>
                     <Coffee className="w-16 h-16 text-blue-400 mx-auto mb-6 opacity-80" />
                     <h3 className="text-3xl font-bold text-white mb-4">Let us Connect!</h3>
                     <p className="text-gray-300 mb-8 text-lg max-w-2xl mx-auto">

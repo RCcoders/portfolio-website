@@ -42,7 +42,7 @@ export default function AnimatedBackground() {
             ctx.clearRect(0, 0, width, height);
 
             // Draw grid
-            ctx.strokeStyle = 'rgba(100, 100, 255, 0.05)';
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.05)';
             ctx.lineWidth = 1;
             const gridSize = 50;
 
@@ -61,7 +61,7 @@ export default function AnimatedBackground() {
             }
 
             // Draw particles
-            ctx.fillStyle = 'rgba(100, 100, 255, 0.2)';
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.2)';
             particles.forEach((p) => {
                 p.x += p.vx;
                 p.y += p.vy;

@@ -51,7 +51,7 @@ export default function Home() {
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1, delay: 0.2 }}
-                className="inline-block bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]"
+                className="inline-block bg-gradient-to-r from-sky-400 via-blue-500 to-green-400 bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(56,189,248,0.5)]"
               >
                 {displayText}
                 <span className="animate-blink">|</span>
@@ -66,7 +66,7 @@ export default function Home() {
               className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed font-light"
             >
               Python Developer & Data Science Enthusiast. <br className="hidden md:block" />
-              Crafting intelligent solutions with <span className="text-purple-400 font-medium">AI</span>, <span className="text-blue-400 font-medium">Machine Learning</span>, and <span className="text-pink-400 font-medium">Modern Web Tech</span>.
+              Crafting intelligent solutions with <span className="text-sky-400 font-medium">AI</span>, <span className="text-blue-400 font-medium">Machine Learning</span>, and <span className="text-green-400 font-medium">Modern Web Tech</span>.
             </motion.p>
 
             {/* Tech stack tags */}
@@ -77,8 +77,8 @@ export default function Home() {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
-                  whileHover={{ scale: 1.1, borderColor: '#a855f7', boxShadow: '0 0 15px rgba(168,85,247,0.3)' }}
-                  className="px-4 py-2 bg-white/5 backdrop-blur-md rounded-full text-sm text-purple-200 border border-white/10 transition-all duration-300 cursor-default shadow-lg"
+                  whileHover={{ scale: 1.1, borderColor: '#38BDF8', boxShadow: '0 0 15px rgba(56,189,248,0.3)' }}
+                  className="px-4 py-2 bg-white/5 backdrop-blur-md rounded-full text-sm text-sky-200 border border-white/10 transition-all duration-300 cursor-default shadow-lg"
                 >
                   {tech}
                 </motion.span>
@@ -93,13 +93,13 @@ export default function Home() {
               className="flex flex-col sm:flex-row gap-6 justify-center mb-16"
             >
               <Link href="/projects" className="group">
-                <button className="flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full font-semibold shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] transition-all duration-300 hover:scale-105 transform border border-white/10">
+                <button className="flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-sky-600 to-green-600 text-white rounded-full font-semibold shadow-[0_0_20px_rgba(56,189,248,0.4)] hover:shadow-[0_0_30px_rgba(56,189,248,0.6)] transition-all duration-300 hover:scale-105 transform border border-white/10">
                   View My Work
                   <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
               </Link>
               <Link href="/contact" className="group">
-                <button className="flex items-center gap-2 px-8 py-4 bg-white/5 backdrop-blur-md text-white rounded-full font-semibold border border-white/10 hover:bg-white/10 hover:border-purple-500/50 transition-all duration-300 hover:scale-105 transform shadow-lg">
+                <button className="flex items-center gap-2 px-8 py-4 bg-white/5 backdrop-blur-md text-white rounded-full font-semibold border border-white/10 hover:bg-white/10 hover:border-sky-500/50 transition-all duration-300 hover:scale-105 transform shadow-lg">
                   Contact Me
                   <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
@@ -126,7 +126,7 @@ export default function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
                 title={social.label}
-                className="p-4 bg-white/5 backdrop-blur-md rounded-full text-white border border-white/10 hover:bg-white/10 hover:border-purple-500/50 hover:text-purple-300 transition-all duration-300 hover:scale-110 transform shadow-lg hover:shadow-[0_0_15px_rgba(168,85,247,0.3)]"
+                className="p-4 bg-white/5 backdrop-blur-md rounded-full text-white border border-white/10 hover:bg-white/10 hover:border-sky-500/50 hover:text-sky-300 transition-all duration-300 hover:scale-110 transform shadow-lg hover:shadow-[0_0_15px_rgba(56,189,248,0.3)]"
               >
                 <social.icon className="w-6 h-6" />
               </a>
@@ -140,7 +140,7 @@ export default function Home() {
             transition={{ delay: 2, duration: 1 }}
             className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce pointer-events-auto"
           >
-            <ArrowDown className="w-6 h-6 text-purple-400" />
+            <ArrowDown className="w-6 h-6 text-sky-400" />
           </motion.div>
         </div>
 
@@ -154,7 +154,7 @@ export default function Home() {
               className="text-center mb-16"
             >
               <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Featured Work</h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto rounded-full"></div>
+              <div className="w-24 h-1 bg-gradient-to-r from-sky-500 to-green-500 mx-auto rounded-full"></div>
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -165,7 +165,7 @@ export default function Home() {
                   description: "A comprehensive desktop application for grocery store management with inventory tracking, sales processing, and customer management features.",
                   tags: ["Python", "Tkinter", "SQLite"],
                   image: "/images/grocery-management.png",
-                  icon: <ShoppingCart className="w-8 h-8 text-purple-400" />
+                  icon: <ShoppingCart className="w-8 h-8 text-sky-400" />
                 },
                 {
                   id: 2,
@@ -192,7 +192,7 @@ export default function Home() {
                   transition={{ delay: index * 0.2 }}
                 >
                   <GlowCard className="h-full flex flex-col">
-                    <div className="w-full h-56 bg-gradient-to-br from-purple-500/10 to-blue-500/10 rounded-xl mb-6 overflow-hidden relative group-hover:scale-[1.02] transition-transform duration-500 border border-white/5">
+                    <div className="w-full h-56 bg-gradient-to-br from-sky-500/10 to-green-500/10 rounded-xl mb-6 overflow-hidden relative group-hover:scale-[1.02] transition-transform duration-500 border border-white/5">
                       {project.image ? (
                         <Image
                           src={project.image}
@@ -205,7 +205,7 @@ export default function Home() {
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-black/40 backdrop-blur-sm">
                           <div className="text-center p-6">
-                            <div className="w-20 h-20 bg-white/5 rounded-2xl flex items-center justify-center mb-4 mx-auto border border-white/10 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+                            <div className="w-20 h-20 bg-white/5 rounded-2xl flex items-center justify-center mb-4 mx-auto border border-white/10 shadow-[0_0_15px_rgba(56,189,248,0.2)]">
                               {project.icon}
                             </div>
                             <span className="text-white/60 text-sm font-medium tracking-wider uppercase">{project.title}</span>
@@ -216,14 +216,14 @@ export default function Home() {
                     </div>
 
                     <div className="flex-1 flex flex-col">
-                      <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-purple-300 transition-colors">{project.title}</h3>
+                      <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-sky-300 transition-colors">{project.title}</h3>
                       <p className="text-gray-400 text-sm mb-6 leading-relaxed flex-1">{project.description}</p>
 
                       <div className="flex gap-2 flex-wrap mt-auto">
                         {project.tags.map((tag, idx) => (
                           <span
                             key={idx}
-                            className="px-3 py-1 bg-purple-500/10 text-purple-300 text-xs font-medium rounded-full border border-purple-500/20"
+                            className="px-3 py-1 bg-sky-500/10 text-sky-300 text-xs font-medium rounded-full border border-sky-500/20"
                           >
                             {tag}
                           </span>
@@ -236,7 +236,7 @@ export default function Home() {
             </div>
             <div className="text-center mt-16">
               <Link href="/projects">
-                <button className="px-10 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full font-semibold shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] transition-all duration-300 hover:scale-105 transform border border-white/10">
+                <button className="px-10 py-4 bg-gradient-to-r from-sky-600 to-green-600 text-white rounded-full font-semibold shadow-[0_0_20px_rgba(56,189,248,0.4)] hover:shadow-[0_0_30px_rgba(56,189,248,0.6)] transition-all duration-300 hover:scale-105 transform border border-white/10">
                   View All Projects
                 </button>
               </Link>

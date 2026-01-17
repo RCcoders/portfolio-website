@@ -1,21 +1,44 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* New Color Palette */
+  --deep-navy: #0F172A;
+  --almost-black: #020617;
+  --light-gray: #E5E7EB;
+  --muted-gray: #94A3B8;
+  --sky-blue: #38BDF8;
+  --tech-green: #22C55E;
+
+  /* Semantic Mappings */
+  --background: var(--deep-navy);
+  --foreground: var(--light-gray);
+  --card-bg: var(--almost-black);
+  --primary: var(--sky-blue);
+  --secondary: var(--tech-green);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card-bg);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  
+  --color-navy: var(--deep-navy);
+  --color-navy-dark: var(--almost-black);
+  --color-gray-light: var(--light-gray);
+  --color-gray-muted: var(--muted-gray);
+  --color-sky: var(--sky-blue);
+  --color-green: var(--tech-green);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #030014;
-    --foreground: #ededed;
+    --background: var(--deep-navy);
+    --foreground: var(--light-gray);
   }
 }
 
@@ -35,14 +58,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: var(--almost-black);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3b82f6;
+  background: var(--muted-gray);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2563eb;
+  background: var(--sky-blue);
 }

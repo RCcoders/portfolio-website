@@ -156,7 +156,7 @@ function AIChatbot() {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white p-4 rounded-full shadow-2xl z-50 group"
+            className="fixed bottom-6 right-6 bg-gradient-to-r from-sky-600 to-green-600 hover:from-sky-700 hover:to-green-700 text-white p-4 rounded-full shadow-2xl z-50 group"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
@@ -179,10 +179,10 @@ function AIChatbot() {
               }`}
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-700 bg-gradient-to-r from-blue-600/20 to-purple-600/20">
+            <div className="flex items-center justify-between p-4 border-b border-gray-700 bg-gradient-to-r from-sky-600/20 to-green-600/20">
               <div className="flex items-center space-x-3">
                 <div className="relative">
-                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-gradient-to-r from-sky-500 to-green-500 rounded-full flex items-center justify-center">
                     <Bot className="w-4 h-4 text-white" />
                   </div>
                   <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-gray-800 rounded-full animate-pulse"></div>
@@ -220,7 +220,7 @@ function AIChatbot() {
                       className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
                     >
                       <div className={`max-w-xs px-4 py-2 rounded-2xl ${message.type === 'user'
-                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
+                        ? 'bg-gradient-to-r from-sky-600 to-green-600 text-white'
                         : 'bg-gray-700 text-gray-100'
                         }`}>
                         <p className="text-sm whitespace-pre-line">{message.content}</p>
@@ -261,7 +261,7 @@ function AIChatbot() {
                     <button
                       onClick={handleSendMessage}
                       disabled={!inputMessage.trim() || isLoading}
-                      className="px-3 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-200"
+                      className="px-3 py-2 bg-gradient-to-r from-sky-600 to-green-600 hover:from-sky-700 hover:to-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-200"
                     >
                       <Send className="w-4 h-4" />
                     </button>
@@ -353,7 +353,7 @@ export default function ContactPage() {
       value: 'Panipat, Haryana',
       description: 'India',
       link: '#',
-      color: 'text-purple-400'
+      color: 'text-sky-400'
     },
     {
       icon: Calendar,
@@ -385,14 +385,14 @@ export default function ContactPage() {
       name: 'Instagram',
       username: '_nx.raghav._',
       link: 'https://instagram.com/_nx.raghav._',
-      color: 'hover:text-pink-500'
+      color: 'hover:text-green-500'
     },
     {
       icon: Globe,
       name: 'Website',
       username: 'raghavchawla.dev',
       link: '#',
-      color: 'hover:text-purple-400'
+      color: 'hover:text-sky-400'
     }
   ];
 
@@ -420,7 +420,7 @@ export default function ContactPage() {
         {/* Background Elements */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
           <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[100px]"></div>
-          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[100px]"></div>
+          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-green-600/10 rounded-full blur-[100px]"></div>
         </div>
 
         {/* Hero Section */}
@@ -438,7 +438,7 @@ export default function ContactPage() {
                 </div>
                 <h1 className="text-5xl lg:text-7xl font-bold text-white mb-8 leading-tight">
                   Let us{' '}
-                  <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-sky-400 via-blue-400 to-green-400 bg-clip-text text-transparent">
                     Connect
                   </span>
                 </h1>
@@ -616,7 +616,7 @@ export default function ContactPage() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-600/20 hover:shadow-blue-600/40 hover:scale-[1.02] transform"
+                    className="w-full flex items-center justify-center px-8 py-4 bg-gradient-to-r from-sky-600 to-green-600 hover:from-sky-700 hover:to-green-700 text-white font-bold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-sky-600/20 hover:shadow-sky-600/40 hover:scale-[1.02] transform"
                   >
                     {isSubmitting ? (
                       <>
@@ -665,7 +665,7 @@ export default function ContactPage() {
               </GlowCard>
 
               {/* AI Assistant Info */}
-              <div className="bg-gradient-to-r from-blue-600/10 to-purple-600/10 p-8 rounded-2xl border border-blue-500/20 relative overflow-hidden">
+              <div className="bg-gradient-to-r from-sky-600/10 to-green-600/10 p-8 rounded-2xl border border-sky-500/20 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
                 <div className="flex items-center mb-4 relative z-10">
                   <div className="p-2 bg-blue-500/20 rounded-lg mr-3">
@@ -727,7 +727,7 @@ export default function ContactPage() {
           <div className="mt-24">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-white mb-4">Frequently Asked Questions</h2>
-              <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
+              <div className="w-20 h-1 bg-gradient-to-r from-sky-500 to-green-500 mx-auto rounded-full"></div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

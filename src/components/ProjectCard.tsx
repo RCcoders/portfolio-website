@@ -50,15 +50,14 @@ export default function ProjectCard({
   }
 
   return (
-    <div className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm border transition-all duration-500 hover:scale-105 transform ${
-      featured 
-        ? 'border-purple-400/30 bg-gradient-to-br from-purple-500/10 to-pink-500/10' 
-        : 'border-white/10 hover:border-purple-400/30'
-    }`}>
+    <div className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm border transition-all duration-500 hover:scale-105 transform ${featured
+        ? 'border-sky-400/30 bg-gradient-to-br from-sky-500/10 to-green-500/10'
+        : 'border-white/10 hover:border-sky-400/30'
+      }`}>
       {/* Featured badge */}
       {featured && (
         <div className="absolute top-4 right-4 z-10">
-          <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
+          <div className="bg-gradient-to-r from-sky-600 to-green-600 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
             <Star className="w-3 h-3" />
             Featured
           </div>
@@ -66,14 +65,14 @@ export default function ProjectCard({
       )}
 
       {/* Hover overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-purple-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-sky-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
 
       <div className="relative">
         {/* Project Image/Preview */}
         <div className="relative h-48 overflow-hidden">
           {imageUrl ? (
-            <Image 
-              src={imageUrl} 
+            <Image
+              src={imageUrl}
               alt={`${title} preview`}
               fill
               sizes="(max-width: 768px) 100vw, 33vw"
@@ -81,11 +80,11 @@ export default function ProjectCard({
               style={{ objectFit: 'cover' }}
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
+            <div className="w-full h-full bg-gradient-to-br from-sky-500/20 to-green-500/20 flex items-center justify-center">
               <Code className="w-16 h-16 text-white/40" />
             </div>
           )}
-          
+
           {/* Overlay with quick actions */}
           <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
             {demoUrl && (
@@ -118,7 +117,7 @@ export default function ProjectCard({
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-2 mb-2">
               {category && (
-                <span className="px-2 py-1 bg-purple-500/20 text-purple-300 text-xs rounded-full border border-purple-500/30">
+                <span className="px-2 py-1 bg-sky-500/20 text-sky-300 text-xs rounded-full border border-sky-500/30">
                   {category}
                 </span>
               )}
@@ -126,7 +125,7 @@ export default function ProjectCard({
                 {getStatusText(status)}
               </span>
             </div>
-            
+
             {stars && (
               <div className="flex items-center gap-1 text-sm text-yellow-400">
                 <Star className="w-4 h-4 fill-current" />
@@ -136,12 +135,12 @@ export default function ProjectCard({
           </div>
 
           {/* Title and Description */}
-          <Link href={`/projects/${slug}`} className="block group-hover:text-purple-300 transition-colors">
+          <Link href={`/projects/${slug}`} className="block group-hover:text-sky-300 transition-colors">
             <h3 className="text-xl font-bold text-white mb-2 line-clamp-2 leading-tight">
               {title}
             </h3>
           </Link>
-          
+
           <p className="text-gray-300 text-sm mb-4 line-clamp-3 leading-relaxed">
             {description}
           </p>
@@ -149,9 +148,9 @@ export default function ProjectCard({
           {/* Technologies */}
           <div className="flex flex-wrap gap-2 mb-4">
             {technologies.slice(0, 4).map((tech, index) => (
-              <span 
+              <span
                 key={tech}
-                className={`px-2 py-1 bg-white/5 backdrop-blur-sm rounded text-xs text-purple-300 border border-white/10 hover:border-purple-400/30 transition-colors tech-delay-${index}`}
+                className={`px-2 py-1 bg-white/5 backdrop-blur-sm rounded text-xs text-sky-300 border border-white/10 hover:border-sky-400/30 transition-colors tech-delay-${index}`}
               >
                 {tech}
               </span>
@@ -169,10 +168,10 @@ export default function ProjectCard({
               <Calendar className="w-4 h-4" />
               <span>{date}</span>
             </div>
-            
-            <Link 
+
+            <Link
               href={`/projects/${slug}`}
-              className="text-purple-400 hover:text-purple-300 transition-colors font-medium"
+              className="text-sky-400 hover:text-sky-300 transition-colors font-medium"
             >
               View Details →
             </Link>
@@ -181,12 +180,12 @@ export default function ProjectCard({
 
         {/* Interactive elements */}
         <div className="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+          <div className="w-2 h-2 bg-sky-400 rounded-full animate-pulse"></div>
         </div>
       </div>
 
       {/* Card border glow effect */}
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl"></div>
+      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-sky-500/20 via-blue-500/20 to-green-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl"></div>
     </div>
   )
 }
