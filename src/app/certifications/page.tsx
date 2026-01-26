@@ -56,7 +56,7 @@ function CertificationCard({ cert, index, onEdit, onDelete }: CertificationCardP
       transition={{ duration: 0.5, delay: index * 0.1 }}
     >
       {/* Action Buttons */}
-      <div className="absolute top-2 right-2 z-20 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+      <div className="absolute top-2 right-2 z-20 flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200">
         <button
           onClick={(e) => {
             e.preventDefault();

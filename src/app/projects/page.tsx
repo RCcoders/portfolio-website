@@ -151,7 +151,7 @@ export default function ProjectsPage() {
     return (
       <GlowCard className="h-full flex flex-col group hover:bg-white/5 transition-all duration-300">
         {/* Action Buttons */}
-        <div className="absolute top-4 right-4 z-20 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-200">
+        <div className="absolute top-4 right-4 z-20 flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-200">
           <button
             onClick={(e) => {
               e.stopPropagation();
