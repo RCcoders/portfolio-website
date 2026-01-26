@@ -4,16 +4,124 @@ import React, { useState, useEffect } from 'react';
 import CertCard from '@/components/CertCard';
 import { api, Certificate } from '@/lib/api';
 import AddCertificateModal from '@/components/AddCertificateModal';
-import { Plus, Trash2 } from 'lucide-react';
+import EditCertificateModal from '@/components/EditCertificateModal';
+import { Plus, Trash2, Edit2, Upload } from 'lucide-react';
 import { motion } from 'framer-motion';
 import PageTransition from '@/components/ui/PageTransition';
 import GlowCard from '@/components/ui/GlowCard';
+
+// Certification Card Component
+interface CertificationCardProps {
+  cert: Certificate;
+  index: number;
+  onEdit: (cert: Certificate) => void;
+  onDelete: (id: string) => void;
+}
+
+function CertificationCard({ cert, index, onEdit, onDelete }: CertificationCardProps) {
+  const [certImage, setCertImage] = React.useState(cert.image);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    const savedImage = localStorage.getItem(`cert-image-${cert.id}`);
+    if (savedImage) {
+      setCertImage(savedImage);
+    }
+  }, [cert.id]);
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setCertImage(base64String);
+        if (cert.id) {
+          localStorage.setItem(`cert-image-${cert.id}`, base64String);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
+  return (
+    <motion.div
+      className="relative group"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+    >
+      {/* Action Buttons */}
+      <div className="absolute top-2 right-2 z-20 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            onEdit(cert);
+          }}
+          className="p-2 bg-blue-600/80 hover:bg-blue-600 text-white rounded-full transition-all transform hover:scale-110 shadow-lg"
+          title="Edit Certificate"
+        >
+          <Edit2 className="w-4 h-4" />
+        </button>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            if (cert.id) onDelete(cert.id);
+          }}
+          className="p-2 bg-red-600/80 hover:bg-red-600 text-white rounded-full transition-all transform hover:scale-110 shadow-lg"
+          title="Delete Certificate"
+        >
+          <Trash2 className="w-4 h-4" />
+        </button>
+      </div>
+
+      {/* Image Upload Overlay */}
+      <div
+        className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer z-10 rounded-xl"
+        onClick={(e) => {
+          e.preventDefault();
+          triggerFileInput();
+        }}
+      >
+        <div className="text-white flex flex-col items-center">
+          <div className="p-3 bg-white/10 rounded-full mb-2 backdrop-blur-sm">
+            <Upload className="w-6 h-6" />
+          </div>
+          <span className="text-sm font-medium">Change Photo</span>
+        </div>
+      </div>
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleImageUpload}
+        accept="image/*"
+        className="hidden"
+      />
+
+      <CertCard
+        slug={cert.slug}
+        title={cert.title}
+        issuer={cert.issuer}
+        date={cert.date}
+        imageUrl={certImage}
+        description={cert.description}
+        credentialUrl={cert.credentialUrl}
+      />
+    </motion.div>
+  );
+}
 
 // Main Certifications Page Component
 export default function CertificationsPage() {
   const [certifications, setCertifications] = useState<Certificate[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingCertificate, setEditingCertificate] = useState<Certificate | null>(null);
 
   useEffect(() => {
     fetchCertifications();
@@ -32,6 +140,15 @@ export default function CertificationsPage() {
 
   const handleAddCertificate = (newCert: Certificate) => {
     setCertifications([...certifications, newCert]);
+  };
+
+  const handleUpdateCertificate = (updatedCert: Certificate) => {
+    setCertifications(certifications.map(c => c.id === updatedCert.id ? updatedCert : c));
+  };
+
+  const handleEditClick = (certificate: Certificate) => {
+    setEditingCertificate(certificate);
+    setIsEditModalOpen(true);
   };
 
   const handleDeleteCertificate = async (id: string) => {
@@ -63,6 +180,18 @@ export default function CertificationsPage() {
           onClose={() => setIsAddModalOpen(false)}
           onCertificateAdded={handleAddCertificate}
         />
+
+        {editingCertificate && (
+          <EditCertificateModal
+            isOpen={isEditModalOpen}
+            onClose={() => {
+              setIsEditModalOpen(false);
+              setEditingCertificate(null);
+            }}
+            onCertificateUpdated={handleUpdateCertificate}
+            certificate={editingCertificate}
+          />
+        )}
 
         <div className="max-w-6xl mx-auto py-12 px-4">
           {/* Header Section */}
@@ -112,33 +241,13 @@ export default function CertificationsPage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {certifications.map((cert, index) => (
-                <motion.div
+                <CertificationCard
                   key={cert.id || cert.slug}
-                  className="relative group"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (cert.id) handleDeleteCertificate(cert.id);
-                    }}
-                    className="absolute top-2 right-2 z-20 p-2 bg-red-600/80 hover:bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                    title="Delete Certificate"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                  <CertCard
-                    slug={cert.slug}
-                    title={cert.title}
-                    issuer={cert.issuer}
-                    date={cert.date}
-                    imageUrl={cert.image}
-                    description={cert.description}
-                    credentialUrl={cert.credentialUrl}
-                  />
-                </motion.div>
+                  cert={cert}
+                  index={index}
+                  onEdit={handleEditClick}
+                  onDelete={handleDeleteCertificate}
+                />
               ))}
             </div>
           )}

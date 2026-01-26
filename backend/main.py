@@ -39,6 +39,13 @@ def create_project(project: schemas.ProjectCreate):
 def delete_project(project_id: str):
     return crud.delete_project(database.supabase, project_id)
 
+@api_router.put("/projects/{project_id}", response_model=schemas.Project)
+def update_project(project_id: str, project: schemas.ProjectCreate):
+    updated = crud.update_project(database.supabase, project_id, project)
+    if not updated:
+        raise HTTPException(status_code=404, detail="Project not found")
+    return updated
+
 @api_router.get("/certificates")
 def get_certificates():
     return crud.get_certificates(database.supabase)
@@ -50,6 +57,13 @@ def create_certificate(certificate: schemas.CertificateCreate):
 @api_router.delete("/certificates/{certificate_id}")
 def delete_certificate(certificate_id: str):
     return crud.delete_certificate(database.supabase, certificate_id)
+
+@api_router.put("/certificates/{certificate_id}", response_model=schemas.Certificate)
+def update_certificate(certificate_id: str, certificate: schemas.CertificateCreate):
+    updated = crud.update_certificate(database.supabase, certificate_id, certificate)
+    if not updated:
+        raise HTTPException(status_code=404, detail="Certificate not found")
+    return updated
 
 @api_router.get("/certificates/{slug}", response_model=schemas.Certificate)
 def get_certificate_by_slug(slug: str):

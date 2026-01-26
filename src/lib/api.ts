@@ -54,6 +54,20 @@ export const api = {
         }
     },
 
+    updateProject: async (id: string, project: Project): Promise<Project> => {
+        const response = await fetch(`${API_URL}/projects/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(project),
+        });
+        if (!response.ok) {
+            throw new Error('Failed to update project');
+        }
+        return response.json();
+    },
+
     getCertificates: async (): Promise<Certificate[]> => {
         const response = await fetch(`${API_URL}/certificates`);
         if (!response.ok) {
@@ -84,6 +98,20 @@ export const api = {
         if (!response.ok) {
             throw new Error('Failed to delete certificate');
         }
+    },
+
+    updateCertificate: async (id: string, certificate: Certificate): Promise<Certificate> => {
+        const response = await fetch(`${API_URL}/certificates/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(certificate),
+        });
+        if (!response.ok) {
+            throw new Error('Failed to update certificate');
+        }
+        return response.json();
     },
 
     getCertificateBySlug: async (slug: string): Promise<Certificate> => {

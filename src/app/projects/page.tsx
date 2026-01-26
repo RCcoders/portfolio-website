@@ -17,10 +17,13 @@ import {
   Trash2,
   Sparkles,
   Zap,
-  Layers
+  Layers,
+  Edit2,
+  Upload
 } from 'lucide-react';
 import { api, Project } from '@/lib/api';
 import AddProjectModal from '@/components/AddProjectModal';
+import EditProjectModal from '@/components/EditProjectModal';
 import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '@/components/ui/PageTransition';
 import GlowCard from '@/components/ui/GlowCard';
@@ -39,6 +42,8 @@ export default function ProjectsPage() {
   const [activeFilter, setActiveFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
 
   useEffect(() => {
     fetchProjects();
@@ -57,6 +62,15 @@ export default function ProjectsPage() {
 
   const handleAddProject = (newProject: Project) => {
     setProjects([...projects, newProject]);
+  };
+
+  const handleUpdateProject = (updatedProject: Project) => {
+    setProjects(projects.map(p => p.id === updatedProject.id ? updatedProject : p));
+  };
+
+  const handleEditClick = (project: Project) => {
+    setEditingProject(project);
+    setIsEditModalOpen(true);
   };
 
   const handleDeleteProject = async (id: string) => {
@@ -87,6 +101,34 @@ export default function ProjectsPage() {
 
   const ProjectCard = ({ project }: { project: Project }) => {
     const [isExpanded, setIsExpanded] = useState(false);
+    const [projectImage, setProjectImage] = useState(project.image);
+    const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+    React.useEffect(() => {
+      const savedImage = localStorage.getItem(`project-image-${project.id}`);
+      if (savedImage) {
+        setProjectImage(savedImage);
+      }
+    }, [project.id]);
+
+    const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const base64String = reader.result as string;
+          setProjectImage(base64String);
+          if (project.id) {
+            localStorage.setItem(`project-image-${project.id}`, base64String);
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+
+    const triggerFileInput = () => {
+      fileInputRef.current?.click();
+    };
 
     const getStatusColor = (status: string) => {
       switch (status) {
@@ -108,22 +150,34 @@ export default function ProjectsPage() {
 
     return (
       <GlowCard className="h-full flex flex-col group hover:bg-white/5 transition-all duration-300">
-        {/* Delete Button */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            if (project.id) handleDeleteProject(project.id);
-          }}
-          className="absolute top-4 right-4 z-20 p-2 bg-red-500/80 hover:bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 transform hover:scale-110 shadow-lg"
-          title="Delete Project"
-        >
-          <Trash2 className="w-4 h-4" />
-        </button>
+        {/* Action Buttons */}
+        <div className="absolute top-4 right-4 z-20 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-200">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleEditClick(project);
+            }}
+            className="p-2 bg-blue-500/80 hover:bg-blue-600 text-white rounded-full transition-all transform hover:scale-110 shadow-lg"
+            title="Edit Project"
+          >
+            <Edit2 className="w-4 h-4" />
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              if (project.id) handleDeleteProject(project.id);
+            }}
+            className="p-2 bg-red-500/80 hover:bg-red-600 text-white rounded-full transition-all transform hover:scale-110 shadow-lg"
+            title="Delete Project"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+        </div>
 
         {/* Project Image */}
         <div className="relative h-56 overflow-hidden rounded-xl mb-6 border border-white/5">
           <Image
-            src={project.image}
+            src={projectImage}
             alt={project.title}
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -131,6 +185,29 @@ export default function ProjectsPage() {
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-300"></div>
+
+          {/* Image Upload Overlay */}
+          <div
+            className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer z-10"
+            onClick={(e) => {
+              e.stopPropagation();
+              triggerFileInput();
+            }}
+          >
+            <div className="text-white flex flex-col items-center">
+              <div className="p-3 bg-white/10 rounded-full mb-2 backdrop-blur-sm">
+                <Upload className="w-6 h-6" />
+              </div>
+              <span className="text-sm font-medium">Change Photo</span>
+            </div>
+          </div>
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleImageUpload}
+            accept="image/*"
+            className="hidden"
+          />
 
           {/* Status Badge */}
           <div className="absolute top-4 right-4">
@@ -317,6 +394,18 @@ export default function ProjectsPage() {
           onClose={() => setIsAddModalOpen(false)}
           onProjectAdded={handleAddProject}
         />
+
+        {editingProject && (
+          <EditProjectModal
+            isOpen={isEditModalOpen}
+            onClose={() => {
+              setIsEditModalOpen(false);
+              setEditingProject(null);
+            }}
+            onProjectUpdated={handleUpdateProject}
+            project={editingProject}
+          />
+        )}
 
         {/* Hero Section */}
         <div className="relative">
