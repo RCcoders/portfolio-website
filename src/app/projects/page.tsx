@@ -444,23 +444,23 @@ export default function ProjectsPage() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
-                className="flex justify-center gap-4 md:gap-12 text-center"
+                className="grid grid-cols-3 gap-3 md:gap-6 max-w-2xl mx-auto"
               >
-                <div className="bg-white/5 backdrop-blur-sm px-6 py-4 rounded-2xl border border-white/10 min-w-[120px]">
-                  <div className="text-3xl font-bold text-blue-400 mb-1">{projects.length}</div>
-                  <div className="text-gray-400 text-sm font-medium uppercase tracking-wider">Projects</div>
+                <div className="bg-white/5 backdrop-blur-sm px-4 md:px-6 py-4 rounded-2xl border border-white/10 text-center">
+                  <div className="text-2xl md:text-3xl font-bold text-blue-400 mb-1">{projects.length}</div>
+                  <div className="text-gray-400 text-xs md:text-sm font-medium uppercase tracking-wider">Projects</div>
                 </div>
-                <div className="bg-white/5 backdrop-blur-sm px-6 py-4 rounded-2xl border border-white/10 min-w-[120px]">
-                  <div className="text-3xl font-bold text-emerald-400 mb-1">
+                <div className="bg-white/5 backdrop-blur-sm px-4 md:px-6 py-4 rounded-2xl border border-white/10 text-center">
+                  <div className="text-2xl md:text-3xl font-bold text-emerald-400 mb-1">
                     {projects.filter(p => p.status === 'completed').length}
                   </div>
-                  <div className="text-gray-400 text-sm font-medium uppercase tracking-wider">Completed</div>
+                  <div className="text-gray-400 text-xs md:text-sm font-medium uppercase tracking-wider">Completed</div>
                 </div>
-                <div className="bg-white/5 backdrop-blur-sm px-6 py-4 rounded-2xl border border-white/10 min-w-[120px]">
-                  <div className="text-3xl font-bold text-sky-400 mb-1">
+                <div className="bg-white/5 backdrop-blur-sm px-4 md:px-6 py-4 rounded-2xl border border-white/10 text-center">
+                  <div className="text-2xl md:text-3xl font-bold text-sky-400 mb-1">
                     {projects.filter(p => p.status === 'in-progress').length}
                   </div>
-                  <div className="text-gray-400 text-sm font-medium uppercase tracking-wider">In Progress</div>
+                  <div className="text-gray-400 text-xs md:text-sm font-medium uppercase tracking-wider">In Progress</div>
                 </div>
               </motion.div>
             </div>

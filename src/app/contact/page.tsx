@@ -642,22 +642,22 @@ export default function ContactPage() {
               className="space-y-8"
             >
               {/* Contact Methods */}
-              <GlowCard className="p-8 border-white/10 bg-white/5 backdrop-blur-md">
-                <h2 className="text-2xl font-bold text-white mb-8">Get In Touch</h2>
-                <div className="space-y-6">
+              <GlowCard className="p-6 md:p-8 border-white/10 bg-white/5 backdrop-blur-md">
+                <h2 className="text-xl md:text-2xl font-bold text-white mb-6 md:mb-8 text-center md:text-left">Get In Touch</h2>
+                <div className="space-y-4 md:space-y-6">
                   {contactMethods.map((method, index) => (
                     <a
                       key={index}
                       href={method.link}
-                      className="flex items-start space-x-5 p-4 rounded-xl hover:bg-white/5 transition-all duration-300 group border border-transparent hover:border-white/5"
+                      className="flex items-start space-x-3 md:space-x-5 p-3 md:p-4 rounded-xl hover:bg-white/5 transition-all duration-300 group border border-transparent hover:border-white/5"
                     >
-                      <div className={`${method.color} bg-gray-800/50 p-4 rounded-xl group-hover:scale-110 transition-transform duration-300 border border-gray-700/50`}>
-                        <method.icon className="w-6 h-6" />
+                      <div className={`${method.color} bg-gray-800/50 p-3 md:p-4 rounded-xl group-hover:scale-110 transition-transform duration-300 border border-gray-700/50 flex-shrink-0`}>
+                        <method.icon className="w-5 h-5 md:w-6 md:h-6" />
                       </div>
-                      <div>
-                        <h3 className="text-white font-bold mb-1 group-hover:text-blue-400 transition-colors">{method.title}</h3>
-                        <p className={`${method.color} font-medium mb-1`}>{method.value}</p>
-                        <p className="text-gray-400 text-sm">{method.description}</p>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-white font-bold mb-1 group-hover:text-blue-400 transition-colors text-sm md:text-base">{method.title}</h3>
+                        <p className={`${method.color} font-medium mb-1 text-xs md:text-sm break-words`}>{method.value}</p>
+                        <p className="text-gray-400 text-xs md:text-sm">{method.description}</p>
                       </div>
                     </a>
                   ))}

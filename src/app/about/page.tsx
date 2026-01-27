@@ -267,7 +267,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 pb-24">
           {/* Tab Navigation */}
           <div className="flex flex-wrap justify-center mb-16">
-            <div className="bg-white/5 backdrop-blur-md p-1.5 rounded-full border border-white/10 inline-flex">
+            <div className="bg-white/5 backdrop-blur-md p-1.5 rounded-2xl border border-white/10 flex flex-wrap justify-center gap-2">
               {[
                 { id: 'overview', label: 'Overview', icon: Globe },
                 { id: 'skills', label: 'Skills', icon: Zap },
@@ -277,12 +277,12 @@ export default function AboutPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center px-6 py-3 rounded-full transition-all duration-300 font-medium ${activeTab === tab.id
+                  className={`flex items-center px-4 md:px-6 py-2.5 md:py-3 rounded-full transition-all duration-300 font-medium text-sm md:text-base ${activeTab === tab.id
                     ? 'text-white bg-gradient-to-r from-sky-600 to-green-600 shadow-lg'
                     : 'text-gray-400 hover:text-white hover:bg-white/5'
                     }`}
                 >
-                  <tab.icon className="w-4 h-4 mr-2" />
+                  <tab.icon className="w-4 h-4 mr-1.5 md:mr-2" />
                   {tab.label}
                 </button>
               ))}
