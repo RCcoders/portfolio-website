@@ -81,13 +81,16 @@ function CertificationCard({ cert, index, onEdit, onDelete }: CertificationCardP
 
       {/* Image Upload Overlay */}
       <div
-        className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer z-10 rounded-xl"
-        onClick={(e) => {
-          e.preventDefault();
-          triggerFileInput();
-        }}
+        className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 rounded-xl pointer-events-none"
       >
-        <div className="text-white flex flex-col items-center">
+        <div
+          className="text-white flex flex-col items-center cursor-pointer pointer-events-auto"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            triggerFileInput();
+          }}
+        >
           <div className="p-3 bg-white/10 rounded-full mb-2 backdrop-blur-sm">
             <Upload className="w-6 h-6" />
           </div>
