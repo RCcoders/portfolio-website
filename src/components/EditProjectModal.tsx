@@ -1,6 +1,6 @@
 'use client';
+
 import React, { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
 import { Project, api } from '@/lib/api';
 
 interface EditProjectModalProps {
@@ -37,6 +37,18 @@ export default function EditProjectModal({ isOpen, onClose, onProjectUpdated, pr
             setMetricsInput(metricsStr);
         }
     }, [isOpen, project]);
+
+    useEffect(() => {
+        const footer = document.querySelector('footer');
+        if (isOpen && footer) {
+            footer.style.display = 'none';
+        }
+        return () => {
+            if (footer) {
+                footer.style.display = '';
+            }
+        };
+    }, [isOpen]);
 
     if (!isOpen) return null;
 
@@ -94,32 +106,39 @@ export default function EditProjectModal({ isOpen, onClose, onProjectUpdated, pr
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-            <div className="bg-gray-800 border border-gray-700 rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-                <div className="flex items-center justify-between p-6 border-b border-gray-700">
-                    <h2 className="text-xl font-bold text-white">Edit Project</h2>
-                    <button onClick={onClose} className="text-gray-400 hover:text-white">
-                        <X className="w-6 h-6" />
+        <div className="fixed inset-0 z-[200] flex items-start justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
+            <div className="my-8 theme-modal-card w-full max-w-2xl">
+                
+                {/* Header */}
+                <div className="flex items-center justify-between p-6 border-b border-[#222]">
+                    <h2 className="text-lg font-bold font-mono uppercase pl-3 border-l-[3px] border-accent text-white">
+                        [Edit Project]
+                    </h2>
+                    <button 
+                        onClick={onClose} 
+                        className="text-[#555] hover:text-accent font-mono text-2xl transition-colors duration-150 cursor-pointer outline-none"
+                    >
+                        &times;
                     </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className="p-6 space-y-4">
+                <form onSubmit={handleSubmit} className="p-6 space-y-5">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">Title</label>
+                            <label className="theme-modal-label">Title</label>
                             <input
                                 type="text"
                                 required
-                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-sky-500 outline-none"
-                                value={formData.title}
+                                className="theme-modal-input"
+                                value={formData.title || ''}
                                 onChange={e => setFormData({ ...formData, title: e.target.value })}
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">Category</label>
+                            <label className="theme-modal-label">Category</label>
                             <select
-                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-sky-500 outline-none"
-                                value={formData.category}
+                                className="theme-modal-input theme-modal-select"
+                                value={formData.category || 'web-development'}
                                 onChange={e => setFormData({ ...formData, category: e.target.value })}
                             >
                                 <option value="web-development">Web Development</option>
@@ -130,31 +149,31 @@ export default function EditProjectModal({ isOpen, onClose, onProjectUpdated, pr
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">Description</label>
+                        <label className="theme-modal-label">Description</label>
                         <textarea
                             required
                             rows={3}
-                            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
-                            value={formData.description}
+                            className="theme-modal-input resize-none"
+                            value={formData.description || ''}
                             onChange={e => setFormData({ ...formData, description: e.target.value })}
                         />
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">Image URL</label>
+                            <label className="theme-modal-label">Image URL</label>
                             <input
                                 type="text"
-                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-sky-500 outline-none"
-                                value={formData.image}
+                                className="theme-modal-input"
+                                value={formData.image || ''}
                                 onChange={e => setFormData({ ...formData, image: e.target.value })}
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">Status</label>
+                            <label className="theme-modal-label">Status</label>
                             <select
-                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-sky-500 outline-none"
-                                value={formData.status}
+                                className="theme-modal-input theme-modal-select"
+                                value={formData.status || 'planned'}
                                 onChange={e => setFormData({ ...formData, status: e.target.value as Project['status'] })}
                             >
                                 <option value="planned">Planned</option>
@@ -166,20 +185,20 @@ export default function EditProjectModal({ isOpen, onClose, onProjectUpdated, pr
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">GitHub URL</label>
+                            <label className="theme-modal-label">GitHub URL</label>
                             <input
                                 type="text"
-                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-sky-500 outline-none"
-                                value={formData.githubUrl}
+                                className="theme-modal-input"
+                                value={formData.githubUrl || ''}
                                 onChange={e => setFormData({ ...formData, githubUrl: e.target.value })}
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">Live URL</label>
+                            <label className="theme-modal-label">Live URL</label>
                             <input
                                 type="text"
-                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-sky-500 outline-none"
-                                value={formData.liveUrl}
+                                className="theme-modal-input"
+                                value={formData.liveUrl || ''}
                                 onChange={e => setFormData({ ...formData, liveUrl: e.target.value })}
                             />
                         </div>
@@ -187,20 +206,20 @@ export default function EditProjectModal({ isOpen, onClose, onProjectUpdated, pr
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">Duration</label>
+                            <label className="theme-modal-label">Duration</label>
                             <input
                                 type="text"
-                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-sky-500 outline-none"
+                                className="theme-modal-input"
                                 value={formData.duration || ''}
                                 onChange={e => setFormData({ ...formData, duration: e.target.value })}
                                 placeholder="e.g., 3 months"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">Client</label>
+                            <label className="theme-modal-label">Client</label>
                             <input
                                 type="text"
-                                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-sky-500 outline-none"
+                                className="theme-modal-input"
                                 value={formData.client || ''}
                                 onChange={e => setFormData({ ...formData, client: e.target.value })}
                                 placeholder="e.g., Company Name"
@@ -209,72 +228,67 @@ export default function EditProjectModal({ isOpen, onClose, onProjectUpdated, pr
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">Tags (comma separated)</label>
+                        <label className="theme-modal-label">Tags (comma separated)</label>
                         <input
                             type="text"
-                            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                            className="theme-modal-input"
                             value={tagsInput}
                             onChange={e => setTagsInput(e.target.value)}
-                            placeholder="React, TypeScript, Tailwind..."
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">Long Description (Optional)</label>
-                        <textarea
-                            rows={4}
-                            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
-                            value={formData.longDescription || ''}
-                            onChange={e => setFormData({ ...formData, longDescription: e.target.value })}
-                            placeholder="Detailed description of the project..."
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">Features (One per line)</label>
+                        <label className="theme-modal-label">Long Description (Optional)</label>
                         <textarea
                             rows={3}
-                            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
-                            placeholder="User Authentication&#10;Real-time Updates&#10;Responsive Design"
+                            className="theme-modal-input resize-none"
+                            value={formData.longDescription || ''}
+                            onChange={e => setFormData({ ...formData, longDescription: e.target.value })}
+                        />
+                    </div>
+
+                    <div>
+                        <label className="theme-modal-label">Features (One per line)</label>
+                        <textarea
+                            rows={3}
+                            className="theme-modal-input resize-none"
                             value={featuresInput}
                             onChange={e => setFeaturesInput(e.target.value)}
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">Technologies (Category: Tech1, Tech2... one per line)</label>
+                        <label className="theme-modal-label">Technologies (Category: Tech1, Tech2... one per line)</label>
                         <textarea
                             rows={3}
-                            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
-                            placeholder="Frontend: React, Tailwind&#10;Backend: Python, FastAPI&#10;Database: PostgreSQL"
+                            className="theme-modal-input resize-none"
                             value={technologiesInput}
                             onChange={e => setTechnologiesInput(e.target.value)}
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">Metrics (Label: Value one per line)</label>
+                        <label className="theme-modal-label">Metrics (Label: Value one per line)</label>
                         <textarea
                             rows={2}
-                            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
-                            placeholder="Performance: 98/100&#10;Users: 10k+"
+                            className="theme-modal-input resize-none"
                             value={metricsInput}
                             onChange={e => setMetricsInput(e.target.value)}
                         />
                     </div>
 
-                    <div className="flex justify-end gap-3 mt-6">
+                    <div className="flex justify-end items-center gap-4 mt-8 pt-4 border-t border-[#222]">
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-4 py-2 text-gray-300 hover:text-white transition-colors"
+                            className="px-4 py-2 bg-transparent text-[#555] hover:text-white font-mono text-xs uppercase tracking-widest transition-colors duration-150 cursor-pointer outline-none"
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
                             disabled={loading}
-                            className="px-6 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-6 py-2.5 bg-accent hover:opacity-85 text-accent-text rounded-[6px] font-mono text-xs uppercase tracking-widest font-bold transition-all duration-150 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed outline-none"
                         >
                             {loading ? 'Updating...' : 'Update Project'}
                         </button>

@@ -10,7 +10,6 @@ origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "https://portfolio-website-rccoders.vercel.app", # Add generic Vercel domain or specific one if known
-    "*" # Allow all for now to avoid CORS issues on deployment
 ]
 
 app.add_middleware(
