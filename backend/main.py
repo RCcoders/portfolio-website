@@ -9,7 +9,8 @@ app = FastAPI()
 origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://portfolio-website-rccoders.vercel.app", # Add generic Vercel domain or specific one if known
+    "https://portfolio-website-zekr.vercel.app",
+    "https://portfolio-website-rccoders.vercel.app",
 ]
 
 app.add_middleware(
