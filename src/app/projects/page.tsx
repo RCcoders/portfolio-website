@@ -237,7 +237,9 @@ export default function ProjectsPage() {
             alt={project.title}
             className="absolute inset-0 w-full h-full object-cover grayscale group-hover/img:grayscale-0 transition-all duration-700 hover:scale-[1.02]"
             onError={(e) => {
-              (e.target as HTMLImageElement).src = 'https://via.placeholder.com/600x400?text=No+Preview';
+              const target = e.target as HTMLImageElement;
+              target.onerror = null;
+              target.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'><rect width='100%' height='100%' fill='%23171717'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='monospace' font-size='14' fill='%23666666'>[NO PREVIEW]</text></svg>";
             }}
           />
           

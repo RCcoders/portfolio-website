@@ -122,7 +122,9 @@ export default function AboutPage() {
                 alt="Raghav Chawla Profile"
                 className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 hover:scale-[1.02]"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/images/MyImage.jpeg'; // fallback to initial profile photo on error
+                  const target = e.target as HTMLImageElement;
+                  target.onerror = null;
+                  target.src = '/images/MyImage.jpeg'; // fallback to initial profile photo on error
                 }}
               />
               <div 

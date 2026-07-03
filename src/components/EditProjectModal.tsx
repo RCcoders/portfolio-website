@@ -60,7 +60,7 @@ export default function EditProjectModal({ isOpen, onClose, onProjectUpdated, pr
                 ...project,
                 title: formData.title || 'Untitled',
                 description: formData.description || '',
-                image: formData.image || 'https://via.placeholder.com/600x400',
+                image: formData.image || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'><rect width='100%' height='100%' fill='%23171717'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='monospace' font-size='14' fill='%23666666'>[NO PREVIEW]</text></svg>",
                 category: formData.category || 'web-development',
                 status: (formData.status as Project['status']) || 'planned',
                 tags: tagsInput.split(',').map(t => t.trim()).filter(t => t),

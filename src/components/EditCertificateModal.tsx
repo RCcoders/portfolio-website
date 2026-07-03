@@ -43,7 +43,7 @@ export default function EditCertificateModal({ isOpen, onClose, onCertificateUpd
                 title: formData.title || 'Untitled',
                 issuer: formData.issuer || '',
                 date: formData.date || new Date().toISOString().split('T')[0],
-                image: formData.image || 'https://via.placeholder.com/300x200',
+                image: formData.image || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'><rect width='100%' height='100%' fill='%23171717'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='monospace' font-size='10' fill='%23666666'>[NO PREVIEW]</text></svg>",
                 description: formData.description || '',
                 credentialUrl: formData.credentialUrl || '#',
                 slug: formData.slug || (formData.title || 'untitled').toLowerCase().replace(/\s+/g, '-'),
