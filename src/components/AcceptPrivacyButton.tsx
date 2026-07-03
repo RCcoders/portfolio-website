@@ -1,17 +1,30 @@
 'use client'
 
+import { useState, useEffect } from 'react'
+
 export default function AcceptPrivacyButton() {
+  const [accepted, setAccepted] = useState(false)
+
+  useEffect(() => {
+    setAccepted(localStorage.getItem('privacyAccepted') === 'true')
+  }, [])
+
   const handleClick = () => {
-    alert('Privacy Policy acknowledged!')
     localStorage.setItem('privacyAccepted', 'true')
+    setAccepted(true)
   }
 
   return (
     <button
       onClick={handleClick}
-      className="bg-gradient-to-r from-sky-500 to-green-600 text-white px-8 py-3 rounded-lg hover:from-sky-600 hover:to-green-700 transition-all duration-200 transform hover:scale-105"
+      disabled={accepted}
+      className={`px-8 py-3 font-mono text-xs uppercase tracking-widest font-bold transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent ${
+        accepted
+          ? 'bg-neutral-950 text-neutral-600 cursor-not-allowed border border-neutral-900'
+          : 'bg-accent hover:opacity-90 text-accent-text'
+      }`}
     >
-      I Understand and Accept
+      {accepted ? '[Policy Accepted]' : '[I Understand and Accept]'}
     </button>
   )
 }

@@ -1,7 +1,34 @@
-'use client';
-
 import React from 'react';
 import PageTransition from '@/components/ui/PageTransition';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Contact',
+  description: 'Get in touch with Raghav Chawla for software development projects, collaboration opportunities, or technical inquiries.',
+  alternates: {
+    canonical: 'https://raghavchawla.dev/contact',
+  },
+  openGraph: {
+    type: 'website',
+    url: 'https://raghavchawla.dev/contact',
+    title: 'Contact | Raghav Chawla',
+    description: 'Get in touch with Raghav Chawla for software development projects, collaboration opportunities, or technical inquiries.',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Contact Raghav Chawla',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Contact | Raghav Chawla',
+    description: 'Get in touch with Raghav Chawla for software development projects, collaboration opportunities, or technical inquiries.',
+    images: ['/og-image.jpg'],
+  },
+};
 
 export default function ContactPage() {
   const socialLinks = [
@@ -31,7 +58,7 @@ export default function ContactPage() {
           </span>
           <a
             href="mailto:chawlaraghav78@gmail.com"
-            className="text-4xl sm:text-6xl md:text-[5.5rem] font-extrabold tracking-tighter uppercase text-white hover:text-accent transition-colors duration-150 leading-none break-all"
+            className="text-4xl sm:text-6xl md:text-[5.5rem] font-extrabold tracking-tighter uppercase text-white hover:text-accent transition-colors duration-150 leading-none break-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
           >
             chawlaraghav78<br className="sm:hidden" />@gmail.com
           </a>
@@ -50,7 +77,7 @@ export default function ContactPage() {
                 href={social.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-neutral-400 hover:text-accent transition-colors duration-150 flex flex-col sm:flex-row sm:items-baseline gap-1"
+                className="text-neutral-400 hover:text-accent transition-colors duration-150 flex flex-col sm:flex-row sm:items-baseline gap-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
               >
                 <span className="text-white font-bold">{social.name}</span>
                 <span className="text-neutral-600 text-xs">({social.username})</span>

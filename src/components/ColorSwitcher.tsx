@@ -84,8 +84,9 @@ export default function ColorSwitcher() {
                     ? `0 0 0 3px #0d0d0d, 0 0 0 5px ${swatch.accent}`
                     : 'none'
                 }}
-                className="w-9 h-9 rounded-full transition-transform duration-150 hover:scale-110 cursor-pointer outline-none border-none"
+                className="w-9 h-9 rounded-full transition-transform duration-150 hover:scale-110 cursor-pointer outline-none border-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
                 title={swatch.accent}
+                aria-label={`Switch theme accent color to ${swatch.accent}`}
               />
             );
           })}
@@ -99,7 +100,8 @@ export default function ColorSwitcher() {
           backgroundColor: currentAccent,
           boxShadow: `0 0 16px 2px ${currentAccent}55` // Soft glow using hex alpha
         }}
-        className="w-12 h-12 rounded-full border border-neutral-900 flex items-center justify-center transition-all duration-200 hover:scale-105 cursor-pointer outline-none"
+        className="w-12 h-12 rounded-full border border-neutral-900 flex items-center justify-center transition-all duration-200 hover:scale-105 cursor-pointer outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+        aria-label="Toggle accent color switcher selector"
       >
         <span 
           style={{ backgroundColor: currentAccentText }}

@@ -11,6 +11,7 @@ interface AddCertificateModalProps {
 
 export default function AddCertificateModal({ isOpen, onClose, onCertificateAdded }: AddCertificateModalProps) {
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
     const [formData, setFormData] = useState<Partial<Certificate>>({
         title: '',
         issuer: '',
@@ -39,6 +40,7 @@ export default function AddCertificateModal({ isOpen, onClose, onCertificateAdde
         e.preventDefault();
         setLoading(true);
         try {
+            setError(null);
             const newCertificate: Certificate = {
                 title: formData.title || 'Untitled',
                 issuer: formData.issuer || '',
@@ -57,9 +59,11 @@ export default function AddCertificateModal({ isOpen, onClose, onCertificateAdde
             const created = await api.createCertificate(newCertificate);
             onCertificateAdded(created);
             onClose();
-        } catch (error) {
-            console.error('Failed to create certificate:', error);
-            alert('Failed to create certificate. See console for details.');
+        } catch (err) {
+            setError('Failed to create certificate. Please verify inputs.');
+            if (process.env.NODE_ENV !== 'production') {
+                console.error(err);
+            }
         } finally {
             setLoading(false);
         }
@@ -67,16 +71,22 @@ export default function AddCertificateModal({ isOpen, onClose, onCertificateAdde
 
     return (
         <div className="fixed inset-0 z-[200] flex items-start justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
-            <div className="my-8 theme-modal-card w-full max-w-2xl">
+            <div 
+                className="my-8 theme-modal-card w-full max-w-2xl"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="add-cert-title"
+            >
                 
                 {/* Header */}
                 <div className="flex items-center justify-between p-6 border-b border-[#222]">
-                    <h2 className="text-lg font-bold font-mono uppercase pl-3 border-l-[3px] border-accent text-white">
+                    <h2 id="add-cert-title" className="text-lg font-bold font-mono uppercase pl-3 border-l-[3px] border-accent text-white">
                         [Add New Certificate]
                     </h2>
                     <button 
                         onClick={onClose} 
-                        className="text-[#555] hover:text-accent font-mono text-2xl transition-colors duration-150 cursor-pointer outline-none"
+                        className="text-[#555] hover:text-accent font-mono text-2xl transition-colors duration-150 cursor-pointer outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+                        aria-label="Close modal"
                     >
                         &times;
                     </button>
@@ -222,6 +232,11 @@ export default function AddCertificateModal({ isOpen, onClose, onCertificateAdde
                         />
                     </div>
 
+                    {error && (
+                        <div className="text-red-500 font-mono text-xs uppercase tracking-wider mb-2">
+                            [{error}]
+                        </div>
+                    )}
                     <div className="flex justify-end items-center gap-4 mt-8 pt-4 border-t border-[#222]">
                         <button
                             type="button"

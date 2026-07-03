@@ -1,5 +1,7 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
-console.log('Using API URL:', API_URL);
+if (process.env.NODE_ENV !== 'production') {
+    console.log('Using API URL:', API_URL);
+}
 
 export interface Project {
     id?: string;

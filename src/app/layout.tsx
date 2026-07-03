@@ -3,12 +3,15 @@ import { Inter, Syne, Space_Mono } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/Navbar'
 import Link from 'next/link'
-import AnimatedBackground from '@/components/ui/AnimatedBackground'
 import ColorSwitcher from '@/components/ColorSwitcher'
+import ErrorBoundary from '@/components/ErrorBoundary'
+import ClientBackground from '@/components/ClientBackground'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
-const syne = Syne({ subsets: ['latin'], variable: '--font-syne', weight: ['400', '700', '800'] })
-const spaceMono = Space_Mono({ subsets: ['latin'], weight: ['400', '700'], variable: '--font-mono' })
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
+const syne = Syne({ subsets: ['latin'], variable: '--font-syne', weight: ['400', '700', '800'], display: 'swap' })
+const spaceMono = Space_Mono({ subsets: ['latin'], weight: ['400', '700'], variable: '--font-mono', display: 'swap' })
 
 export const metadata: Metadata = {
   title: {
@@ -86,7 +89,9 @@ export default function RootLayout({
       </head>
       <body className={`${inter.variable} ${syne.variable} ${spaceMono.variable} font-sans bg-[#0d0d0d] text-white antialiased`}>
         <div className="min-h-screen flex flex-col relative overflow-x-hidden">
-          <AnimatedBackground />
+          <ErrorBoundary>
+            <ClientBackground />
+          </ErrorBoundary>
 
           <Navbar />
 
@@ -164,6 +169,8 @@ export default function RootLayout({
             </div>
           </footer>
         </div>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
