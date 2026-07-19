@@ -4,23 +4,21 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
+import { motion, useReducedMotion } from 'framer-motion'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
+  const reducedMotion = useReducedMotion()
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20)
-    }
+    const handleScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  useEffect(() => {
-    setIsOpen(false)
-  }, [pathname])
+  useEffect(() => { setIsOpen(false) }, [pathname])
 
   const navItems = [
     { name: 'Home', href: '/' },
@@ -36,18 +34,20 @@ export default function Navbar() {
   ]
 
   const isActive = (path: string) => {
-    if (path === '/' && pathname === '/') { return true }
-    if (path !== '/' && pathname.startsWith(path)) { return true }
+    if (path === '/' && pathname === '/') return true
+    if (path !== '/' && pathname.startsWith(path)) return true
     return false
   }
 
   return (
     <>
-      <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 border-b ${scrolled
-          ? 'bg-[#0d0d0d] border-neutral-900 py-3'
-          : 'bg-transparent border-transparent py-5'
-          }`}
+      <motion.nav
+        initial={reducedMotion ? false : { opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 border-b ${
+          scrolled ? 'bg-[#0d0d0d] border-neutral-900 py-3' : 'bg-transparent border-transparent py-5'
+        }`}
       >
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-14">
@@ -64,12 +64,33 @@ export default function Navbar() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`font-mono text-xs uppercase tracking-widest transition-colors duration-150 ${isActive(item.href)
-                    ? 'text-accent font-bold'
-                    : 'text-neutral-400 hover:text-white'
-                    }`}
+                  className={`relative font-mono text-xs uppercase tracking-widest transition-colors duration-150 ${
+                    isActive(item.href) ? 'text-accent font-bold' : 'text-neutral-400 hover:text-white'
+                  }`}
+                  style={{ paddingBottom: 4 }}
                 >
-                  [{item.name.toLowerCase()}]
+                  <motion.span
+                    whileHover={reducedMotion ? {} : { y: -2 }}
+                    transition={{ duration: 0.15 }}
+                    style={{ display: 'inline-block' }}
+                  >
+                    [{item.name.toLowerCase()}]
+                  </motion.span>
+                  {/* Sliding underline indicator */}
+                  {isActive(item.href) && (
+                    <motion.span
+                      layoutId="nav-indicator"
+                      style={{
+                        position: 'absolute',
+                        bottom: -2,
+                        left: 0,
+                        right: 0,
+                        height: 1,
+                        background: 'var(--accent)',
+                      }}
+                      transition={reducedMotion ? { duration: 0 } : { type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
                 </Link>
               ))}
             </div>
@@ -102,8 +123,9 @@ export default function Navbar() {
 
         {/* Mobile Navigation */}
         <div
-          className={`md:hidden fixed inset-x-0 top-[57px] bg-[#0d0d0d] border-b border-neutral-900 transition-all duration-300 ease-in-out overflow-hidden ${isOpen ? 'opacity-100 max-h-screen' : 'opacity-0 max-h-0 pointer-events-none'
-            }`}
+          className={`md:hidden fixed inset-x-0 top-[57px] bg-[#0d0d0d] border-b border-neutral-900 transition-all duration-300 ease-in-out overflow-hidden ${
+            isOpen ? 'opacity-100 max-h-screen' : 'opacity-0 max-h-0 pointer-events-none'
+          }`}
         >
           <div className="px-6 py-8 space-y-6">
             {navItems.map((item) => (
@@ -111,10 +133,9 @@ export default function Navbar() {
                 key={item.name}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className={`block font-mono text-sm uppercase tracking-widest transition-colors ${isActive(item.href)
-                  ? 'text-accent font-bold'
-                  : 'text-neutral-400 hover:text-white'
-                  }`}
+                className={`block font-mono text-sm uppercase tracking-widest transition-colors ${
+                  isActive(item.href) ? 'text-accent font-bold' : 'text-neutral-400 hover:text-white'
+                }`}
               >
                 [{item.name.toLowerCase()}]
               </Link>
@@ -135,7 +156,7 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-      </nav>
+      </motion.nav>
     </>
   )
 }

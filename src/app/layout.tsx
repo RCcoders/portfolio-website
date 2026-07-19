@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Syne, Space_Mono } from 'next/font/google'
+import { Inter, Syne, Space_Mono, Geist } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/Navbar'
 import Link from 'next/link'
@@ -8,6 +8,9 @@ import ErrorBoundary from '@/components/ErrorBoundary'
 import ClientBackground from '@/components/ClientBackground'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
 const syne = Syne({ subsets: ['latin'], variable: '--font-syne', weight: ['400', '700', '800'], display: 'swap' })
@@ -72,7 +75,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+    <html lang="en" className={cn("scroll-smooth", "font-sans", geist.variable)} data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{

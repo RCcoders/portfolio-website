@@ -1,37 +1,34 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 
 const swatches = [
-  { accent: '#FFE500', text: '#0d0d0d' }, // Yellow
-  { accent: '#FF2D2D', text: '#ffffff' }, // Red
-  { accent: '#00FF85', text: '#0d0d0d' }, // Green
-  { accent: '#3D8BFF', text: '#ffffff' }, // Blue
-  { accent: '#FF6B00', text: '#ffffff' }, // Orange
-  { accent: '#FF2D9B', text: '#ffffff' }, // Pink
-  { accent: '#00E5FF', text: '#0d0d0d' }, // Cyan
-  { accent: '#9B5DFF', text: '#ffffff' }, // Purple
+  { accent: '#FFE500', text: '#0d0d0d' },
+  { accent: '#FF2D2D', text: '#ffffff' },
+  { accent: '#00FF85', text: '#0d0d0d' },
+  { accent: '#3D8BFF', text: '#ffffff' },
+  { accent: '#FF6B00', text: '#ffffff' },
+  { accent: '#FF2D9B', text: '#ffffff' },
+  { accent: '#00E5FF', text: '#0d0d0d' },
+  { accent: '#9B5DFF', text: '#ffffff' },
 ];
 
 export default function ColorSwitcher() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentAccent, setCurrentAccent] = useState('#FFE500');
   const [currentAccentText, setCurrentAccentText] = useState('#0d0d0d');
-  
-  // Track the user-selected (persisted) colors
   const [selectedAccent, setSelectedAccent] = useState('#FFE500');
   const [selectedAccentText, setSelectedAccentText] = useState('#0d0d0d');
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
-    // Restore from localStorage
     const savedAccent = localStorage.getItem('portfolio-accent') || '#FFE500';
     const savedAccentText = localStorage.getItem('portfolio-accent-text') || '#0d0d0d';
-    
     setCurrentAccent(savedAccent);
     setCurrentAccentText(savedAccentText);
     setSelectedAccent(savedAccent);
     setSelectedAccentText(savedAccentText);
-    
     document.documentElement.style.setProperty('--accent', savedAccent);
     document.documentElement.style.setProperty('--accent-text', savedAccentText);
   }, []);
@@ -41,10 +38,8 @@ export default function ColorSwitcher() {
     setSelectedAccentText(text);
     setCurrentAccent(accent);
     setCurrentAccentText(text);
-    
     localStorage.setItem('portfolio-accent', accent);
     localStorage.setItem('portfolio-accent-text', text);
-    
     document.documentElement.style.setProperty('--accent', accent);
     document.documentElement.style.setProperty('--accent-text', text);
   };
@@ -65,24 +60,22 @@ export default function ColorSwitcher() {
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 select-none">
-      {/* Expanded Swatches List */}
+      {/* Expanded Swatches */}
       {isOpen && (
-        <div 
+        <div
           className="bg-[#161616] border border-[#222] rounded-[12px] p-3 flex flex-row gap-2.5 shadow-2xl transition-all duration-200 transform scale-100 origin-bottom-right"
           onMouseLeave={handleMouseLeave}
         >
           {swatches.map((swatch) => {
-            const isActive = selectedAccent === swatch.accent;
+            const isActiveS = selectedAccent === swatch.accent;
             return (
               <button
                 key={swatch.accent}
                 onClick={() => handleSelect(swatch.accent, swatch.text)}
                 onMouseEnter={() => handleMouseEnter(swatch.accent, swatch.text)}
-                style={{ 
+                style={{
                   backgroundColor: swatch.accent,
-                  boxShadow: isActive 
-                    ? `0 0 0 3px #0d0d0d, 0 0 0 5px ${swatch.accent}`
-                    : 'none'
+                  boxShadow: isActiveS ? `0 0 0 3px #0d0d0d, 0 0 0 5px ${swatch.accent}` : 'none',
                 }}
                 className="w-9 h-9 rounded-full transition-transform duration-150 hover:scale-110 cursor-pointer outline-none border-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
                 title={swatch.accent}
@@ -93,21 +86,46 @@ export default function ColorSwitcher() {
         </div>
       )}
 
-      {/* Main Toggle Circle */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        style={{
-          backgroundColor: currentAccent,
-          boxShadow: `0 0 16px 2px ${currentAccent}55` // Soft glow using hex alpha
-        }}
-        className="w-12 h-12 rounded-full border border-neutral-900 flex items-center justify-center transition-all duration-200 hover:scale-105 cursor-pointer outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
-        aria-label="Toggle accent color switcher selector"
-      >
-        <span 
-          style={{ backgroundColor: currentAccentText }}
-          className="w-2.5 h-2.5 rounded-full transition-colors duration-200"
-        />
-      </button>
+      {/* Main Toggle Circle with pulse ring */}
+      <div style={{ position: 'relative', width: 48, height: 48 }}>
+        {/* Pulse ring — animates every 5 s */}
+        {!reducedMotion && (
+          <motion.span
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              borderRadius: '50%',
+              border: `2px solid ${currentAccent}`,
+              pointerEvents: 'none',
+            }}
+            animate={{
+              scale: [1, 1.8, 1.8],
+              opacity: [0.6, 0, 0],
+            }}
+            transition={{
+              duration: 1.2,
+              ease: 'easeOut',
+              repeat: Infinity,
+              repeatDelay: 3.8, // fires once every 5 s total
+            }}
+          />
+        )}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          style={{
+            backgroundColor: currentAccent,
+            boxShadow: `0 0 16px 2px ${currentAccent}55`,
+          }}
+          className="w-12 h-12 rounded-full border border-neutral-900 flex items-center justify-center transition-all duration-200 hover:scale-105 cursor-pointer outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+          aria-label="Toggle accent color switcher selector"
+        >
+          <span
+            style={{ backgroundColor: currentAccentText }}
+            className="w-2.5 h-2.5 rounded-full transition-colors duration-200"
+          />
+        </button>
+      </div>
     </div>
   );
 }

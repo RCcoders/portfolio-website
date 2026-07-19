@@ -3,10 +3,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PageTransition from '@/components/ui/PageTransition';
 import Image from 'next/image';
+import { motion, useReducedMotion } from 'framer-motion';
+import { useInViewOnce } from '@/hooks/useInViewOnce';
 
 export default function AboutClient() {
   const [profileImage, setProfileImage] = useState('/images/MyImage.jpeg');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const reducedMotion = useReducedMotion();
+
+  const skillsRef = useRef<HTMLDivElement>(null);
+  const isSkillsInView = useInViewOnce(skillsRef, "-80px");
+
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const isTimelineInView = useInViewOnce(timelineRef, "-80px");
 
   useEffect(() => {
     const savedImage = localStorage.getItem('profileImage');
@@ -80,19 +89,43 @@ export default function AboutClient() {
         
         {/* Typographic Title */}
         <div className="border-b border-neutral-900 pb-8">
-          <span className="font-mono text-xs text-neutral-500 uppercase tracking-widest block mb-2">
+          <motion.span
+            className="font-mono text-xs text-neutral-500 uppercase tracking-widest block mb-2"
+            initial={reducedMotion ? false : { opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
             [profile / background]
-          </span>
-          <h1 className="text-5xl md:text-8xl font-extrabold tracking-tighter text-white m-0">
-            RAGHAV CHAWLA
+          </motion.span>
+          <h1 className="text-5xl md:text-8xl font-extrabold tracking-tighter text-white m-0" aria-label="RAGHAV CHAWLA">
+            {reducedMotion ? (
+              "RAGHAV CHAWLA"
+            ) : (
+              [... "RAGHAV CHAWLA"].map((char, i) => (
+                <motion.span
+                  key={i}
+                  style={{ display: 'inline-block', whiteSpace: char === ' ' ? 'pre' : 'normal' }}
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.35, delay: 0.1 + i * 0.04, ease: 'easeOut' }}
+                >
+                  {char}
+                </motion.span>
+              ))
+            )}
           </h1>
         </div>
 
-        {/* Magazine-Style Profile Section (Two columns) */}
+        {/* Profile Section */}
         <section className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-12 md:gap-20 items-start">
           
           {/* Left Column: Biography */}
-          <div className="space-y-8 text-neutral-400 font-light text-lg leading-relaxed">
+          <motion.div
+            className="space-y-8 text-neutral-400 font-light text-lg leading-relaxed"
+            initial={reducedMotion ? false : { opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
             <p className="text-white text-xl md:text-2xl font-normal leading-snug">
               I am a software developer and machine learning specialist focused on building clean backend architectures, reliable data systems, and scalable web APIs.
             </p>
@@ -107,18 +140,43 @@ export default function AboutClient() {
             </p>
 
             <div className="flex flex-wrap gap-4 pt-6">
-              <a href="/pdfs/resume.pdf" download className="px-5 py-3 bg-accent hover:opacity-90 text-accent-text font-mono text-xs uppercase tracking-widest font-bold transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent">
+              <motion.a
+                href="/pdfs/resume.pdf"
+                download
+                className="relative overflow-hidden px-5 py-3 bg-accent hover:opacity-90 text-accent-text font-mono text-xs uppercase tracking-widest font-bold transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+                initial={reducedMotion ? false : { opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.6 }}
+                whileHover={reducedMotion ? {} : { scale: 1.03 }}
+                whileTap={reducedMotion ? {} : { scale: 0.97 }}
+              >
                 [download resume]
-              </a>
-              <a href="mailto:chawlaraghav78@gmail.com" className="px-5 py-3 border border-neutral-800 hover:border-white text-white font-mono text-xs uppercase tracking-widest transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent">
+                {/* Diagonal shimmer sweep */}
+                {!reducedMotion && <span className="shimmer-sweep" />}
+              </motion.a>
+              <motion.a
+                href="mailto:chawlaraghav78@gmail.com"
+                className="px-5 py-3 border border-neutral-800 hover:border-white text-white font-mono text-xs uppercase tracking-widest transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+                initial={reducedMotion ? false : { opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.7 }}
+                whileHover={reducedMotion ? {} : { scale: 1.03 }}
+                whileTap={reducedMotion ? {} : { scale: 0.97 }}
+              >
                 [email me]
-              </a>
+              </motion.a>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Right Column: Flat B&W Image Block */}
+          {/* Right Column */}
           <div className="flex flex-col gap-4">
-            <div className="relative aspect-square w-full bg-neutral-900 border border-neutral-800 group overflow-hidden">
+            <motion.div
+              className="relative aspect-square w-full bg-neutral-900 border border-neutral-800 group overflow-hidden"
+              initial={reducedMotion ? false : { opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              whileHover={reducedMotion ? {} : { scale: 1.02, boxShadow: '0 20px 40px rgba(0,0,0,0.8)' }}
+            >
               <Image
                 src={profileImage}
                 alt="Raghav Chawla Profile Photo"
@@ -130,7 +188,7 @@ export default function AboutClient() {
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.onerror = null;
-                  target.src = '/images/MyImage.jpeg'; // fallback to initial profile photo on error
+                  target.src = '/images/MyImage.jpeg';
                 }}
               />
               <div 
@@ -148,66 +206,158 @@ export default function AboutClient() {
                 accept="image/*"
                 className="hidden"
               />
-            </div>
+            </motion.div>
             
             <div className="font-mono text-[11px] text-neutral-500 uppercase tracking-widest flex justify-between">
-              <span>[loc: chandigarh, india]</span>
-              <span>[status: open to roles]</span>
+              <motion.span
+                initial={reducedMotion ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4, delay: 0.5 }}
+              >
+                [loc: chandigarh, india]
+              </motion.span>
+              <motion.span
+                initial={reducedMotion ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4, delay: 0.6 }}
+              >
+                [status: open to roles]
+              </motion.span>
             </div>
           </div>
         </section>
 
         {/* Technical Stack Section */}
-        <section className="border-t border-neutral-900 pt-16 flex flex-col gap-8">
-          <h2 className="text-3xl font-extrabold tracking-tight text-white uppercase m-0">
+        <section ref={skillsRef} className="border-t border-neutral-900 pt-16 flex flex-col gap-8">
+          <motion.h2
+            className="text-3xl font-extrabold tracking-tight text-white uppercase m-0"
+            initial={reducedMotion ? false : { opacity: 0, y: 20 }}
+            animate={isSkillsInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5 }}
+          >
             TECHNICAL FOCUS
-          </h2>
+          </motion.h2>
           
-          {/* Text-only inline grid */}
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-6 gap-x-4 border-t border-b border-neutral-900 py-10 font-mono text-xs uppercase tracking-widest">
-            {coreSkills.map((skill) => (
-              <div key={skill} className="flex items-center gap-3 text-neutral-300">
-                <span className="text-accent text-[10px] select-none">■</span>
-                <span>{skill}</span>
-              </div>
+            {coreSkills.map((skill, index) => (
+              <motion.div
+                key={skill}
+                className="skill-item flex items-center gap-3 text-neutral-300"
+                initial={reducedMotion ? false : { opacity: 0, x: -15 }}
+                animate={isSkillsInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.3, delay: index * 0.03 }}
+              >
+                <span className="bullet text-accent text-[10px] select-none transition-colors duration-150">■</span>
+                <span className="skill-name transition-colors duration-150">{skill}</span>
+              </motion.div>
             ))}
           </div>
         </section>
 
         {/* Experience Section */}
-        <section className="border-t border-neutral-900 pt-16 flex flex-col gap-12">
-          <h2 className="text-3xl font-extrabold tracking-tight text-white uppercase m-0">
+        <section ref={timelineRef} className="border-t border-neutral-900 pt-16 flex flex-col gap-12">
+          <motion.h2
+            className="text-3xl font-extrabold tracking-tight text-white uppercase m-0"
+            initial={reducedMotion ? false : { opacity: 0, y: 20 }}
+            animate={isTimelineInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5 }}
+          >
             EXPERIENCE TIMELINE
-          </h2>
+          </motion.h2>
 
-          <div className="flex flex-col gap-12 pl-2 border-l border-neutral-900 ml-1">
+          <div className="relative flex flex-col gap-12 pl-2 ml-1">
+            {/* Animated vertical timeline line */}
+            <motion.div
+              style={{
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                bottom: 0,
+                width: 1,
+                background: '#1a1a1a',
+                originY: 0
+              }}
+              initial={reducedMotion ? false : { scaleY: 0 }}
+              animate={isTimelineInView ? { scaleY: 1 } : {}}
+              transition={{ duration: 0.8 }}
+            />
+            
             {experiences.map((exp, idx) => (
               <div key={idx} className="relative pl-8 group">
-                {/* Custom grid marker */}
-                <div className="absolute left-[-5px] top-1.5 w-2 h-2 bg-neutral-900 border border-neutral-700 group-hover:bg-accent group-hover:border-accent transition-colors"></div>
+                {/* Custom dot marker */}
+                <motion.div
+                  className="absolute left-[-5px] top-1.5 w-2 h-2 bg-neutral-900 border border-neutral-700 group-hover:bg-accent group-hover:border-accent transition-colors"
+                  initial={reducedMotion ? false : { scale: 0 }}
+                  animate={isTimelineInView ? { scale: 1 } : {}}
+                  transition={reducedMotion ? {} : { type: 'spring', stiffness: 300, damping: 20, delay: idx * 0.12 }}
+                />
                 
-                <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-2">
-                  <h3 className="text-xl font-bold tracking-tight text-white m-0 group-hover:text-accent transition-colors duration-150">
-                    {exp.role.toUpperCase()}
-                  </h3>
-                  <span className="font-mono text-xs text-neutral-500 uppercase tracking-widest">
-                    {exp.period}
-                  </span>
-                </div>
-                
-                <div className="font-mono text-xs text-neutral-400 mt-1 uppercase tracking-wide">
-                  {exp.company}
-                </div>
-                
-                <p className="mt-4 text-neutral-400 font-light text-base leading-relaxed max-w-3xl">
-                  {exp.description}
-                </p>
+                <motion.div
+                  initial={reducedMotion ? false : { opacity: 0, x: -40 }}
+                  animate={isTimelineInView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ duration: 0.5, delay: idx * 0.12 }}
+                >
+                  <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-2">
+                    <h3 className="text-xl font-bold tracking-tight text-white m-0 group-hover:text-accent transition-colors duration-150">
+                      {exp.role.toUpperCase()}
+                    </h3>
+                    <span className="font-mono text-xs text-neutral-500 uppercase tracking-widest">
+                      {exp.period}
+                    </span>
+                  </div>
+                  
+                  <div className="font-mono text-xs text-neutral-400 mt-1 uppercase tracking-wide group-hover:text-accent transition-colors duration-150">
+                    {exp.company}
+                  </div>
+                  
+                  <p className="mt-4 text-neutral-400 font-light text-base leading-relaxed max-w-3xl">
+                    {exp.description}
+                  </p>
+                </motion.div>
               </div>
             ))}
           </div>
         </section>
 
       </div>
+
+      <style jsx>{`
+        /* CSS Shimmer Effect for Download button */
+        .shimmer-sweep {
+          position: absolute;
+          top: -50%;
+          left: -50%;
+          width: 200%;
+          height: 200%;
+          background: linear-gradient(
+            45deg,
+            transparent 45%,
+            rgba(255, 255, 255, 0.15) 50%,
+            transparent 55%
+          );
+          transform: rotate(45deg);
+          animation: shimmer 3s infinite;
+          pointer-events: none;
+        }
+
+        @keyframes shimmer {
+          0% {
+            left: -100%;
+            top: -100%;
+          }
+          100% {
+            left: 100%;
+            top: 100%;
+          }
+        }
+
+        .skill-item:hover .bullet {
+          color: var(--accent);
+        }
+        .skill-item:hover .skill-name {
+          color: #fff;
+        }
+      `}</style>
     </PageTransition>
   );
 }
