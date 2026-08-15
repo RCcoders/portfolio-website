@@ -14,6 +14,8 @@ export default function AboutClient() {
   const skillsRef = useRef<HTMLDivElement>(null);
   const isSkillsInView = useInViewOnce(skillsRef, "-80px");
 
+  const achievementsRef = useRef<HTMLDivElement>(null);
+
   const timelineRef = useRef<HTMLDivElement>(null);
   const isTimelineInView = useInViewOnce(timelineRef, "-80px");
 
@@ -36,6 +38,39 @@ export default function AboutClient() {
       reader.readAsDataURL(file);
     }
   };
+
+  const achievements = [
+    {
+      title: 'Co-Founder — A.E.G.I.S',
+      tag: 'Community Leadership · 2024 – Present',
+      description:
+        'Co-founded the Association of Engineering Growth, Innovation and Science — a 50+ member student community focused on guiding peers in choosing the right tech stack, participating in hackathons, building real-world projects, developing leadership skills, and staying aware of emerging technologies.',
+    },
+    {
+      title: 'IEEE YESIST12 2026 — 2nd Place (College) → Indonesia Finals',
+      tag: 'Global Innovation Challenge · 2026',
+      description:
+        'Secured 2nd position among college finalists in the globally recognized IEEE YESIST12 Innovation Challenge 2026. Now representing the college at the international finals in Indonesia.',
+    },
+    {
+      title: 'Smart India Hackathon — Participant (2024 & 2025)',
+      tag: 'National Hackathon · 2024, 2025',
+      description:
+        'Participated in India\'s largest national-level hackathon twice, working on government problem statements across domains including data science and backend development in cross-functional teams.',
+    },
+    {
+      title: 'National Science Day 2026 — 2nd Prize',
+      tag: 'Research Presentation · Feb 2026',
+      description:
+        'Represented and presented research work at National Science Day 2026 under the "Research for Pioneer" theme, earning 2nd place recognition for innovative technical contributions.',
+    },
+    {
+      title: '400+ DSA Problems Solved',
+      tag: 'Competitive Programming · Ongoing',
+      description:
+        'Solved 400+ Data Structures & Algorithms problems across platforms including LeetCode, Codeforces, CodeChef, and HackerEarth — strengthening problem-solving depth across arrays, graphs, DP, and system design topics.',
+    },
+  ];
 
   const experiences = [
     {
@@ -312,6 +347,64 @@ export default function AboutClient() {
                   
                   <p className="mt-4 text-neutral-400 font-light text-base leading-relaxed max-w-3xl">
                     {exp.description}
+                  </p>
+                </motion.div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Achievements Section */}
+        <section ref={achievementsRef} className="border-t border-neutral-900 pt-16 flex flex-col gap-12">
+          <motion.h2
+            className="text-3xl font-extrabold tracking-tight text-white uppercase m-0"
+            initial={reducedMotion ? false : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            ACHIEVEMENTS
+          </motion.h2>
+
+          <div className="relative flex flex-col gap-12 pl-2 ml-1">
+            <motion.div
+              style={{
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                bottom: 0,
+                width: 1,
+                background: '#1a1a1a',
+                originY: 0,
+              }}
+              initial={reducedMotion ? false : { scaleY: 0 }}
+              animate={{ scaleY: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            />
+
+            {achievements.map((item, idx) => (
+              <div key={idx} className="relative pl-8 group">
+                <motion.div
+                  className="absolute left-[-5px] top-1.5 w-2 h-2 bg-neutral-900 border border-neutral-700 group-hover:bg-accent group-hover:border-accent transition-colors"
+                  initial={reducedMotion ? false : { scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={reducedMotion ? {} : { type: 'spring', stiffness: 300, damping: 20, delay: 0.2 + idx * 0.1 }}
+                />
+
+                <motion.div
+                  initial={reducedMotion ? false : { opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: 0.2 + idx * 0.1 }}
+                >
+                  <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-2">
+                    <h3 className="text-xl font-bold tracking-tight text-white m-0 group-hover:text-accent transition-colors duration-150">
+                      {item.title}
+                    </h3>
+                    <span className="font-mono text-xs text-neutral-500 uppercase tracking-widest whitespace-nowrap">
+                      {item.tag}
+                    </span>
+                  </div>
+                  <p className="mt-4 text-neutral-400 font-light text-base leading-relaxed max-w-3xl">
+                    {item.description}
                   </p>
                 </motion.div>
               </div>

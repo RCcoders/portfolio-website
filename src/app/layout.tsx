@@ -9,6 +9,7 @@ import ClientBackground from '@/components/ClientBackground'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { cn } from "@/lib/utils";
+import AdminShell from '@/components/admin/AdminShell';
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -91,6 +92,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.variable} ${syne.variable} ${spaceMono.variable} font-sans bg-[#0d0d0d] text-white antialiased`}>
+        <AdminShell>
         <div className="min-h-screen flex flex-col relative overflow-x-hidden">
           <ErrorBoundary>
             <ClientBackground />
@@ -172,6 +174,7 @@ export default function RootLayout({
             </div>
           </footer>
         </div>
+        </AdminShell>
         <Analytics />
         <SpeedInsights />
       </body>

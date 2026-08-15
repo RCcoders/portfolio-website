@@ -5,11 +5,7 @@ import { api, Project } from '@/lib/api';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import PageTransition from '@/components/ui/PageTransition';
 import Carousel from '@/components/ui/Carousel';
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
-
-const AddProjectModal = dynamic(() => import('@/components/AddProjectModal'), { ssr: false });
-const EditProjectModal = dynamic(() => import('@/components/EditProjectModal'), { ssr: false });
 
 const EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -29,11 +25,9 @@ interface ProjectCardProps {
   project: Project;
   index: number;
   isActive: boolean;
-  onEdit: (p: Project) => void;
-  onDelete: (id: string) => void;
 }
 
-function ProjectCard({ project, index, isActive, onEdit, onDelete }: ProjectCardProps) {
+function ProjectCard({ project, index, isActive }: ProjectCardProps) {
   const [projectImage, setProjectImage] = useState(project.image);
   const [imgError, setImgError] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -129,7 +123,7 @@ function ProjectCard({ project, index, isActive, onEdit, onDelete }: ProjectCard
             sizes="560px"
             loading="lazy"
             unoptimized={!isBase64}
-            className="absolute inset-0 w-full h-full object-cover grayscale group-hover/img:grayscale-0 transition-all duration-700"
+            className="absolute inset-0 w-full h-full object-cover transition-all duration-700"
             onError={() => setImgError(true)}
           />
         ) : null}
@@ -352,22 +346,6 @@ function ProjectCard({ project, index, isActive, onEdit, onDelete }: ProjectCard
           >
             {isExpanded ? '[show less]' : '[show details]'}
           </button>
-
-          <span style={{ height: 14, borderLeft: '1px solid #222', display: 'inline-block' }} />
-          <button
-            onClick={() => onEdit(project)}
-            style={{ color: '#555' }}
-            className="hover:text-accent transition-colors"
-          >
-            [edit]
-          </button>
-          <button
-            onClick={() => { if (project.id) onDelete(project.id); }}
-            style={{ color: '#555' }}
-            className="hover:text-red-500 transition-colors"
-          >
-            [delete]
-          </button>
         </motion.div>
       </div>
     </motion.div>
@@ -387,9 +365,6 @@ export default function ProjectsClient() {
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editingProject, setEditingProject] = useState<Project | null>(null);
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -409,21 +384,7 @@ export default function ProjectsClient() {
     }
   };
 
-  const handleAddProject = (p: Project) => setProjects((prev) => [...prev, p]);
-  const handleUpdateProject = (p: Project) =>
-    setProjects((prev) => prev.map((x) => (x.id === p.id ? p : x)));
-  const handleEditClick = (p: Project) => { setEditingProject(p); setIsEditModalOpen(true); };
-  const handleDeleteProject = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this project?')) return;
-    try {
-      await api.deleteProject(id);
-      setProjects((prev) => prev.filter((p) => p.id !== id));
-    } catch (error) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.error('Failed to delete project:', error);
-      }
-    }
-  };
+
 
   const categories: Category[] = [
     { id: 'all', name: 'All Projects', count: projects.length },
@@ -443,7 +404,7 @@ export default function ProjectsClient() {
 
   return (
     <PageTransition>
-      <div className="max-w-7xl mx-auto px-6 py-16 md:py-24 flex flex-col gap-12">
+      <div className="max-w-7xl mx-auto px-6 py-10 md:py-14 flex flex-col gap-6">
 
         {/* Header */}
         <div className="border-b border-neutral-900 pb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -456,11 +417,11 @@ export default function ProjectsClient() {
             >
               [project catalog]
             </motion.span>
-            <h1 className="text-5xl md:text-8xl font-extrabold tracking-tighter text-white m-0" aria-label="ARCHIVE">
+            <h1 className="text-5xl md:text-8xl font-extrabold tracking-tighter text-white m-0" aria-label="PROJECTS">
               {reducedMotion ? (
-                "ARCHIVE"
+                "PROJECTS"
               ) : (
-                [... "ARCHIVE"].map((char, i) => (
+                [... "PROJECTS"].map((char, i) => (
                   <motion.span
                     key={i}
                     style={{ display: 'inline-block' }}
@@ -474,33 +435,9 @@ export default function ProjectsClient() {
               )}
             </h1>
           </div>
-          <motion.button
-            onClick={() => setIsAddModalOpen(true)}
-            className="px-6 py-3.5 bg-accent hover:opacity-90 text-accent-text font-mono text-xs uppercase tracking-widest font-bold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
-            initial={reducedMotion ? false : { opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, delay: 0.4 }}
-            whileHover={reducedMotion ? {} : { scale: 1.03 }}
-            whileTap={reducedMotion ? {} : { scale: 0.96 }}
-          >
-            [add project]
-          </motion.button>
         </div>
 
-        {/* Modals */}
-        <AddProjectModal
-          isOpen={isAddModalOpen}
-          onClose={() => setIsAddModalOpen(false)}
-          onProjectAdded={handleAddProject}
-        />
-        {editingProject && (
-          <EditProjectModal
-            isOpen={isEditModalOpen}
-            onClose={() => { setIsEditModalOpen(false); setEditingProject(null); }}
-            onProjectUpdated={handleUpdateProject}
-            project={editingProject}
-          />
-        )}
+        {/* Modals — handled by Admin Panel, not here */}
 
         {/* Filters and Search */}
         <div className="flex flex-col gap-6">
@@ -554,7 +491,7 @@ export default function ProjectsClient() {
             [no project entries match: &quot;{searchTerm}&quot;]
           </div>
         ) : (
-          <div className="py-8">
+          <div className="py-2">
             <Carousel
               items={filteredProjects}
               renderCard={(project, index, isActive) => (
@@ -563,8 +500,6 @@ export default function ProjectsClient() {
                   project={project}
                   index={index}
                   isActive={isActive}
-                  onEdit={handleEditClick}
-                  onDelete={handleDeleteProject}
                 />
               )}
             />

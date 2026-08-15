@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 import { motion, useReducedMotion } from 'framer-motion'
+import AdminLockIcon from '@/components/admin/AdminLockIcon'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -52,11 +53,14 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-14">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 group">
-              <span className="font-heading font-black text-xl tracking-tighter text-white select-none">
-                RAGHAV <span className="text-accent">CHAWLA</span>
-              </span>
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link href="/" className="flex items-center gap-2 group">
+                <span className="font-heading font-black text-xl tracking-tighter text-white select-none">
+                  RAGHAV <span className="text-accent">CHAWLA</span>
+                </span>
+              </Link>
+              <AdminLockIcon />
+            </div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-6">

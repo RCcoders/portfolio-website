@@ -6,12 +6,8 @@ import { motion, useReducedMotion } from 'framer-motion';
 import PageTransition from '@/components/ui/PageTransition';
 import Carousel from '@/components/ui/Carousel';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
 import { useCountUp } from '@/hooks/useCountUp';
 import { useInViewOnce } from '@/hooks/useInViewOnce';
-
-const AddCertificateModal = dynamic(() => import('@/components/AddCertificateModal'), { ssr: false });
-const EditCertificateModal = dynamic(() => import('@/components/EditCertificateModal'), { ssr: false });
 
 const EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -30,11 +26,9 @@ function fadeUpProps(isActive: boolean, delay: number, reducedMotion: boolean = 
 interface CertCardProps {
   cert: Certificate;
   isActive: boolean;
-  onEdit: (c: Certificate) => void;
-  onDelete: (id: string) => void;
 }
 
-function CertCard({ cert, isActive, onEdit, onDelete }: CertCardProps) {
+function CertCard({ cert, isActive }: CertCardProps) {
   const reducedMotion = useReducedMotion();
 
   return (
@@ -222,22 +216,6 @@ function CertCard({ cert, isActive, onEdit, onDelete }: CertCardProps) {
         >
           [details]
         </Link>
-
-        <span style={{ height: 14, borderLeft: '1px solid #222', display: 'inline-block' }} />
-        <button
-          onClick={() => onEdit(cert)}
-          style={{ color: '#555' }}
-          className="hover:text-accent transition-colors"
-        >
-          [edit]
-        </button>
-        <button
-          onClick={() => { if (cert.id) onDelete(cert.id); }}
-          style={{ color: '#555' }}
-          className="hover:text-red-500 transition-colors"
-        >
-          [delete]
-        </button>
       </motion.div>
     </motion.div>
   );
@@ -248,9 +226,6 @@ function CertCard({ cert, isActive, onEdit, onDelete }: CertCardProps) {
 export default function CertificationsClient() {
   const [certifications, setCertifications] = useState<Certificate[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editingCertificate, setEditingCertificate] = useState<Certificate | null>(null);
 
   const reducedMotion = useReducedMotion();
   const statsRef = useRef<HTMLDivElement>(null);
@@ -276,18 +251,6 @@ export default function CertificationsClient() {
   const handleAddCertificate = (c: Certificate) => setCertifications((prev) => [...prev, c]);
   const handleUpdateCertificate = (c: Certificate) =>
     setCertifications((prev) => prev.map((x) => (x.id === c.id ? c : x)));
-  const handleEditClick = (c: Certificate) => { setEditingCertificate(c); setIsEditModalOpen(true); };
-  const handleDeleteCertificate = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this certificate?')) return;
-    try {
-      await api.deleteCertificate(id);
-      setCertifications((prev) => prev.filter((c) => c.id !== id));
-    } catch (error) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.error('Failed to delete certificate:', error);
-      }
-    }
-  };
 
   const totalCerts = certifications.length;
   const uniqueProviders = new Set(certifications.map((c) => c.issuer)).size;
@@ -334,33 +297,9 @@ export default function CertificationsClient() {
               )}
             </h1>
           </div>
-          <motion.button
-            onClick={() => setIsAddModalOpen(true)}
-            className="px-6 py-3.5 bg-accent hover:opacity-90 text-accent-text font-mono text-xs uppercase tracking-widest font-bold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
-            initial={reducedMotion ? false : { opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, delay: 0.4 }}
-            whileHover={reducedMotion ? {} : { scale: 1.03 }}
-            whileTap={reducedMotion ? {} : { scale: 0.96 }}
-          >
-            [add certificate]
-          </motion.button>
         </div>
 
-        {/* Modals */}
-        <AddCertificateModal
-          isOpen={isAddModalOpen}
-          onClose={() => setIsAddModalOpen(false)}
-          onCertificateAdded={handleAddCertificate}
-        />
-        {editingCertificate && (
-          <EditCertificateModal
-            isOpen={isEditModalOpen}
-            onClose={() => { setIsEditModalOpen(false); setEditingCertificate(null); }}
-            onCertificateUpdated={handleUpdateCertificate}
-            certificate={editingCertificate}
-          />
-        )}
+        {/* Modals — handled by Admin Panel, not here */}
 
         {/* Carousel */}
         {loading ? (
@@ -380,8 +319,6 @@ export default function CertificationsClient() {
                   key={cert.id || cert.slug}
                   cert={cert}
                   isActive={isActive}
-                  onEdit={handleEditClick}
-                  onDelete={handleDeleteCertificate}
                 />
               )}
             />
