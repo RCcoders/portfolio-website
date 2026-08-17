@@ -97,10 +97,16 @@ export async function POST(req: Request): Promise<Response> {
           systemInstruction: SYSTEM_PROMPT,
         })
         const chat = model.startChat({ history })
-        resultStream = await chat.sendMessageStream(messageParts)
+        try {
+          resultStream = await chat.sendMessageStream(messageParts)
+        } catch (fileErr) {
+          console.warn(`[Gemini API] Stream with fileContext failed on ${modelName}, retrying text-only:`, fileErr)
+          resultStream = await chat.sendMessageStream([{ text: lastMessage }])
+        }
         if (resultStream) break
       } catch (err: unknown) {
         lastError = err instanceof Error ? err : new Error(String(err))
+        console.warn(`[Gemini API] Model ${modelName} failed:`, lastError.message)
       }
     }
 
@@ -121,7 +127,8 @@ export async function POST(req: Request): Promise<Response> {
     return new Response(stream, {
       headers: { 'Content-Type': 'text/event-stream' }
     })
-  } catch {
+  } catch (err) {
+    console.error('[Ask Route] Gemini API execution failed, returning fallback response:', err)
     const fallbackText = getFallbackResponse(lastMessage)
     const stream = new ReadableStream({
       start(controller) {

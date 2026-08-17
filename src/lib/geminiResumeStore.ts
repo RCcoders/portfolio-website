@@ -95,9 +95,12 @@ export async function getResumeFileContext(): Promise<ResumeFileContext | null> 
 
   if (activeUri && activeUri.trim().length > 0) {
     const docxExists = fs.existsSync(path.join(process.cwd(), 'knowledge', 'Raghav_Chawla_Resume_ATS.docx'));
-    const mimeType = docxExists
-      ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-      : 'application/pdf';
+    const pdfExists = fs.existsSync(path.join(process.cwd(), 'public', 'pdfs', 'resume.pdf'));
+
+    const mimeType = process.env.GEMINI_RESUME_MIME_TYPE ||
+      (pdfExists && !docxExists
+        ? 'application/pdf'
+        : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
 
     return {
       fileData: {
