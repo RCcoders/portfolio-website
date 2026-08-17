@@ -199,7 +199,7 @@ export default function PinModal() {
             textTransform: 'uppercase' as const,
           }}
         >
-          // ACCESS REQUIRED
+          {`// ACCESS REQUIRED`}
         </span>
 
         {/* PIN boxes */}
@@ -258,11 +258,11 @@ export default function PinModal() {
           }}
         >
           {error === 'denied' && (
-            <span style={{ color: '#ef4444' }}>// ACCESS DENIED</span>
+            <span style={{ color: '#ef4444' }}>{`// ACCESS DENIED`}</span>
           )}
           {error === 'locked' && locked && (
             <span style={{ color: '#ef4444' }}>
-              // LOCKED. RETRY IN {countdown}s
+              {`// LOCKED. RETRY IN ${countdown}s`}
             </span>
           )}
         </div>

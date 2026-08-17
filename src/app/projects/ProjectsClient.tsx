@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { api, Project } from '@/lib/api';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import PageTransition from '@/components/ui/PageTransition';
@@ -47,6 +48,26 @@ function ProjectCard({ project, index, isActive }: ProjectCardProps) {
     if (!isActive) setIsExpanded(false);
   }, [isActive]);
 
+  // Escape key handler
+  useEffect(() => {
+    if (!isExpanded) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsExpanded(false);
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [isExpanded]);
+
+  // Body scroll lock when expanded
+  useEffect(() => {
+    if (isExpanded) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isExpanded]);
+
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -82,273 +103,694 @@ function ProjectCard({ project, index, isActive }: ProjectCardProps) {
   const hasRealImage = !!projectImage && !imgError;
 
   return (
-    <motion.div
-      style={{
-        width: 'clamp(300px, 560px, 88vw)',
-        background: '#111111',
-        border: '1px solid',
-        borderColor: isActive ? 'var(--accent)' : '#1a1a1a',
-        boxShadow: isActive
-          ? '0 0 0 1px var(--accent), 0 32px 80px rgba(0,0,0,0.6)'
-          : '0 8px 32px rgba(0,0,0,0.4)',
-        transition: 'border-color 0.4s ease, box-shadow 0.4s ease',
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-      initial={reducedMotion ? false : { scale: 0.95, opacity: 0.6 }}
-      animate={isActive ? { scale: 1.0, opacity: 1 } : { scale: 0.95, opacity: 0.6 }}
-      transition={
-        reducedMotion
-          ? { duration: 0 }
-          : { type: 'spring', stiffness: 260, damping: 28 }
-      }
-    >
-      {/* Image area */}
-      <div
+    <>
+      <motion.div
         style={{
-          height: 200,
-          position: 'relative',
-          background: 'linear-gradient(135deg, #111 0%, #1a1a1a 100%)',
+          width: 'clamp(300px, 560px, 88vw)',
+          background: '#111111',
+          border: '1px solid',
+          borderColor: isActive ? 'var(--accent)' : '#1a1a1a',
+          boxShadow: isActive
+            ? '0 0 0 1px var(--accent), 0 32px 80px rgba(0,0,0,0.6)'
+            : '0 8px 32px rgba(0,0,0,0.4)',
+          transition: 'border-color 0.4s ease, box-shadow 0.4s ease, opacity 0.3s ease, filter 0.3s ease',
           overflow: 'hidden',
-          flexShrink: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          opacity: isExpanded ? 0.3 : (isActive ? 1 : 0.6),
+          pointerEvents: isExpanded ? 'none' : 'auto',
+          filter: isExpanded ? 'blur(2px)' : 'none',
         }}
-        className="group/img"
+        initial={reducedMotion ? false : { scale: 0.95, opacity: 0.6 }}
+        animate={isActive ? { scale: 1.0, opacity: isExpanded ? 0.3 : 1 } : { scale: 0.95, opacity: 0.6 }}
+        transition={
+          reducedMotion
+            ? { duration: 0 }
+            : { type: 'spring', stiffness: 260, damping: 28 }
+        }
       >
-        {hasRealImage ? (
-          <Image
-            src={projectImage!}
-            alt={`${project.title} project image`}
-            fill
-            sizes="560px"
-            loading="lazy"
-            unoptimized={!isBase64}
-            className="absolute inset-0 w-full h-full object-cover transition-all duration-700"
-            onError={() => setImgError(true)}
-          />
-        ) : null}
-
-        {!hasRealImage && (
-          <div
-            className="absolute inset-0 flex items-center justify-center"
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '5rem',
-              fontWeight: 800,
-              color: '#222',
-              letterSpacing: '-0.04em',
-              userSelect: 'none',
-            }}
-          >
-            {padded}
-          </div>
-        )}
-
-        {isActive && (
-          <div
-            onClick={() => fileInputRef.current?.click()}
-            className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200 cursor-pointer"
-            style={{ background: 'rgba(0,0,0,0.82)' }}
-          >
-            <span
-              className="font-mono text-xs uppercase tracking-widest text-white px-4 py-2 hover:text-black transition-all"
-              style={{
-                border: '1px solid rgba(255,255,255,0.25)',
-                background: 'transparent',
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.background = 'var(--accent)';
-                (e.currentTarget as HTMLElement).style.color = '#000';
-                (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)';
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.background = 'transparent';
-                (e.currentTarget as HTMLElement).style.color = '#fff';
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.25)';
-              }}
-            >
-              [upload photo]
-            </span>
-          </div>
-        )}
-        <input
-          type="file"
-          ref={fileInputRef}
-          onChange={handleImageUpload}
-          accept="image/*"
-          className="hidden"
-        />
-      </div>
-
-      {/* Content area */}
-      <div style={{ padding: '24px 28px 28px', display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
-        {/* Top row */}
-        <motion.div
-          key={isActive ? 'active-meta' : 'idle-meta'}
-          {...fadeUpProps(isActive, 0, reducedMotion ?? false)}
-          className="flex items-center gap-3 flex-wrap"
-          style={{ fontFamily: 'var(--font-mono)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#666' }}
-        >
-          <span>{project.category.replace(/-/g, ' ')}</span>
-          <span>•</span>
-          <span style={{ color: 'var(--accent)' }}>{project.status}</span>
-          {project.date && (
-            <>
-              <span>•</span>
-              <span>{new Date(project.date).toLocaleDateString(undefined, { year: 'numeric', month: 'short' })}</span>
-            </>
-          )}
-        </motion.div>
-
-        {/* Title */}
-        <motion.h3
-          key={isActive ? 'active-title' : 'idle-title'}
-          {...fadeUpProps(isActive, 0.08, reducedMotion ?? false)}
+        {/* Image area */}
+        <div
           style={{
-            fontFamily: 'var(--font-heading)',
-            fontSize: '1.6rem',
-            fontWeight: 800,
-            letterSpacing: '-0.04em',
-            textTransform: 'uppercase',
-            color: '#fff',
-            margin: 0,
-            lineHeight: 1,
-          }}
-        >
-          {project.title}
-        </motion.h3>
-
-        {/* Description */}
-        <motion.p
-          key={isActive ? 'active-desc' : 'idle-desc'}
-          {...fadeUpProps(isActive, 0.16, reducedMotion ?? false)}
-          style={{
-            color: '#888',
-            fontSize: '0.8rem',
-            fontWeight: 300,
-            lineHeight: 1.65,
-            margin: 0,
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
+            height: 200,
+            position: 'relative',
+            background: 'linear-gradient(135deg, #111 0%, #1a1a1a 100%)',
             overflow: 'hidden',
+            flexShrink: 0,
           }}
+          className="group/img"
         >
-          {project.description}
-        </motion.p>
+          {hasRealImage ? (
+            <Image
+              src={projectImage!}
+              alt={`${project.title} project image`}
+              fill
+              sizes="560px"
+              loading="lazy"
+              unoptimized={!isBase64}
+              className="absolute inset-0 w-full h-full object-cover transition-all duration-700"
+              onError={() => setImgError(true)}
+            />
+          ) : null}
 
-        {/* Tags */}
-        <motion.div
-          key={isActive ? 'active-tags' : 'idle-tags'}
-          {...fadeUpProps(isActive, 0.24, reducedMotion ?? false)}
-          style={{ display: 'flex', gap: 6, flexWrap: 'wrap', overflowX: 'auto' }}
-        >
-          {project.tags.slice(0, 5).map((tag) => (
-            <span
-              key={tag}
+          {!hasRealImage && (
+            <div
+              className="absolute inset-0 flex items-center justify-center"
               style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: 9,
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em',
-                color: '#555',
-                border: '1px solid #222',
-                padding: '2px 8px',
-                whiteSpace: 'nowrap',
-                background: '#0d0d0d',
+                fontSize: '5rem',
+                fontWeight: 800,
+                color: '#222',
+                letterSpacing: '-0.04em',
+                userSelect: 'none',
               }}
             >
-              {tag}
-            </span>
-          ))}
-        </motion.div>
+              {padded}
+            </div>
+          )}
 
-        {/* Expanded details */}
+          {isActive && (
+            <div
+              onClick={() => fileInputRef.current?.click()}
+              className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200 cursor-pointer"
+              style={{ background: 'rgba(0,0,0,0.82)' }}
+            >
+              <span
+                className="font-mono text-xs uppercase tracking-widest text-white px-4 py-2 hover:text-black transition-all"
+                style={{
+                  border: '1px solid rgba(255,255,255,0.25)',
+                  background: 'transparent',
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = 'var(--accent)';
+                  (e.currentTarget as HTMLElement).style.color = '#000';
+                  (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)';
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = 'transparent';
+                  (e.currentTarget as HTMLElement).style.color = '#fff';
+                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.25)';
+                }}
+              >
+                [upload photo]
+              </span>
+            </div>
+          )}
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleImageUpload}
+            accept="image/*"
+            className="hidden"
+          />
+        </div>
+
+        {/* Content area */}
+        <div style={{ padding: '24px 28px 28px', display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
+          {/* Top row */}
+          <motion.div
+            key={isActive ? 'active-meta' : 'idle-meta'}
+            {...fadeUpProps(isActive, 0, reducedMotion ?? false)}
+            className="flex items-center gap-3 flex-wrap"
+            style={{ fontFamily: 'var(--font-mono)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#666' }}
+          >
+            <span>{project.category.replace(/-/g, ' ')}</span>
+            <span>•</span>
+            <span style={{ color: 'var(--accent)' }}>{project.status}</span>
+            {project.date && (
+              <>
+                <span>•</span>
+                <span>{new Date(project.date).toLocaleDateString(undefined, { year: 'numeric', month: 'short' })}</span>
+              </>
+            )}
+          </motion.div>
+
+          {/* Title */}
+          <motion.h3
+            key={isActive ? 'active-title' : 'idle-title'}
+            {...fadeUpProps(isActive, 0.08, reducedMotion ?? false)}
+            style={{
+              fontFamily: 'var(--font-heading)',
+              fontSize: '1.6rem',
+              fontWeight: 800,
+              letterSpacing: '-0.04em',
+              textTransform: 'uppercase',
+              color: '#fff',
+              margin: 0,
+              lineHeight: 1,
+            }}
+          >
+            {project.title}
+          </motion.h3>
+
+          {/* Description */}
+          <motion.p
+            key={isActive ? 'active-desc' : 'idle-desc'}
+            {...fadeUpProps(isActive, 0.16, reducedMotion ?? false)}
+            style={{
+              color: '#888',
+              fontSize: '0.8rem',
+              fontWeight: 300,
+              lineHeight: 1.65,
+              margin: 0,
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+            }}
+          >
+            {project.description}
+          </motion.p>
+
+          {/* Tags */}
+          <motion.div
+            key={isActive ? 'active-tags' : 'idle-tags'}
+            {...fadeUpProps(isActive, 0.24, reducedMotion ?? false)}
+            style={{ display: 'flex', gap: 6, flexWrap: 'wrap', overflowX: 'auto' }}
+          >
+            {project.tags.slice(0, 5).map((tag) => (
+              <span
+                key={tag}
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 9,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  color: '#555',
+                  border: '1px solid #222',
+                  padding: '2px 8px',
+                  whiteSpace: 'nowrap',
+                  background: '#0d0d0d',
+                }}
+              >
+                {tag}
+              </span>
+            ))}
+          </motion.div>
+
+          {/* Actions */}
+          <motion.div
+            key={isActive ? 'active-actions' : 'idle-actions'}
+            {...fadeUpProps(isActive, 0.32, reducedMotion ?? false)}
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              alignItems: 'center',
+              gap: '0 20px',
+              marginTop: 4,
+              fontFamily: 'var(--font-mono)',
+              fontSize: 10,
+              textTransform: 'uppercase',
+              letterSpacing: '0.15em',
+              pointerEvents: isActive ? 'auto' : 'none',
+              opacity: isActive ? 1 : 0,
+            }}
+          >
+            {project.githubUrl && (
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: '#aaa' }}
+                className="hover:text-white transition-colors"
+              >
+                [codebase]
+              </a>
+            )}
+            {project.liveUrl && project.liveUrl !== '#' && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: '#aaa' }}
+                className="hover:text-white transition-colors"
+              >
+                [live demo]
+              </a>
+            )}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsExpanded((v) => !v);
+              }}
+              style={{ color: 'var(--accent)', fontWeight: 700 }}
+              className="hover:text-white transition-colors cursor-pointer"
+            >
+              {isExpanded ? '[show less ▲]' : '[show details ▼]'}
+            </button>
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* Full-screen Portal Overlay */}
+      {isExpanded && typeof document !== 'undefined' && createPortal(
         <AnimatePresence>
           {isExpanded && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              style={{ overflow: 'hidden', fontSize: '0.75rem' }}
-            >
-              {project.features && project.features.length > 0 && (
-                <div style={{ marginTop: 12 }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: '#555', textTransform: 'uppercase', letterSpacing: '0.12em', display: 'block', marginBottom: 6 }}>[features]</span>
-                  <ul style={{ color: '#777', listStyle: 'none', padding: 0, margin: 0, lineHeight: 1.7 }}>
-                    {project.features.map((f, i) => (
-                      <li key={i} style={{ display: 'flex', gap: 8 }}>
-                        <span style={{ color: 'var(--accent)', flexShrink: 0 }}>▪</span>
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {project.metrics && Object.keys(project.metrics).length > 0 && (
-                <div style={{ marginTop: 12, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                  {Object.entries(project.metrics).map(([k, v]) => (
-                    <div key={k} style={{ background: '#0d0d0d', border: '1px solid #1a1a1a', padding: '10px 12px' }}>
-                      <div style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)', fontSize: '0.9rem', fontWeight: 700 }}>{v as string}</div>
-                      <div style={{ color: '#444', fontFamily: 'var(--font-mono)', fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 2 }}>{k}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
+            <div key="project-portal">
+              {/* Backdrop */}
+              <motion.div
+                key="backdrop"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: reducedMotion ? 0 : 0.25 }}
+                onClick={() => setIsExpanded(false)}
+                style={{
+                  position: 'fixed',
+                  inset: 0,
+                  zIndex: 999,
+                  background: 'rgba(0, 0, 0, 0.92)',
+                  backdropFilter: 'blur(12px)',
+                  WebkitBackdropFilter: 'blur(12px)',
+                }}
+              />
 
-        {/* Actions */}
-        <motion.div
-          key={isActive ? 'active-actions' : 'idle-actions'}
-          {...fadeUpProps(isActive, 0.32, reducedMotion ?? false)}
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            gap: '0 20px',
-            marginTop: 4,
-            fontFamily: 'var(--font-mono)',
-            fontSize: 10,
-            textTransform: 'uppercase',
-            letterSpacing: '0.15em',
-            pointerEvents: isActive ? 'auto' : 'none',
-            opacity: isActive ? 1 : 0,
-          }}
-        >
-          {project.githubUrl && (
-            <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: '#aaa' }}
-              className="hover:text-white transition-colors"
-            >
-              [codebase]
-            </a>
+              {/* Expanded Card Panel */}
+              <motion.div
+                key="panel"
+                initial={reducedMotion ? { opacity: 0 } : { scale: 0.94, opacity: 0 }}
+                animate={reducedMotion ? { opacity: 1 } : { scale: 1, opacity: 1 }}
+                exit={reducedMotion ? { opacity: 0 } : { scale: 0.96, opacity: 0 }}
+                transition={
+                  reducedMotion
+                    ? { duration: 0.2 }
+                    : { type: 'spring', stiffness: 280, damping: 28 }
+                }
+                style={{
+                  position: 'fixed',
+                  top: 'clamp(16px, 40px, 5vh)',
+                  left: 'clamp(16px, 40px, 5vw)',
+                  right: 'clamp(16px, 40px, 5vw)',
+                  bottom: 'clamp(16px, 40px, 5vh)',
+                  zIndex: 1000,
+                  background: '#111111',
+                  border: '1px solid var(--accent)',
+                  boxShadow: '0 0 0 2px var(--accent), 0 40px 120px rgba(0,0,0,0.95)',
+                  borderRadius: 8,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  overflow: 'hidden',
+                }}
+              >
+                {/* Close Button (×) */}
+                <button
+                  onClick={() => setIsExpanded(false)}
+                  style={{
+                    position: 'absolute',
+                    top: 16,
+                    right: 20,
+                    zIndex: 20,
+                    color: '#555',
+                    fontSize: 24,
+                    lineHeight: 1,
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    transition: 'color 0.15s ease',
+                  }}
+                  onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#ffffff')}
+                  onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = '#555555')}
+                  aria-label="Close project modal"
+                >
+                  ×
+                </button>
+
+                {/* Top Section — Image (260px fixed height) */}
+                <div
+                  style={{
+                    height: 260,
+                    position: 'relative',
+                    background: 'linear-gradient(135deg, #111 0%, #1a1a1a 100%)',
+                    overflow: 'hidden',
+                    flexShrink: 0,
+                  }}
+                >
+                  {hasRealImage ? (
+                    <Image
+                      src={projectImage!}
+                      alt={`${project.title} project image`}
+                      fill
+                      sizes="100vw"
+                      loading="eager"
+                      priority
+                      unoptimized={!isBase64}
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div
+                      className="absolute inset-0 flex items-center justify-center font-mono text-7xl font-extrabold text-[#222] select-none"
+                    >
+                      {padded}
+                    </div>
+                  )}
+
+                  {/* Gradient blend overlay at bottom of image */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      pointerEvents: 'none',
+                      background: 'linear-gradient(to bottom, transparent 60%, #111111 100%)',
+                    }}
+                  />
+
+                  {/* Top action links on image */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: 16,
+                      left: 20,
+                      zIndex: 10,
+                      display: 'flex',
+                      gap: 8,
+                    }}
+                  >
+                    {project.githubUrl && (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          background: 'rgba(0,0,0,0.8)',
+                          border: '1px solid #333',
+                          padding: '6px 14px',
+                          borderRadius: 4,
+                          color: '#fff',
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: 11,
+                          textTransform: 'uppercase',
+                          textDecoration: 'none',
+                          transition: 'all 0.15s ease',
+                        }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)';
+                          (e.currentTarget as HTMLElement).style.color = 'var(--accent)';
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLElement).style.borderColor = '#333';
+                          (e.currentTarget as HTMLElement).style.color = '#fff';
+                        }}
+                      >
+                        [codebase]
+                      </a>
+                    )}
+                    {project.liveUrl && project.liveUrl !== '#' && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          background: 'rgba(0,0,0,0.8)',
+                          border: '1px solid #333',
+                          padding: '6px 14px',
+                          borderRadius: 4,
+                          color: '#fff',
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: 11,
+                          textTransform: 'uppercase',
+                          textDecoration: 'none',
+                          transition: 'all 0.15s ease',
+                        }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)';
+                          (e.currentTarget as HTMLElement).style.color = 'var(--accent)';
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLElement).style.borderColor = '#333';
+                          (e.currentTarget as HTMLElement).style.color = '#fff';
+                        }}
+                      >
+                        [live demo]
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                {/* Bottom Section — Scrollable Content */}
+                <div
+                  style={{
+                    flex: 1,
+                    overflowY: 'auto',
+                    padding: '28px 32px 40px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 20,
+                  }}
+                  className="project-modal-scroll"
+                >
+                  {/* Meta row */}
+                  <motion.div
+                    initial={reducedMotion ? false : { opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.15, duration: 0.3 }}
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 10,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.15em',
+                      color: '#666',
+                      display: 'flex',
+                      gap: 12,
+                      alignItems: 'center',
+                    }}
+                  >
+                    <span>{project.category.replace(/-/g, ' ')}</span>
+                    <span>•</span>
+                    <span style={{ color: 'var(--accent)' }}>{project.status}</span>
+                    {project.date && (
+                      <>
+                        <span>•</span>
+                        <span>{new Date(project.date).toLocaleDateString(undefined, { year: 'numeric', month: 'short' })}</span>
+                      </>
+                    )}
+                  </motion.div>
+
+                  {/* Title */}
+                  <motion.h2
+                    initial={reducedMotion ? false : { opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.21, duration: 0.3 }}
+                    style={{
+                      fontFamily: 'var(--font-heading)',
+                      fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)',
+                      fontWeight: 800,
+                      letterSpacing: '-0.04em',
+                      textTransform: 'uppercase',
+                      color: '#fff',
+                      margin: 0,
+                      lineHeight: 1.1,
+                    }}
+                  >
+                    {project.title}
+                  </motion.h2>
+
+                  {/* Description & Long Description */}
+                  <motion.div
+                    initial={reducedMotion ? false : { opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.27, duration: 0.3 }}
+                    style={{ display: 'flex', flexDirection: 'column', gap: 12 }}
+                  >
+                    <p style={{ color: '#aaa', fontSize: '0.875rem', lineHeight: 1.7, margin: 0 }}>
+                      {project.description}
+                    </p>
+                    {project.longDescription && (
+                      <p style={{ color: '#888', fontSize: '0.85rem', lineHeight: 1.7, margin: 0, fontWeight: 300 }}>
+                        {project.longDescription}
+                      </p>
+                    )}
+                  </motion.div>
+
+                  {/* Tags (uncapped full list) */}
+                  <motion.div
+                    initial={reducedMotion ? false : { opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.33, duration: 0.3 }}
+                    style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}
+                  >
+                    {project.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        style={{
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: 9,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.1em',
+                          color: '#aaa',
+                          border: '1px solid #222',
+                          padding: '4px 10px',
+                          background: '#0d0d0d',
+                          borderRadius: 4,
+                        }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </motion.div>
+
+                  {/* Features Block */}
+                  {project.features && project.features.length > 0 && (
+                    <motion.div
+                      initial={reducedMotion ? false : { opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.39, duration: 0.3 }}
+                      style={{
+                        background: '#0a0a0a',
+                        border: '1px solid #1a1a1a',
+                        padding: '20px',
+                        borderRadius: 6,
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: 9,
+                          color: 'var(--accent)',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.15em',
+                          display: 'block',
+                          marginBottom: 10,
+                          fontWeight: 700,
+                        }}
+                      >
+                        [features]
+                      </span>
+                      <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                        {project.features.map((f, i) => (
+                          <li key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#ccc' }}>
+                            <span style={{ color: 'var(--accent)', flexShrink: 0, marginTop: 1 }}>▪</span>
+                            <span>{f}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </motion.div>
+                  )}
+
+                  {/* Tech Stack Block */}
+                  {project.technologies && Object.keys(project.technologies).length > 0 && (
+                    <motion.div
+                      initial={reducedMotion ? false : { opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.45, duration: 0.3 }}
+                      style={{
+                        background: '#0a0a0a',
+                        border: '1px solid #1a1a1a',
+                        padding: '20px',
+                        borderRadius: 6,
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: 9,
+                          color: 'var(--accent)',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.15em',
+                          display: 'block',
+                          marginBottom: 12,
+                          fontWeight: 700,
+                        }}
+                      >
+                        [tech stack]
+                      </span>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                        {Object.entries(project.technologies).map(([group, items]) => (
+                          <div key={group}>
+                            <span style={{ color: '#555', fontFamily: 'var(--font-mono)', fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: 6 }}>
+                              {group}
+                            </span>
+                            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                              {items.map((item) => (
+                                <span key={item} style={{ background: '#111', border: '1px solid #222', color: '#ccc', fontFamily: 'var(--font-mono)', fontSize: 10, padding: '3px 8px', borderRadius: 3 }}>
+                                  {item}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* Metrics Grid */}
+                  {project.metrics && Object.keys(project.metrics).length > 0 && (
+                    <motion.div
+                      initial={reducedMotion ? false : { opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.51, duration: 0.3 }}
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+                        gap: 12,
+                      }}
+                    >
+                      {Object.entries(project.metrics).map(([k, v]) => (
+                        <div key={k} style={{ background: '#0a0a0a', border: '1px solid #1a1a1a', padding: '14px', borderRadius: 6 }}>
+                          <div style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)', fontSize: '1.1rem', fontWeight: 800 }}>{v as string}</div>
+                          <div style={{ color: '#555', fontFamily: 'var(--font-mono)', fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 4 }}>{k}</div>
+                        </div>
+                      ))}
+                    </motion.div>
+                  )}
+
+                  {/* Bottom Action Row */}
+                  <motion.div
+                    initial={reducedMotion ? false : { opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.57, duration: 0.3 }}
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      alignItems: 'center',
+                      gap: 20,
+                      paddingTop: 16,
+                      borderTop: '1px solid #1a1a1a',
+                      marginTop: 8,
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 10,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.15em',
+                    }}
+                  >
+                    {project.githubUrl && (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: '#aaa' }}
+                        className="hover:text-white transition-colors"
+                      >
+                        [codebase]
+                      </a>
+                    )}
+                    {project.liveUrl && project.liveUrl !== '#' && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: '#aaa' }}
+                        className="hover:text-white transition-colors"
+                      >
+                        [live demo]
+                      </a>
+                    )}
+                    <button
+                      onClick={() => setIsExpanded(false)}
+                      style={{ color: 'var(--accent)', fontWeight: 700, marginLeft: 'auto' }}
+                      className="hover:text-white transition-colors cursor-pointer"
+                    >
+                      [show less ▲]
+                    </button>
+                  </motion.div>
+
+                </div>
+              </motion.div>
+            </div>
           )}
-          {project.liveUrl && project.liveUrl !== '#' && (
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: '#aaa' }}
-              className="hover:text-white transition-colors"
-            >
-              [live demo]
-            </a>
-          )}
-          <button
-            onClick={() => setIsExpanded((v) => !v)}
-            style={{ color: '#aaa' }}
-            className="hover:text-white transition-colors"
-          >
-            {isExpanded ? '[show less]' : '[show details]'}
-          </button>
-        </motion.div>
-      </div>
-    </motion.div>
+        </AnimatePresence>,
+        document.body
+      )}
+    </>
   );
 }
 

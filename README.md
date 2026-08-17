@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Raghav Chawla — Personal Portfolio Website
 
-## Getting Started
+A modern, high-performance portfolio website built with Next.js 15 App Router, React 19, TypeScript, and Tailwind CSS, featuring an AI interactive terminal and FastAPI backend integration.
 
-First, run the development server:
+## 🚀 Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Frontend**: Next.js 15 (App Router), React 19, TypeScript, Tailwind CSS, Framer Motion
+- **Backend API**: FastAPI (Python), PostgreSQL, Supabase
+- **AI Integration**: Google Gemini 2.5/3.6 Flash File & Generative AI API
+- **Deployment**: Vercel / Cloudflare
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Local Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/RCcoders/portfolio-website.git
+   cd portfolio-website
+   ```
 
-## Learn More
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+3. **Configure Environment Variables**:
+   Copy `.env.example` to `.env.local` and populate the required keys:
+   ```bash
+   cp .env.example .env.local
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. **Run the Next.js Development Server**:
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🐍 Running the FastAPI Backend
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Navigate to the backend directory**:
+   ```bash
+   cd backend
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. **Set up Python Virtual Environment**:
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+
+3. **Run the FastAPI server**:
+   ```bash
+   uvicorn main:app --reload --port 8000
+   ```
+
+---
+
+## 🔑 Environment Variables Documentation
+
+| Variable Name | Description |
+| --- | --- |
+| `ADMIN_PIN` | Secret PIN for granting admin access |
+| `BACKEND_URL` | Fast API backend endpoint URL (e.g. `http://localhost:8000`) |
+| `NEXT_PUBLIC_API_URL` | Public API base path |
+| `GEMINI_API_KEY` | Google Gemini API key for AI terminal grounding |
+| `GEMINI_RESUME_FILE_URI` | Cached Gemini File API URI for indexed resume context |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anonymous API key |
+
+---
+
+## 📦 Deployment Notes
+
+- Deploy on **Vercel** with default Next.js build command (`npm run build`).
+- Ensure environment variables are configured in the Vercel dashboard.
+

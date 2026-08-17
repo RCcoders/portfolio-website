@@ -63,6 +63,48 @@ export default function ContactPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // Form state
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  });
+  const [submitting, setSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email || !formData.message) return;
+
+    setSubmitting(true);
+    setSubmitStatus('idle');
+    setErrorMessage('');
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to send message.');
+      }
+
+      setSubmitStatus('success');
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'An error occurred while sending.';
+      setSubmitStatus('error');
+      setErrorMessage(msg);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <PageTransition>
       <div className="max-w-7xl mx-auto px-6 py-16 md:py-24 relative min-h-[70vh]">
@@ -216,13 +258,106 @@ export default function ContactPage() {
 
           {/* RIGHT COLUMN */}
           <div ref={cardsContainerRef} className="right-column">
-            
+
+            {/* Contact Form Card */}
+            <motion.div
+              className="info-card border-accent/40"
+              initial={reducedMotion ? undefined : { opacity: 0, x: 40 }}
+              animate={isCardsInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.4, delay: 0 }}
+            >
+              <div className="card-header">
+                <span className="status-label text-accent font-mono text-xs tracking-widest uppercase">
+                  ✉ TRANSMIT INQUIRY
+                </span>
+                <span className="status-badge">[resend active]</span>
+              </div>
+              <div className="card-divider" />
+              
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <div>
+                  <label className="font-mono text-[10px] text-neutral-500 uppercase tracking-widest block mb-1">
+                    [NAME] *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Your name or company..."
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full bg-[#111] border border-neutral-800 text-white font-mono text-xs px-3 py-2.5 rounded outline-none focus:border-accent transition-colors"
+                  />
+                </div>
+
+                <div>
+                  <label className="font-mono text-[10px] text-neutral-500 uppercase tracking-widest block mb-1">
+                    [EMAIL ADDRESS] *
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="name@company.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full bg-[#111] border border-neutral-800 text-white font-mono text-xs px-3 py-2.5 rounded outline-none focus:border-accent transition-colors"
+                  />
+                </div>
+
+                <div>
+                  <label className="font-mono text-[10px] text-neutral-500 uppercase tracking-widest block mb-1">
+                    [SUBJECT]
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Project / Hiring inquiry..."
+                    value={formData.subject}
+                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                    className="w-full bg-[#111] border border-neutral-800 text-white font-mono text-xs px-3 py-2.5 rounded outline-none focus:border-accent transition-colors"
+                  />
+                </div>
+
+                <div>
+                  <label className="font-mono text-[10px] text-neutral-500 uppercase tracking-widest block mb-1">
+                    [MESSAGE CONTENT] *
+                  </label>
+                  <textarea
+                    required
+                    rows={4}
+                    placeholder="Describe your project, timeline, or requirements..."
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    className="w-full bg-[#111] border border-neutral-800 text-white font-mono text-xs px-3 py-2.5 rounded outline-none focus:border-accent transition-colors resize-none"
+                  />
+                </div>
+
+                {submitStatus === 'success' && (
+                  <div className="bg-emerald-950/40 border border-emerald-500/40 text-emerald-400 font-mono text-xs p-3 rounded">
+                    [MESSAGE TRANSMITTED SUCCESSFULLY ✓ — I will reply shortly!]
+                  </div>
+                )}
+
+                {submitStatus === 'error' && (
+                  <div className="bg-red-950/40 border border-red-500/40 text-red-400 font-mono text-xs p-3 rounded">
+                    [ERROR: {errorMessage}]
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="w-full bg-accent text-black font-mono text-xs uppercase tracking-widest py-3 font-bold rounded hover:bg-white transition-colors disabled:opacity-50 cursor-pointer"
+                >
+                  {submitting ? '[TRANSMITTING...]' : '[DISPATCH MESSAGE →]'}
+                </button>
+              </form>
+            </motion.div>
+
             {/* Card 1 — Availability Status */}
             <motion.div
               className="info-card"
               initial={reducedMotion ? undefined : { opacity: 0, x: 40 }}
               animate={isCardsInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.4, delay: 0 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
               whileHover={reducedMotion ? undefined : { y: -3, borderColor: '#2a2a2a' }}
             >
               <div className="card-header">

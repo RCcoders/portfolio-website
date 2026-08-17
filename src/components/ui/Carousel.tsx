@@ -109,12 +109,18 @@ export default function Carousel<T>({
   };
   const handleMouseUp = (e: React.MouseEvent) => {
     const delta = e.clientX - dragStartX.current;
-    if (Math.abs(delta) > 80) { delta < 0 ? next() : prev(); pauseManually(); }
+    if (Math.abs(delta) > 80) {
+      if (delta < 0) { next(); } else { prev(); }
+      pauseManually();
+    }
   };
   const handleTouchStart = (e: React.TouchEvent) => { dragStartX.current = e.touches[0].clientX; };
   const handleTouchEnd = (e: React.TouchEvent) => {
     const delta = e.changedTouches[0].clientX - dragStartX.current;
-    if (Math.abs(delta) > 80) { delta < 0 ? next() : prev(); pauseManually(); }
+    if (Math.abs(delta) > 80) {
+      if (delta < 0) { next(); } else { prev(); }
+      pauseManually();
+    }
   };
 
   // ── Arrow nudge helpers ───────────────────────────────────────────────────

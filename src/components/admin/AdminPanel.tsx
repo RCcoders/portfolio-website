@@ -231,10 +231,8 @@ export default function AdminPanel() {
                   paddingLeft: 13,
                 }}
               >
-                // authenticated · session expires in {formatCountdown(timeLeft)}
+                {`// authenticated · session expires in ${formatCountdown(timeLeft)}`}
               </div>
-
-              <div style={{ height: 1, background: '#1a1a1a', marginLeft: -24, marginRight: -24 }} />
 
               {/* Tabs */}
               <div

@@ -16,7 +16,7 @@ export default function ClientBackground() {
         if (val && val.startsWith('#')) {
           setAccentColor(val);
         }
-      } catch (e) {
+      } catch {
         // Fallback in case of SSR or layout compute delay
       }
     };

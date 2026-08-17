@@ -248,10 +248,6 @@ export default function CertificationsClient() {
     }
   };
 
-  const handleAddCertificate = (c: Certificate) => setCertifications((prev) => [...prev, c]);
-  const handleUpdateCertificate = (c: Certificate) =>
-    setCertifications((prev) => prev.map((x) => (x.id === c.id ? c : x)));
-
   const totalCerts = certifications.length;
   const uniqueProviders = new Set(certifications.map((c) => c.issuer)).size;
   const validYears = certifications

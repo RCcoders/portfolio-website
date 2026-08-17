@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Syne, Space_Mono, Geist } from 'next/font/google'
+import { Inter, Syne, Space_Mono, Geist, Anton, Playfair_Display } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/Navbar'
 import Link from 'next/link'
@@ -16,6 +16,8 @@ const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
 const syne = Syne({ subsets: ['latin'], variable: '--font-syne', weight: ['400', '700', '800'], display: 'swap' })
 const spaceMono = Space_Mono({ subsets: ['latin'], weight: ['400', '700'], variable: '--font-mono', display: 'swap' })
+const anton = Anton({ subsets: ['latin'], weight: '400', variable: '--font-anton', display: 'swap' })
+const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair', display: 'swap' })
 
 export const metadata: Metadata = {
   title: {
@@ -91,7 +93,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.variable} ${syne.variable} ${spaceMono.variable} font-sans bg-[#0d0d0d] text-white antialiased`}>
+      <body className={`${inter.variable} ${syne.variable} ${spaceMono.variable} ${anton.variable} ${playfair.variable} font-sans bg-[#0d0d0d] text-white antialiased`}>
         <AdminShell>
         <div className="min-h-screen flex flex-col relative overflow-x-hidden">
           <ErrorBoundary>

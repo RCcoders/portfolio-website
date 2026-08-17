@@ -19,7 +19,7 @@ export default function ProjectDetailClient() {
   useEffect(() => {
     if (!id) return;
     api.getProjectById(id)
-      .then((data) => {
+      .then((data: Project) => {
         setProject(data);
         // check localStorage for uploaded image
         try {

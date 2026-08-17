@@ -5,6 +5,10 @@ def get_projects(db: Client):
     response = db.table("projects").select("*").execute()
     return response.data
 
+def get_project_by_id(db: Client, project_id: str):
+    response = db.table("projects").select("*").eq("id", project_id).execute()
+    return response.data[0] if response.data else None
+
 def create_project(db: Client, project: schemas.ProjectCreate):
     project_data = project.dict(by_alias=True)
     response = db.table("projects").insert(project_data).execute()

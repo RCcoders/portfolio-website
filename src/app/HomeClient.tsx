@@ -2,58 +2,10 @@
 
 import React, { useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import PageTransition from '@/components/ui/PageTransition';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useInViewOnce } from '@/hooks/useInViewOnce';
-
-/* ─── Social links (same source as footer / contact page) ─── */
-const SOCIAL_LINKS = [
-  {
-    label: 'GitHub',
-    href: 'https://github.com/RCcoders',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22" aria-hidden="true">
-        <path d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.483 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.026 2.747-1.026.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.138 20.2 22 16.447 22 12.021 22 6.484 17.522 2 12 2z" />
-      </svg>
-    ),
-  },
-  {
-    label: 'LinkedIn',
-    href: 'https://www.linkedin.com/in/raghav-chawla-29255b275/',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22" aria-hidden="true">
-        <path d="M19 3A2 2 0 0 1 21 5v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zm-8.5 7H9v7h1.5v-7zm.25-2.25a.875.875 0 1 0-1.75 0 .875.875 0 0 0 1.75 0zM18 17v-4c0-1.657-1.343-3-3-3-.826 0-1.573.336-2 1V10h-1.5v7H13v-3.5c0-.828.672-1.5 1.5-1.5s1.5.672 1.5 1.5V17H18z" />
-      </svg>
-    ),
-  },
-  {
-    label: 'Gmail',
-    href: 'mailto:chawlaraghav78@gmail.com',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22" aria-hidden="true">
-        <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4.236-8 5.334-8-5.334V6l8 5.333L20 6v2.236z" />
-      </svg>
-    ),
-  },
-  {
-    label: 'Instagram',
-    href: 'https://instagram.com/_nx.raghav._',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22" aria-hidden="true">
-        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
-      </svg>
-    ),
-  },
-  {
-    label: 'Twitter / X',
-    href: 'https://twitter.com/raghavchawla',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22" aria-hidden="true">
-        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-      </svg>
-    ),
-  },
-];
 
 /* ─── Tech stack (devicon CDN icons) ─── */
 const TECH_STACK = [
@@ -81,159 +33,173 @@ export default function HomeClient() {
 
   const techDouble = [...TECH_STACK, ...TECH_STACK];
 
-  // Letter animations for headings
-  const splitLetters = (text: string) => {
-    return [...text].map((char, index) => (
-      <span
-        key={index}
-        style={{ display: 'inline-block', whiteSpace: char === ' ' ? 'pre' : 'normal' }}
-      >
-        {char}
-      </span>
-    ));
-  };
 
   return (
     <PageTransition>
       {/* ══════════════════════════════════════════════════
           Hero — two-column split layout
       ══════════════════════════════════════════════════ */}
-      <section className="hero-section">
-        <div className="hero-inner">
+      {/* ══════════════════════════════════════════════════
+          Hero — new three-column layout with image
+      ══════════════════════════════════════════════════ */}
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden border-b border-[#1a1a1a] pt-20 md:pt-0 pb-16 md:pb-0">
+        {/* Background PORTFOLIO text */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden">
+          <motion.h1 
+            initial={reducedMotion ? false : { opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            className="text-[18vw] leading-none text-accent/[0.07] whitespace-nowrap select-none font-bold"
+            style={{ fontFamily: 'var(--font-anton)' }}
+          >
+            PORTFOLIO
+          </motion.h1>
+        </div>
 
-          {/* ── LEFT column ── */}
-          <div className="hero-left">
-            <motion.span
-              className="hero-role"
-              initial={reducedMotion ? false : { opacity: 0, y: -10 }}
+        {/* Main Content Grid */}
+        <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full relative z-10 grid grid-cols-1 lg:grid-cols-[1fr_minmax(300px,1.2fr)_1fr] gap-8 lg:gap-12 items-center min-h-[70vh]">
+          
+          {/* Left Column */}
+          <div className="flex flex-col items-start z-20 order-2 lg:order-1 mt-8 lg:mt-0">
+            <motion.span 
+              initial={reducedMotion ? false : { opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.1 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-[10px] md:text-xs tracking-[0.2em] text-neutral-400 font-mono uppercase mb-8 lg:mb-12"
             >
-              Hi, I&apos;m Raghav Chawla
+              AI Developer / Full-Stack Builder
             </motion.span>
-
-            <h1 className="hero-title" aria-label="Full Stack Developer">
-              <motion.span
-                style={{ display: 'block' }}
-                initial={reducedMotion ? false : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
+            
+            <motion.h2 
+              initial={reducedMotion ? false : { opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-3xl md:text-5xl text-white/90 italic mb-2 md:mb-4" 
+              style={{ fontFamily: 'var(--font-playfair)' }}
+            >
+              Hello, I&apos;m
+            </motion.h2>
+            
+            <div className="flex flex-col leading-[0.85] mb-8 uppercase select-none" style={{ fontFamily: 'var(--font-anton)' }}>
+              <motion.span 
+                initial={reducedMotion ? false : { opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.3, type: "spring", stiffness: 100 }}
+                className="text-white text-[16vw] lg:text-[7.5rem] xl:text-[9rem] tracking-tight"
               >
-                {reducedMotion ? (
-                  splitLetters("Full Stack")
-                ) : (
-                  [... "Full Stack"].map((char, i) => (
-                    <motion.span
-                      key={i}
-                      style={{ display: 'inline-block', whiteSpace: char === ' ' ? 'pre' : 'normal' }}
-                      initial={{ opacity: 0, y: 60 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.35, delay: 0.2 + i * 0.03, ease: 'easeOut' }}
-                    >
-                      {char}
-                    </motion.span>
-                  ))
-                )}
+                RAGHAV
               </motion.span>
-
-              <motion.span
-                style={{ display: 'block' }}
-                className="hero-title-accent"
-                initial={reducedMotion ? false : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 + "Full Stack".length * 0.03 + 0.2 }}
+              <motion.span 
+                initial={reducedMotion ? false : { opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.4, type: "spring", stiffness: 100 }}
+                className="text-accent text-[16vw] lg:text-[7.5rem] xl:text-[9rem] tracking-tight"
               >
-                {reducedMotion ? (
-                  splitLetters("Developer")
-                ) : (
-                  [... "Developer"].map((char, i) => (
-                    <motion.span
-                      key={i}
-                      style={{ display: 'inline-block', whiteSpace: char === ' ' ? 'pre' : 'normal' }}
-                      initial={{ opacity: 0, y: 60 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{
-                        duration: 0.35,
-                        delay: 0.2 + "Full Stack".length * 0.03 + 0.2 + i * 0.03,
-                        ease: 'easeOut'
-                      }}
-                    >
-                      {char}
-                    </motion.span>
-                  ))
-                )}
+                CHAWLA
               </motion.span>
-            </h1>
-
-            {/* Social icon buttons */}
-            <div className="hero-socials" role="list" aria-label="Social links">
-              {SOCIAL_LINKS.map((social, index) => (
-                <motion.a
-                  key={social.label}
-                  href={social.href}
-                  target={social.href.startsWith('mailto') ? undefined : '_blank'}
-                  rel={social.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
-                  className="hero-social-btn"
-                  aria-label={social.label}
-                  role="listitem"
-                  initial={reducedMotion ? false : { scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={
-                    reducedMotion
-                      ? {}
-                      : { type: 'spring', stiffness: 300, damping: 20, delay: 0.3 + index * 0.06 }
-                  }
-                  whileHover={reducedMotion ? {} : { scale: 1.12 }}
-                  whileTap={reducedMotion ? {} : { scale: 0.92 }}
-                >
-                  {social.icon}
-                </motion.a>
-              ))}
             </div>
+
+            <motion.div 
+              initial={reducedMotion ? false : { opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="mb-10 lg:mb-16"
+            >
+              <p className="text-xs md:text-sm text-neutral-400 font-sans max-w-sm leading-relaxed">
+                <span className="text-accent font-semibold tracking-wider text-[11px] mb-2 block uppercase">AI BUILDER & FULL-STACK DEVELOPER</span>
+                I design and build intelligent, user-focused digital experiences that combine robust backends, creative frontends, and machine learning.
+              </p>
+            </motion.div>
+
+            <motion.div 
+              initial={reducedMotion ? false : { opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              className="flex flex-wrap items-center gap-6"
+            >
+              <div className="flex items-center gap-3 px-5 py-2.5 rounded-full border border-[#222] bg-[#111]/80 backdrop-blur-sm">
+                <span className="w-2.5 h-2.5 rounded-full bg-accent animate-pulse shadow-[0_0_8px_var(--accent)]"></span>
+                <span className="text-[10px] md:text-xs font-bold text-white tracking-wider uppercase">AVAILABLE WORLDWIDE</span>
+              </div>
+              <Link href="/projects" className="text-sm font-bold text-white hover:text-accent transition-colors flex items-center gap-2 group uppercase tracking-wider">
+                See My Work <span className="group-hover:translate-x-2 transition-transform duration-300">→</span>
+              </Link>
+            </motion.div>
           </div>
 
-          {/* ── RIGHT column ── */}
-          <div className="hero-right">
-            <motion.p
-              className="hero-description"
+          {/* Center Image */}
+          <div className="relative h-[50vh] md:h-[65vh] lg:h-[80vh] flex items-center justify-center z-10 order-1 lg:order-2 w-full max-w-lg mx-auto">
+            {/* Blending gradients for smooth integration */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-transparent to-transparent z-10 h-1/4 bottom-0 top-auto w-full"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d] via-transparent to-transparent z-10 h-1/4 top-0 w-full"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0d0d0d] via-transparent to-transparent z-10 w-1/4 right-0 left-auto h-full"></div>
+            <div className="absolute inset-0 bg-gradient-to-l from-[#0d0d0d] via-transparent to-transparent z-10 w-1/4 left-0 h-full"></div>
+            
+            <motion.div
+              initial={reducedMotion ? false : { opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
+              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative w-full h-full flex items-center justify-center"
+            >
+              {/* Subtle accent glow behind the image */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-accent/20 rounded-full blur-[100px] -z-10 mix-blend-screen pointer-events-none"></div>
+              
+              <Image 
+                src="/images/raghav.jpg" 
+                alt="Raghav Chawla"
+                width={500}
+                height={700}
+                priority
+                className="h-full w-auto max-w-full object-contain mix-blend-lighten filter contrast-[1.1] brightness-[0.9] saturate-[0.85] grayscale-[0.2]"
+              />
+            </motion.div>
+          </div>
+
+          {/* Right Column */}
+          <div className="flex flex-col items-start lg:items-end text-left lg:text-right z-20 gap-12 lg:gap-16 order-3 w-full">
+            <motion.div 
               initial={reducedMotion ? false : { opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.7, ease: 'easeOut' }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="flex flex-col items-start lg:items-end gap-3 lg:gap-4 max-w-[280px]"
             >
-              Chandigarh, India — Crafting high-performance digital products,
-              predictive models, and clean{' '}
-              <span className="hero-description-accent">APIs &amp; full-stack systems</span>
-              {' '}with precise, deliberate engineering.
-            </motion.p>
+              <div className="flex items-center gap-2 text-accent text-[10px] md:text-xs font-bold tracking-[0.15em] uppercase">
+                AVAILABLE FOR FREELANCE <span className="animate-pulse">✦</span>
+              </div>
+              <p className="text-xs md:text-sm text-neutral-400 leading-relaxed relative pl-6 lg:pl-0">
+                 <span className="absolute left-0 top-1 text-accent text-lg leading-none lg:hidden">✦</span>
+                 Turning complex data and automation ideas into high-fidelity, high-performance web products.
+                 <span className="absolute -left-6 top-1 text-accent text-lg leading-none hidden lg:block">✦</span>
+              </p>
+            </motion.div>
 
-            <div className="hero-cta">
-              <motion.div
-                initial={reducedMotion ? false : { opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.8, ease: 'easeOut' }}
-              >
-                <Link
-                  href="/projects"
-                  className="cta-primary"
-                >
-                  [view projects]
-                </Link>
-              </motion.div>
-              <motion.div
-                initial={reducedMotion ? false : { opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.9, ease: 'easeOut' }}
-              >
-                <Link
-                  href="/contact"
-                  className="cta-secondary"
-                >
-                  [contact me]
-                </Link>
-              </motion.div>
-            </div>
+            <motion.div 
+              initial={reducedMotion ? false : { opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              className="flex flex-col gap-6 w-full mt-auto"
+            >
+              {/* Stats */}
+              <div className="flex items-center justify-between lg:justify-end gap-4 lg:gap-6 w-full group">
+                <span className="text-[10px] md:text-xs text-neutral-500 font-mono tracking-widest uppercase group-hover:text-neutral-300 transition-colors">Years Experience</span>
+                <div className="h-[1px] bg-neutral-800 flex-1 lg:min-w-[4rem] group-hover:bg-neutral-600 transition-colors"></div>
+                <span className="text-accent text-4xl lg:text-5xl font-bold min-w-[3rem] text-right" style={{ fontFamily: 'var(--font-anton)' }}>1+</span>
+              </div>
+              
+              <div className="flex items-center justify-between lg:justify-end gap-4 lg:gap-6 w-full group">
+                <span className="text-[10px] md:text-xs text-neutral-500 font-mono tracking-widest uppercase group-hover:text-neutral-300 transition-colors">Projects Completed</span>
+                <div className="h-[1px] bg-neutral-800 flex-1 lg:min-w-[4rem] group-hover:bg-neutral-600 transition-colors"></div>
+                <span className="text-accent text-4xl lg:text-5xl font-bold min-w-[3rem] text-right" style={{ fontFamily: 'var(--font-anton)' }}>25+</span>
+              </div>
+              
+              <div className="flex items-center justify-between lg:justify-end gap-4 lg:gap-6 w-full group">
+                <span className="text-[10px] md:text-xs text-neutral-500 font-mono tracking-widest uppercase group-hover:text-neutral-300 transition-colors">Happy Clients</span>
+                <div className="h-[1px] bg-neutral-800 flex-1 lg:min-w-[4rem] group-hover:bg-neutral-600 transition-colors"></div>
+                <span className="text-accent text-4xl lg:text-5xl font-bold min-w-[3rem] text-right" style={{ fontFamily: 'var(--font-anton)' }}>10+</span>
+              </div>
+            </motion.div>
           </div>
-
+          
         </div>
       </section>
 
@@ -261,13 +227,12 @@ export default function HomeClient() {
                 whileHover={reducedMotion ? {} : { scale: 1.05 }}
                 transition={{ duration: 0.15 }}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={tech.icon}
                   alt={tech.name}
                   width={32}
                   height={32}
-                  loading="lazy"
+                  unoptimized
                   className="ticker-badge-icon"
                 />
                 <span className="ticker-badge-name">{tech.name}</span>

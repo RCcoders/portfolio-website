@@ -31,6 +31,13 @@ def read_root():
 def get_projects():
     return crud.get_projects(database.supabase)
 
+@api_router.get("/projects/{project_id}", response_model=schemas.Project)
+def get_project_by_id(project_id: str):
+    proj = crud.get_project_by_id(database.supabase, project_id)
+    if not proj:
+        raise HTTPException(status_code=404, detail="Project not found")
+    return proj
+
 @api_router.post("/projects", response_model=List[schemas.Project])
 def create_project(project: schemas.ProjectCreate):
     return crud.create_project(database.supabase, project)

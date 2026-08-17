@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
+import { Terminal } from 'lucide-react';
+import AskTerminal from './AskTerminal';
 
 const swatches = [
   { accent: '#FFE500', text: '#0d0d0d' },
@@ -16,6 +18,7 @@ const swatches = [
 
 export default function ColorSwitcher() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isTerminalOpen, setIsTerminalOpen] = useState(false);
   const [currentAccent, setCurrentAccent] = useState('#FFE500');
   const [currentAccentText, setCurrentAccentText] = useState('#0d0d0d');
   const [selectedAccent, setSelectedAccent] = useState('#FFE500');
@@ -59,73 +62,103 @@ export default function ColorSwitcher() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 select-none">
-      {/* Expanded Swatches */}
-      {isOpen && (
-        <div
-          className="bg-[#161616] border border-[#222] rounded-[12px] p-3 flex flex-row gap-2.5 shadow-2xl transition-all duration-200 transform scale-100 origin-bottom-right"
-          onMouseLeave={handleMouseLeave}
-        >
-          {swatches.map((swatch) => {
-            const isActiveS = selectedAccent === swatch.accent;
-            return (
-              <button
-                key={swatch.accent}
-                onClick={() => handleSelect(swatch.accent, swatch.text)}
-                onMouseEnter={() => handleMouseEnter(swatch.accent, swatch.text)}
+    <>
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 select-none">
+        {/* Expanded Swatches */}
+        {isOpen && (
+          <div
+            className="bg-[#161616] border border-[#222] rounded-[12px] p-3 flex flex-row gap-2.5 shadow-2xl transition-all duration-200 transform scale-100 origin-bottom-right"
+            onMouseLeave={handleMouseLeave}
+          >
+            {swatches.map((swatch) => {
+              const isActiveS = selectedAccent === swatch.accent;
+              return (
+                <button
+                  key={swatch.accent}
+                  onClick={() => handleSelect(swatch.accent, swatch.text)}
+                  onMouseEnter={() => handleMouseEnter(swatch.accent, swatch.text)}
+                  style={{
+                    backgroundColor: swatch.accent,
+                    boxShadow: isActiveS ? `0 0 0 3px #0d0d0d, 0 0 0 5px ${swatch.accent}` : 'none',
+                  }}
+                  className="w-9 h-9 rounded-full transition-transform duration-150 hover:scale-110 cursor-pointer outline-none border-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+                  title={swatch.accent}
+                  aria-label={`Switch theme accent color to ${swatch.accent}`}
+                />
+              );
+            })}
+          </div>
+        )}
+
+        {/* Buttons Row */}
+        <div className="flex items-center gap-3">
+          {/* Terminal Icon Button */}
+          <button
+            onClick={() => setIsTerminalOpen(!isTerminalOpen)}
+            className="w-12 h-12 rounded-full bg-[#111] border border-neutral-800 text-white flex items-center justify-center transition-all duration-200 hover:scale-105 hover:border-accent hover:text-accent shadow-xl cursor-pointer outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-white group"
+            title="Ask Raghav AI Terminal"
+            aria-label="Toggle AI Terminal"
+          >
+            <Terminal className="w-5 h-5 transition-transform group-hover:scale-110" />
+          </button>
+
+          {/* Main Color Toggle Circle with pulse ring */}
+          <div style={{ position: 'relative', width: 48, height: 48 }}>
+            {!reducedMotion && (
+              <motion.span
+                aria-hidden="true"
                 style={{
-                  backgroundColor: swatch.accent,
-                  boxShadow: isActiveS ? `0 0 0 3px #0d0d0d, 0 0 0 5px ${swatch.accent}` : 'none',
+                  position: 'absolute',
+                  inset: 0,
+                  borderRadius: '50%',
+                  border: `2px solid ${currentAccent}`,
+                  pointerEvents: 'none',
                 }}
-                className="w-9 h-9 rounded-full transition-transform duration-150 hover:scale-110 cursor-pointer outline-none border-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
-                title={swatch.accent}
-                aria-label={`Switch theme accent color to ${swatch.accent}`}
+                animate={{
+                  scale: [1, 1.8, 1.8],
+                  opacity: [0.6, 0, 0],
+                }}
+                transition={{
+                  duration: 1.2,
+                  ease: 'easeOut',
+                  repeat: Infinity,
+                  repeatDelay: 3.8,
+                }}
               />
-            );
-          })}
+            )}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              style={{
+                backgroundColor: currentAccent,
+                boxShadow: `0 0 16px 2px ${currentAccent}55`,
+              }}
+              className="w-12 h-12 rounded-full border border-neutral-900 flex items-center justify-center transition-all duration-200 hover:scale-105 cursor-pointer outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+              aria-label="Toggle accent color switcher selector"
+              title="Theme Accent Colors"
+            >
+              <span
+                style={{ backgroundColor: currentAccentText }}
+                className="w-2.5 h-2.5 rounded-full transition-colors duration-200"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Terminal Modal Overlay */}
+      {isTerminalOpen && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+          onClick={() => setIsTerminalOpen(false)}
+        >
+          <div 
+            className="w-full max-w-[860px] animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <AskTerminal onClose={() => setIsTerminalOpen(false)} />
+          </div>
         </div>
       )}
-
-      {/* Main Toggle Circle with pulse ring */}
-      <div style={{ position: 'relative', width: 48, height: 48 }}>
-        {/* Pulse ring — animates every 5 s */}
-        {!reducedMotion && (
-          <motion.span
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              inset: 0,
-              borderRadius: '50%',
-              border: `2px solid ${currentAccent}`,
-              pointerEvents: 'none',
-            }}
-            animate={{
-              scale: [1, 1.8, 1.8],
-              opacity: [0.6, 0, 0],
-            }}
-            transition={{
-              duration: 1.2,
-              ease: 'easeOut',
-              repeat: Infinity,
-              repeatDelay: 3.8, // fires once every 5 s total
-            }}
-          />
-        )}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          style={{
-            backgroundColor: currentAccent,
-            boxShadow: `0 0 16px 2px ${currentAccent}55`,
-          }}
-          className="w-12 h-12 rounded-full border border-neutral-900 flex items-center justify-center transition-all duration-200 hover:scale-105 cursor-pointer outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
-          aria-label="Toggle accent color switcher selector"
-        >
-          <span
-            style={{ backgroundColor: currentAccentText }}
-            className="w-2.5 h-2.5 rounded-full transition-colors duration-200"
-          />
-        </button>
-      </div>
-    </div>
+    </>
   );
 }
