@@ -36,9 +36,6 @@ yarn-error.log*
 .env.local
 backend/.env
 
-# knowledge folder (resume and context)
-knowledge/
-
 # python
 __pycache__/
 *.pyc
