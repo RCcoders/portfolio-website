@@ -71,10 +71,13 @@ SYSTEM INSTRUCTIONS & RULES:
 
 function getFallbackResponse(query: string): string {
   const q = query.toLowerCase()
+  if (q.includes('package') || q.includes('lpa') || q.includes('salary') || q.includes('offer') || q.includes('compensation')) {
+    return "Thank you for the offer! I am very interested in exploring full-time SDE / AI Engineering roles and high-impact opportunities. Please reach out to me directly at chawlaraghav78@gmail.com or via LinkedIn (linkedin.com/in/raghav-chawla-29255b275) so we can discuss the position details!"
+  }
   if (q.includes('bug') || q.includes('challenge') || q.includes('hardest') || q.includes('problem')) {
     return "While building PulseDesk AI, one major challenge was real-time ticket escalation. I built an NLP sentiment-analysis pipeline using scikit-learn and Celery task queues with Redis to process high-volume customer streams asynchronously without dropping real-time WebSockets connections."
   }
-  if (q.includes('project') || q.includes('strongest') || q.includes('work') || q.includes('built') || q.includes('best')) {
+  if (q.includes('project') || q.includes('flagship') || q.includes('built') || q.includes('best project')) {
     return "My flagship projects are PulseDesk AI (an AI Customer Support Intelligence platform with OpenAI, Django, React & Celery) and NeuroTech (a Medical Decision Support Platform with RBAC & Flask ML microservices)."
   }
   if (q.includes('remote') || q.includes('hire') || q.includes('job') || q.includes('available') || q.includes('role') || q.includes('why')) {
@@ -117,10 +120,9 @@ export async function POST(req: Request): Promise<Response> {
 
   try {
     const genAI = new GoogleGenerativeAI(apiKey)
-    const resumeContext = await getResumeFileContext()
 
     // Try active Gemini models in order of speed and capability
-    const modelsToTry = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-2.0-flash-lite'];
+    const modelsToTry = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-2.0-flash-lite']
     let resultStream = null
     let lastError: Error | null = null
 
@@ -131,14 +133,6 @@ export async function POST(req: Request): Promise<Response> {
         }))
       : []
 
-    // Prepare message payload with resume file grounding if available
-    type PartType = { fileData: { mimeType: string; fileUri: string } } | { text: string }
-    const messageParts: PartType[] = []
-    if (resumeContext) {
-      messageParts.push(resumeContext)
-    }
-    messageParts.push({ text: lastMessage })
-
     for (const modelName of modelsToTry) {
       try {
         const model = genAI.getGenerativeModel({
@@ -146,12 +140,7 @@ export async function POST(req: Request): Promise<Response> {
           systemInstruction: SYSTEM_PROMPT,
         })
         const chat = model.startChat({ history })
-        try {
-          resultStream = await chat.sendMessageStream(messageParts)
-        } catch (fileErr) {
-          console.warn(`[Gemini API] Stream with fileContext failed on ${modelName}, retrying text-only:`, fileErr)
-          resultStream = await chat.sendMessageStream([{ text: lastMessage }])
-        }
+        resultStream = await chat.sendMessageStream([{ text: lastMessage }])
         if (resultStream) break
       } catch (err: unknown) {
         lastError = err instanceof Error ? err : new Error(String(err))
